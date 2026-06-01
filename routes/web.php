@@ -58,7 +58,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/jual', [JualController::class, 'storeStep1']);
 
 
-    Route::get('/jual/step-2', fn () => view('jual2'))->name('jual2');
+Route::post('/jual/step-2', [JualController::class, 'storeStep2'])
+    ->name('jual2.store');
 
     Route::post('/jual/step-2', [JualController::class, 'storeStep2']);
 
@@ -81,7 +82,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/mobil/{mobil}/jual', [UserController::class, 'simpanJual'])
         ->name('mobil.simpanHarga');
 
-    Route::get('/cek-slot/{tanggal}', [JualController::class,'cekSlot']);
+
 
 Route::get('/booking/finish', [MobilController::class, 'paymentFinishBooking'])
     ->name('payment.finish.booking');
