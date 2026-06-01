@@ -16,6 +16,11 @@ return [
     'default' => env('FILESYSTEM_DISK', 'local'),
 
     /*
+    | For production on Railway/ephemeral filesystems, set FILESYSTEM_DISK=s3
+    | and provide AWS credentials via environment variables (see .env.example).
+    */
+
+    /*
     |--------------------------------------------------------------------------
     | Filesystem Disks
     |--------------------------------------------------------------------------
@@ -39,9 +44,16 @@ return [
         ],
 
         'public' => [
-            'driver' => 'local',
-            'root' => storage_path('app/public'),
-            'url' => rtrim(env('APP_URL', 'http://localhost'), '/').'/storage',
+            // Switch between local (dev) and s3 (production)
+            'driver' => env('FILESYSTEM_DISK') === 's3' ? 's3' : 'local',
+            'root' => env('FILESYSTEM_DISK') === 's3' ? null : storage_path('app/public'),
+            'key' => env('FILESYSTEM_DISK') === 's3' ? env('AWS_ACCESS_KEY_ID') : null,
+            'secret' => env('FILESYSTEM_DISK') === 's3' ? env('AWS_SECRET_ACCESS_KEY') : null,
+            'region' => env('FILESYSTEM_DISK') === 's3' ? env('AWS_DEFAULT_REGION') : null,
+            'bucket' => env('FILESYSTEM_DISK') === 's3' ? env('AWS_BUCKET') : null,
+            'url' => env('FILESYSTEM_DISK') === 's3' ? env('AWS_URL') : rtrim(env('APP_URL', 'http://localhost'), '/').'/storage',
+            'endpoint' => env('FILESYSTEM_DISK') === 's3' ? env('AWS_ENDPOINT') : null,
+            'use_path_style_endpoint' => env('FILESYSTEM_DISK') === 's3' ? env('AWS_USE_PATH_STYLE_ENDPOINT', false) : false,
             'visibility' => 'public',
             'throw' => false,
             'report' => false,
@@ -56,6 +68,7 @@ return [
             'url' => env('AWS_URL'),
             'endpoint' => env('AWS_ENDPOINT'),
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
+            'visibility' => 'public',
             'throw' => false,
             'report' => false,
         ],
