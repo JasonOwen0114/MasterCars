@@ -44,7 +44,7 @@
 
     <div class="card shadow-sm p-4 form-card">
 
-        <form action="{{ route('jual2.store') }}" method="POST">
+        <form action="{{ route('jual2') }}" method="POST">
         @csrf
 
 
