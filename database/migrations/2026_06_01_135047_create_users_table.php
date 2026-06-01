@@ -11,17 +11,22 @@ return new class extends Migration
      */
     public function up(): void
     {
-    Schema::create('users', function (Blueprint $table) {
-        $table->id();
-        $table->string('nama',100);
-        $table->string('email',100)->unique();
-        $table->string('password')->nullable();
-        $table->string('no_hp',20)->nullable();
-        $table->tinyInteger('role')->nullable();
-        $table->string('alamat')->nullable();
-        $table->string('kecamatan')->nullable();
-        $table->timestamps();
-    });
+Schema::create('users', function (Blueprint $table) {
+    $table->id();
+
+    $table->string('nama', 100);
+    $table->string('email', 100)->unique();
+    $table->string('password')->nullable();
+
+    $table->string('no_hp', 20)->nullable();
+
+    $table->tinyInteger('role')->nullable();
+
+    $table->string('alamat', 255)->nullable();
+    $table->string('kecamatan', 255)->nullable();
+
+    $table->timestamps();
+});
     }
 
     /**

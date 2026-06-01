@@ -11,51 +11,66 @@ return new class extends Migration
      */
     public function up(): void
     {
-Schema::create('reinspeksi', function (Blueprint $table) {
+        Schema::create('jadwal_booking', function (Blueprint $table) {
+            $table->id();
 
-    $table->id();
+            $table->unsignedBigInteger('mobil_id')->nullable();
 
-    $table->unsignedBigInteger('mobil_id')->nullable();
-    $table->unsignedBigInteger('user_id')->nullable();
-    $table->unsignedBigInteger('jadwal_id')->nullable();
-    $table->unsignedBigInteger('inspeksi_id')->nullable();
+            $table->string('order_id', 100)->nullable();
 
-    $table->enum('status', [
-        'pending',
-        'proses',
-        'selesai'
-    ])->default('pending');
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->unsignedBigInteger('pembeli_id')->nullable();
+            $table->unsignedBigInteger('staff_id')->nullable();
 
-    $table->string('foto_thumbnail')->nullable();
-    $table->string('foto_depan')->nullable();
-    $table->string('foto_belakang')->nullable();
-    $table->string('foto_kanan')->nullable();
-    $table->string('foto_kiri')->nullable();
-    $table->string('foto_dashboard')->nullable();
-    $table->string('foto_kursi_depan')->nullable();
-    $table->string('foto_kursi_belakang')->nullable();
-    $table->string('foto_bagasi_belakang')->nullable();
+            $table->integer('status')->default(0);
 
-    $table->string('merk',100)->nullable();
-    $table->string('nama_mobil',100)->nullable();
-    $table->string('tipe',50)->nullable();
+            $table->string('merk', 100)->nullable();
+            $table->string('model_mobil', 100)->nullable();
 
-    $table->integer('tahun')->nullable();
+            $table->integer('tahun')->nullable();
 
-    $table->string('warna',50)->nullable();
+            $table->string('transmisi', 50)->nullable();
+            $table->string('warna', 50)->nullable();
+            $table->string('tipe_mesin', 50)->nullable();
 
-    $table->bigInteger('harga')->nullable();
+            $table->string('nomor_kontak', 20)->nullable();
 
-    $table->integer('kapasitas_kursi')->nullable();
-    $table->integer('kapasitas_mesin')->nullable();
+            $table->text('alamat_asal')->nullable();
+            $table->string('kecamatan_asal', 100)->nullable();
 
-    $table->string('transmisi',50)->nullable();
-    $table->string('tipe_mesin',50)->nullable();
+            $table->text('alamat_tujuan')->nullable();
+            $table->string('kecamatan_tujuan', 100)->nullable();
 
-    $table->text('alamat')->nullable();
+            $table->date('jadwal')->nullable();
+            $table->time('jam')->nullable();
 
-    $table->timestamps();
-});
+            $table->text('note')->nullable();
+
+            $table->integer('kilometer')->nullable();
+
+            $table->timestamps();
+
+  
+            $table->foreign('mobil_id')
+                ->references('id')
+                ->on('mobil')
+                ->nullOnDelete();
+
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('users')
+                ->nullOnDelete();
+
+            $table->foreign('pembeli_id')
+                ->references('id')
+                ->on('users')
+                ->nullOnDelete();
+
+            $table->foreign('staff_id')
+                ->references('id')
+                ->on('users')
+                ->nullOnDelete();
+        });
     }
 
     /**
@@ -63,6 +78,6 @@ Schema::create('reinspeksi', function (Blueprint $table) {
      */
     public function down(): void
     {
-        Schema::dropIfExists('reinspeksi');
+        Schema::dropIfExists('jadwal_booking');
     }
 };

@@ -13,8 +13,8 @@ return new class extends Migration
     {
     Schema::create('data_mobil', function (Blueprint $table) {
         $table->id();
-        $table->string('merk',50);
-        $table->string('model',100);
+        $table->string('merk', 50);
+        $table->string('model', 100);
         $table->timestamps();
     });
     }

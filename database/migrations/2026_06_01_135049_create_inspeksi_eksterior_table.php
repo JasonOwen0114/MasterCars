@@ -11,31 +11,55 @@ return new class extends Migration
      */
     public function up(): void
     {
-Schema::create('inspeksi_eksterior', function (Blueprint $table) {
+        Schema::create('inspeksi_eksterior', function (Blueprint $table) {
 
-    $table->id();
+            $table->id();
 
-    $table->foreignId('inspeksi_id')
-        ->nullable()
-        ->constrained('inspeksi');
+            $table->foreignId('inspeksi_id')
+                ->nullable()
+                ->constrained('inspeksi')
+                ->nullOnDelete();
 
-    $items = [
-        'kondisi_cat',
-        'panel_bodi',
-        'lampu_depan',
-        'lampu_belakang',
-        'velg',
-        'ban',
-        'kaca',
-        'wiper'
-    ];
+       
+            $table->char('kondisi_cat', 1)->nullable();
+            $table->string('foto_kondisi_cat')->nullable();
+            $table->text('note_kondisi_cat')->nullable();
 
-    foreach ($items as $item) {
-        $table->char($item, 1)->nullable();
-        $table->string('foto_'.$item)->nullable();
-        $table->text('note_'.$item)->nullable();
-    }
-});
+    
+            $table->char('panel_bodi', 1)->nullable();
+            $table->string('foto_panel_bodi')->nullable();
+            $table->text('note_panel_bodi')->nullable();
+
+          
+            $table->char('lampu_depan', 1)->nullable();
+            $table->string('foto_lampu_depan')->nullable();
+            $table->text('note_lampu_depan')->nullable();
+
+       
+            $table->char('lampu_belakang', 1)->nullable();
+            $table->string('foto_lampu_belakang')->nullable();
+            $table->text('note_lampu_belakang')->nullable();
+
+     
+            $table->char('velg', 1)->nullable();
+            $table->string('foto_velg')->nullable();
+            $table->text('note_velg')->nullable();
+
+     
+            $table->char('ban', 1)->nullable();
+            $table->string('foto_ban')->nullable();
+            $table->text('note_ban')->nullable();
+
+       
+            $table->char('kaca', 1)->nullable();
+            $table->string('foto_kaca')->nullable();
+            $table->text('note_kaca')->nullable();
+
+     
+            $table->char('wiper', 1)->nullable();
+            $table->string('foto_wiper')->nullable();
+            $table->text('note_wiper')->nullable();
+        });
     }
 
     /**

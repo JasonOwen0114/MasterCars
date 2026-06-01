@@ -19,25 +19,25 @@ Schema::create('mobil', function (Blueprint $table) {
         ->nullable()
         ->constrained('users');
 
-    $table->string('merk',50)->nullable();
-    $table->string('nama_mobil',100)->nullable();
-    $table->string('tipe',50)->nullable();
+    $table->string('merk', 50)->nullable();
+    $table->string('nama_mobil', 100)->nullable();
+    $table->string('tipe', 50)->nullable();
 
     $table->integer('tahun')->nullable();
 
-    $table->string('warna',30)->nullable();
+    $table->string('warna', 30)->nullable();
 
     $table->bigInteger('harga')->nullable();
 
     $table->integer('kapasitas_kursi')->nullable();
     $table->integer('kapasitas_mesin')->nullable();
 
-    $table->string('transmisi',50)->nullable();
-    $table->string('tipe_mesin',50)->nullable();
+    $table->string('transmisi', 50)->nullable();
+    $table->string('tipe_mesin', 50)->nullable();
 
-    $table->string('alamat',100)->nullable();
+    $table->string('alamat', 100)->nullable();
 
-    $table->enum('status',[
+    $table->enum('status', [
         'menunggu',
         'tersedia',
         'terjual',
@@ -46,23 +46,16 @@ Schema::create('mobil', function (Blueprint $table) {
     ])->default('menunggu');
 
     $table->string('foto_thumbnail')->nullable();
+
     $table->string('foto_depan')->nullable();
     $table->string('foto_kanan')->nullable();
     $table->string('foto_belakang')->nullable();
     $table->string('foto_kiri')->nullable();
+
     $table->string('foto_dashboard')->nullable();
     $table->string('foto_kursi_depan')->nullable();
     $table->string('foto_kursi_belakang')->nullable();
     $table->string('foto_bagasi_belakang')->nullable();
-
-    $table->string('kecamatan')->nullable();
-
-    $table->tinyInteger('status_jual')->nullable();
-
-    $table->integer('kilometer')->nullable();
-
-    $table->boolean('reinspeksi_used')
-        ->default(false);
 
     $table->timestamps();
 });

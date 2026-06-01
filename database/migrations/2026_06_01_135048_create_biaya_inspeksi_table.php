@@ -11,19 +11,20 @@ return new class extends Migration
      */
     public function up(): void
     {
-Schema::create('biaya_inspeksi', function (Blueprint $table) {
+        Schema::create('biaya_inspeksi', function (Blueprint $table) {
+            $table->id();
 
-    $table->id();
+            $table->unsignedBigInteger('inspeksi_id')->nullable();
 
-    $table->foreignId('inspeksi_id')
-        ->nullable()
-        ->constrained('jadwal_inspeksi')
-        ->cascadeOnDelete();
+            $table->bigInteger('jumlah')->nullable();
 
-    $table->bigInteger('jumlah')->nullable();
+            $table->date('tanggal_bayar')->nullable();
 
-    $table->date('tanggal_bayar')->nullable();
-});
+            $table->foreign('inspeksi_id', 'fk_biaya_jadwal')
+                ->references('id')
+                ->on('jadwal_inspeksi')
+                ->onDelete('cascade');
+        });
     }
 
     /**

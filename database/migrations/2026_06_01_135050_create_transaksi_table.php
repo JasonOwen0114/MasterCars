@@ -11,28 +11,30 @@ return new class extends Migration
      */
     public function up(): void
     {
-Schema::create('transaksi', function (Blueprint $table) {
+        Schema::create('transaksi', function (Blueprint $table) {
+            $table->id();
 
-    $table->id();
+            $table->unsignedBigInteger('mobil_id')->nullable();
+            $table->unsignedBigInteger('pembeli_id')->nullable();
+            $table->unsignedBigInteger('penjual_id')->nullable();
 
-    $table->foreignId('mobil_id')
-        ->nullable()
-        ->constrained('mobil');
+            $table->bigInteger('harga')->nullable();
+            $table->bigInteger('total_komisi')->nullable();
 
-    $table->foreignId('pembeli_id')
-        ->nullable()
-        ->constrained('users');
+            $table->date('tanggal_transaksi')->nullable();
 
-    $table->foreignId('penjual_id')
-        ->nullable()
-        ->constrained('users');
+            $table->foreign('mobil_id')
+                ->references('id')
+                ->on('mobil');
 
-    $table->bigInteger('harga')->nullable();
+            $table->foreign('pembeli_id')
+                ->references('id')
+                ->on('users');
 
-    $table->bigInteger('total_komisi')->nullable();
-
-    $table->date('tanggal_transaksi')->nullable();
-});
+            $table->foreign('penjual_id')
+                ->references('id')
+                ->on('users');
+        });
     }
 
     /**

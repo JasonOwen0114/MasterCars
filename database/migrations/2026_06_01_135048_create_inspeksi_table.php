@@ -11,30 +11,34 @@ return new class extends Migration
      */
     public function up(): void
     {
-Schema::create('inspeksi', function (Blueprint $table) {
+        Schema::create('inspeksi', function (Blueprint $table) {
+            $table->id();
 
-    $table->id();
+            $table->unsignedBigInteger('mobil_id')->nullable();
+            $table->unsignedBigInteger('staff_id')->nullable();
 
-    $table->foreignId('mobil_id')
-        ->nullable()
-        ->constrained('mobil');
+            $table->char('grade_eksterior', 1)->nullable();
+            $table->char('grade_interior', 1)->nullable();
+            $table->char('grade_mesin', 1)->nullable();
+            $table->char('grade_kelengkapan', 1)->nullable();
+            $table->char('grade_keseluruhan', 1)->nullable();
 
-    $table->foreignId('staff_id')
-        ->nullable()
-        ->constrained('users');
+            $table->text('catatan')->nullable();
 
-    $table->char('grade_eksterior',1)->nullable();
-    $table->char('grade_interior',1)->nullable();
-    $table->char('grade_mesin',1)->nullable();
-    $table->char('grade_kelengkapan',1)->nullable();
-    $table->char('grade_keseluruhan',1)->nullable();
+            $table->date('tanggal_inspeksi')->nullable();
 
-    $table->text('catatan')->nullable();
+            $table->timestamps();
 
-    $table->date('tanggal_inspeksi')->nullable();
+            $table->foreign('mobil_id')
+                ->references('id')
+                ->on('mobil')
+                ->onDelete('cascade');
 
-    $table->timestamps();
-});
+            $table->foreign('staff_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade');
+        });
     }
 
     /**

@@ -25,26 +25,22 @@ Schema::create('jadwal_inspeksi', function (Blueprint $table) {
         ->nullable()
         ->constrained('users');
 
-    $table->tinyInteger('status')
-        ->default(1);
+    $table->tinyInteger('status')->default(1);
 
-    $table->string('merk',50)->nullable();
-
-    $table->string('model_mobil',100)->nullable();
+    $table->string('merk', 50)->nullable();
+    $table->string('model_mobil', 100)->nullable();
 
     $table->integer('tahun')->nullable();
 
-    $table->string('transmisi',30)->nullable();
+    $table->string('transmisi', 30)->nullable();
+    $table->string('warna', 30)->nullable();
+    $table->string('tipe_mesin', 50)->nullable();
 
-    $table->string('warna',30)->nullable();
-
-    $table->string('tipe_mesin',50)->nullable();
-
-    $table->string('nomor_kontak',20)->nullable();
+    $table->string('nomor_kontak', 20)->nullable();
 
     $table->text('alamat')->nullable();
 
-    $table->string('kecamatan')->nullable();
+    $table->string('kecamatan', 100)->nullable();
 
     $table->date('jadwal')->nullable();
 
@@ -56,11 +52,9 @@ Schema::create('jadwal_inspeksi', function (Blueprint $table) {
 
     $table->foreignId('mobil_id')
         ->nullable()
-        ->constrained('mobil')
-        ->nullOnDelete();
+        ->constrained('mobil');
 
-    $table->string('tipe')
-        ->default('inspeksi');
+    $table->string('tipe')->default('inspeksi');
 
     $table->timestamps();
 });
