@@ -8,10 +8,10 @@
         Laporan Pendapatan Inspeksi
     </h3>
 
-    {{-- FILTER --}}
+    
     <form method="GET" class="row g-3 mb-4">
 
-        {{-- TAHUN --}}
+    
         <div class="col-md-3">
 
             <input type="number"
@@ -102,7 +102,7 @@
     </div>
 
 
-    {{-- CHART --}}
+
     <div class="card shadow-sm">
 
         <div class="card-header fw-bold">

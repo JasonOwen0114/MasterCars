@@ -8,10 +8,10 @@
 
 
 
-{{-- FILTER --}}
+
 <form method="GET" class="row g-3 mb-4">
 
-    {{-- MERK --}}
+
     <div class="col-md-3">
 
         <select id="merk"
@@ -40,7 +40,7 @@
 
 
 
-    {{-- MODEL --}}
+
     <div class="col-md-3">
 
         <select id="model"
@@ -58,7 +58,7 @@
 
 
 
-    {{-- SORT --}}
+  
     <div class="col-md-3">
 
         <select name="sort" class="form-select">
@@ -84,7 +84,7 @@
 
 
 
-    {{-- BUTTON --}}
+    
     <div class="col-md-auto">
 
         <button class="btn btn-dark">
@@ -172,7 +172,7 @@
 
 
 
-{{-- TOMSELECT TERBARU --}}
+
 <link href="https://cdn.jsdelivr.net/npm/tom-select@2.4.3/dist/css/tom-select.bootstrap5.min.css" rel="stylesheet">
 
 <script src="https://cdn.jsdelivr.net/npm/tom-select@2.4.3/dist/js/tom-select.complete.min.js"></script>

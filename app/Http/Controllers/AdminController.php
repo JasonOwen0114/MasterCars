@@ -9,7 +9,6 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 
-
 class AdminController extends Controller
 {
 public function dashboard()
@@ -220,7 +219,7 @@ public function laporanKinerjaStaff(Request $request)
 
         ->whereYear('tanggal_inspeksi', $tahun);
 
-    // FILTER BULAN
+
     if($bulan){
 
         $query->whereMonth('tanggal_inspeksi', $bulan);
@@ -365,7 +364,7 @@ public function laporanWaktuPenjualan(Request $request)
     $model = $request->model;
     $sort = $request->sort ?? 'asc';
 
-    // AMBIL SEMUA MERK
+   
     $merks = DB::table('data_mobil')
         ->select('merk')
         ->distinct()
@@ -423,9 +422,7 @@ public function laporanPendapatanInspeksi(Request $request)
     $tipe = $request->tipe ?? 'bulan';
 
 
-    // =========================
-    // PER BULAN
-    // =========================
+
     if($tipe == 'bulan'){
 
         $data = DB::table('biaya_inspeksi')
@@ -445,9 +442,7 @@ public function laporanPendapatanInspeksi(Request $request)
 
     }
 
-    // =========================
-    // SETAHUN
-    // =========================
+
     else{
 
         $total = DB::table('biaya_inspeksi')
@@ -478,7 +473,7 @@ public function laporanMobilPerTahun(Request $request)
     $tahun = $request->tahun;
     $sort = $request->sort ?? 'desc';
 
-    // AMBIL SEMUA MERK
+
     $merks = DB::table('data_mobil')
         ->select('merk')
         ->distinct()

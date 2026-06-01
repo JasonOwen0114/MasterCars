@@ -10,7 +10,7 @@
 
 
 
-    {{-- FILTER --}}
+
     <form method="GET" class="row g-3 mb-4">
 
         <div class="col-md-3">
@@ -100,7 +100,7 @@
 
 
 
-            {{-- CHART --}}
+         
             <div class="d-flex justify-content-center mt-5">
 
                 <div style="width: 850px; height: 400px;">

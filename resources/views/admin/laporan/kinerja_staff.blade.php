@@ -12,7 +12,7 @@
 
 <form method="GET" class="row g-3 mb-4">
 
-    {{-- BULAN --}}
+   
     <div class="col-md-3">
 
         <select name="bulan" class="form-select">
@@ -38,7 +38,7 @@
 
 
 
-    {{-- TAHUN --}}
+  
     <div class="col-md-2">
 
         <input type="number"
@@ -51,7 +51,7 @@
 
 
 
-    {{-- SORT --}}
+   
     <div class="col-md-3">
 
         <select name="sort" class="form-select">
@@ -72,7 +72,7 @@
 
 
 
-    {{-- BUTTON --}}
+  
     <div class="col-md-auto">
 
         <button class="btn btn-dark">

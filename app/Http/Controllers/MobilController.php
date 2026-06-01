@@ -92,11 +92,11 @@ DB::table('jadwal_booking')->insert([
 
     'nomor_kontak' => $request->nomor_kontak,
 
-    // alamat penjual dari table mobil
+
     'alamat_asal' => $mobil->alamat ?? '-',
     'kecamatan_asal' => $mobil->kecamatan ?? '-',
 
-    // alamat pembeli
+
     'alamat_tujuan' => $request->alamat,
     'kecamatan_tujuan' => $request->kecamatan,
 
@@ -148,85 +148,7 @@ $params = [
 
 
 
-    // public function booking(Request $request, Mobil $mobil)
-    // {
-    //     $request->validate([
-    //         'nomor_kontak' => 'required',
-    //         'alamat' => 'required',
-    //         'kecamatan' => 'required', 
-    //         'jadwal' => 'required|date',
-    //         'jam' => 'required'
-    //     ]);
 
-    //     if (!$this->cekSlotAvailable($request->jadwal, $request->jam)) {
-    //         return back()->with('error', 'Slot penuh');
-    //     }
-
-    //     DB::beginTransaction();
-
-    //     try {
-
-    //         $inspeksi = JadwalInspeksi::create([
-
-    //             'mobil_id' => $mobil->id,
-    //             'user_id' => auth()->id(),
-    //             'staff_id' => null,
-    //             'status' => 0,
-
-    //             'merk' => $mobil->merk,
-    //             'model_mobil' => $mobil->nama_mobil,
-    //             'tahun' => $mobil->tahun,
-    //             'kilometer' => $mobil->kilometer,
-    //             'transmisi' => $mobil->transmisi,
-    //             'warna' => $mobil->warna,
-    //             'tipe_mesin' => '-',
-
-    //             'nomor_kontak' => $request->nomor_kontak,
-    //             'alamat' => $request->alamat,
-    //             'kecamatan' => $request->kecamatan,
-
-    //             'jadwal' => $request->jadwal,
-    //             'jam' => $request->jam,
-    //         ]);
-
-
-    //         $dp = 5000000;
-
-    
-    //         $order_id = 'BOOKING-' . $mobil->id . '-' . uniqid();
-
-    //         $inspeksi->update([
-    //             'order_id' => $order_id
-    //         ]);
-
-    //         DB::commit();
-
-    //     } catch (\Exception $e) {
-    //         DB::rollBack();
-    //         return back()->with('error', 'Gagal booking');
-    //     }
-
-   
-    //     Config::$serverKey = config('services.midtrans.server_key');
-    //     Config::$isProduction = false;
-    //     Config::$isSanitized = true;
-    //     Config::$is3ds = true;
-
-    //     $params = [
-    //         'transaction_details' => [
-    //             'order_id' => $order_id,
-    //             'gross_amount' => $dp,
-    //         ],
-    //         'customer_details' => [
-    //             'first_name' => auth()->user()->nama,
-    //             'email' => auth()->user()->email,
-    //         ],
-    //     ];
-
-    //     $snapToken = Snap::getSnapToken($params);
-
-    //     return back()->with('snapToken', $snapToken);
-    // }
 
     private function cekSlotAvailable($tanggal, $jam)
     {
@@ -257,7 +179,7 @@ public function paymentFinishBooking(Request $request)
             ->with('error', 'Booking tidak ditemukan');
     }
 
-    // jika sudah dibayar
+   
     if ($booking->status != 0) {
         return redirect()->route('dashboard')
             ->with('success', 'Booking sudah dibayar');
@@ -271,7 +193,7 @@ public function paymentFinishBooking(Request $request)
 
         try {
 
-            // update status booking
+         
             DB::table('jadwal_booking')
                 ->where('id', $booking->id)
                 ->update([
@@ -279,17 +201,17 @@ public function paymentFinishBooking(Request $request)
                     'updated_at' => now()
                 ]);
 
-            // ambil mobil
+         
             $mobil = Mobil::find($booking->mobil_id);
 
             if ($mobil) {
 
-                // ubah status mobil
+        
                 $mobil->update([
                     'status' => 'terbooking'
                 ]);
 
-                // insert transaksi
+            
                 DB::table('transaksi')->insert([
                     'mobil_id' => $mobil->id,
                     'pembeli_id' => $booking->user_id,

@@ -126,52 +126,50 @@ table{
 
 <tr>
 
-    {{-- MERK --}}
+
     <td>
         {{ $j->merk }}
     </td>
 
-    {{-- MODEL --}}
+  
     <td>
         {{ $j->model_mobil }}
     </td>
 
-    {{-- TAHUN --}}
+   
     <td>
         {{ $j->tahun }}
     </td>
 
-    {{-- TRANSMISI --}}
+ 
     <td>
         {{ $j->transmisi }}
     </td>
 
-    {{-- WARNA --}}
     <td>
         {{ $j->warna }}
     </td>
 
-    {{-- TIPE MESIN --}}
+   
     <td>
         {{ $j->tipe_mesin }}
     </td>
 
-    {{-- KONTAK --}}
+  
     <td>
         {{ $j->nomor_kontak }}
     </td>
 
-    {{-- ALAMAT --}}
     <td>
         {{ $j->alamat }}
     </td>
 
-    {{-- KECAMATAN --}}
+
     <td>
         {{ $j->kecamatan }}
     </td>
 
-    {{-- JADWAL --}}
+
     <td>
         {{ $j->jadwal }}
         <br>
@@ -180,7 +178,7 @@ table{
         </small>
     </td>
 
-    {{-- STAFF --}}
+
     <td>
 
         <form action="{{ route('admin.assign.store',$j->id) }}"

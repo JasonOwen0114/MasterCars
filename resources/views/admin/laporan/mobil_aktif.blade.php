@@ -9,7 +9,7 @@
 
 <form method="GET" class="row g-3 mb-4">
 
-    {{-- MERK --}}
+  
     <div class="col-md-3">
 
         <select id="merk"
@@ -35,7 +35,7 @@
 
 
 
-    {{-- MODEL --}}
+
     <div class="col-md-3">
 
         <select id="model"
@@ -50,7 +50,7 @@
 
 
 
-    {{-- TAHUN --}}
+    
     <div class="col-md-2">
 
         <input type="number"
@@ -63,7 +63,7 @@
 
 
 
-    {{-- SORT --}}
+  
     <div class="col-md-2">
 
         <select name="sort" class="form-select">
@@ -84,7 +84,7 @@
 
 
 
-    {{-- BUTTON --}}
+
     <div class="col-md-auto">
 
         <button class="btn btn-dark">
@@ -162,7 +162,7 @@
 
 
 
-        {{-- CHART KECIL --}}
+  
         <div class="mt-4 d-flex justify-content-center">
 
             <div style="width:350px; height:350px;">
@@ -180,7 +180,7 @@
 
 
 
-{{-- TOMSELECT TERBARU --}}
+
 <link href="https://cdn.jsdelivr.net/npm/tom-select@2.4.3/dist/css/tom-select.bootstrap5.min.css" rel="stylesheet">
 
 <script src="https://cdn.jsdelivr.net/npm/tom-select@2.4.3/dist/js/tom-select.complete.min.js"></script>

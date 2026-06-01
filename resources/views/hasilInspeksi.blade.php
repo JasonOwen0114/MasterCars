@@ -205,7 +205,7 @@
         </div>
     </div>
 
-    {{-- lanjutkan isi file lama di bawah sini --}}
+    
 
     @php
         $fotos = collect([

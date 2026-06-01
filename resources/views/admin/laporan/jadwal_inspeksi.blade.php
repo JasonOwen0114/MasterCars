@@ -8,7 +8,7 @@
 
 <form method="GET" class="row g-3 mb-4">
 
-    {{-- MERK --}}
+   
     <div class="col-md-3">
 
         <select id="merk"
@@ -33,7 +33,7 @@
     </div>
 
 
-    {{-- MODEL --}}
+  
     <div class="col-md-3">
 
         <select id="model"
@@ -47,7 +47,6 @@
     </div>
 
 
-    {{-- BULAN --}}
     <div class="col-md-2">
 
         <input type="number"
@@ -59,7 +58,7 @@
     </div>
 
 
-    {{-- TAHUN --}}
+  
     <div class="col-md-2">
 
         <input type="number"
@@ -71,7 +70,7 @@
     </div>
 
 
-    {{-- SORT --}}
+
     <div class="col-md-2">
 
         <select name="sort" class="form-select">
@@ -91,7 +90,6 @@
     </div>
 
 
-    {{-- BUTTON --}}
     <div class="col-md-auto">
 
         <button class="btn btn-dark">
@@ -152,7 +150,7 @@
         </table>
 
 
-        {{-- CHART --}}
+
         <div class="d-flex justify-content-center mt-5">
             <canvas id="chart"></canvas>
         </div>
@@ -163,7 +161,7 @@
 
 
 
-{{-- CDN TOMSELECT TERBARU --}}
+
 <link href="https://cdn.jsdelivr.net/npm/tom-select@2.4.3/dist/css/tom-select.bootstrap5.min.css" rel="stylesheet">
 
 <script src="https://cdn.jsdelivr.net/npm/tom-select@2.4.3/dist/js/tom-select.complete.min.js"></script>
