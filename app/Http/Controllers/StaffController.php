@@ -115,12 +115,7 @@ public function simpanInspeksi(Request $request, $id)
 
                 if ($file) {
 
-                    $mobil->$key = $this->uploadResize(
-                        $file,
-                        'mobil',
-                        400,
-                        300
-                    );
+                    $mobil->$key = $file->store('mobil', 'public');
                 }
             }
 
@@ -149,12 +144,7 @@ public function simpanInspeksi(Request $request, $id)
 
                 if ($file) {
 
-                    $mobil->$key = $this->uploadResize(
-                        $file,
-                        'mobil',
-                        400,
-                        300
-                    );
+                    $mobil->$key = $file->store('mobil', 'public');
                 }
             }
 
@@ -261,12 +251,7 @@ $inspeksi = Inspeksi::create([
 
                 if ($file) {
 
-                    $fotoData[$key] = $this->uploadResize(
-                        $file,
-                        'reinspeksi',
-                        400,
-                        300
-                    );
+                    $fotoData[$key] = $file->store('reinspeksi', 'public');
                 }
             }
 
@@ -401,14 +386,9 @@ private function simpanDetail($model, $data, $request, $inspeksiId, $folder, $pr
         $files = $request->file($prefix, []);
 
         if (isset($files[$fotoKey]) && $files[$fotoKey] instanceof \Illuminate\Http\UploadedFile) {
-            $payload[$fotoKey] = $this->uploadResize(
-                $files[$fotoKey],
-                $folder,
-                600,
-                450
-            );
+                $payload[$fotoKey] = $files[$fotoKey]->store($folder, 'public');
         }
-    }
+}
 
 $model::create($payload);
 }
