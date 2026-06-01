@@ -6,22 +6,18 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-    Schema::create('data_mobil', function (Blueprint $table) {
-        $table->id();
-        $table->string('merk', 50);
-        $table->string('model', 100);
-        $table->timestamps();
-    });
+        if (!Schema::hasTable('data_mobil')) {
+            Schema::create('data_mobil', function (Blueprint $table) {
+                $table->id();
+                $table->string('merk', 50);
+                $table->string('model', 100);
+                $table->timestamps();
+            });
+        }
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('data_mobil');
