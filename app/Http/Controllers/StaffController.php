@@ -296,26 +296,26 @@ $inspeksi = Inspeksi::create([
         ->with('success', 'Inspeksi berhasil disimpan');
 }
 
-    private function uploadResize($file, $folder, $w, $h)
-    {
-        $image = imagecreatefromstring(file_get_contents($file));
-        $width  = imagesx($image);
-        $height = imagesy($image);
+    // private function uploadResize($file, $folder, $w, $h)
+    // {
+    //     $image = imagecreatefromstring(file_get_contents($file));
+    //     $width  = imagesx($image);
+    //     $height = imagesy($image);
 
-        $thumb = imagecreatetruecolor($w, $h);
+    //     $thumb = imagecreatetruecolor($w, $h);
 
-        imagecopyresampled($thumb, $image, 0, 0, 0, 0, $w, $h, $width, $height);
+    //     imagecopyresampled($thumb, $image, 0, 0, 0, 0, $w, $h, $width, $height);
 
-        $filename = $folder . '/' . Str::random(40) . '.jpg';
-        $path = storage_path('app/public/' . $filename);
+    //     $filename = $folder . '/' . Str::random(40) . '.jpg';
+    //     $path = storage_path('app/public/' . $filename);
 
-        imagejpeg($thumb, $path, 80);
+    //     imagejpeg($thumb, $path, 80);
 
-        imagedestroy($image);
-        imagedestroy($thumb);
+    //     imagedestroy($image);
+    //     imagedestroy($thumb);
 
-        return $filename;
-    }
+    //     return $filename;
+    // }
 
     private function ambilNilai($data)
     {
