@@ -115,12 +115,7 @@ public function simpanInspeksi(Request $request, $id)
 
                 if ($file) {
 
-                    $mobil->$key = $this->uploadResize(
-                        $file,
-                        'mobil',
-                        400,
-                        300
-                    );
+                    $mobil->$key = $file->store('mobil', 'public');
                 }
             }
 
@@ -149,12 +144,7 @@ public function simpanInspeksi(Request $request, $id)
 
                 if ($file) {
 
-                    $mobil->$key = $this->uploadResize(
-                        $file,
-                        'mobil',
-                        400,
-                        300
-                    );
+                    $mobil->$key = $file->store('mobil', 'public');
                 }
             }
 
@@ -261,12 +251,7 @@ $inspeksi = Inspeksi::create([
 
                 if ($file) {
 
-                    $fotoData[$key] = $this->uploadResize(
-                        $file,
-                        'reinspeksi',
-                        400,
-                        300
-                    );
+                    $fotoData[$key] = $file->store('reinspeksi', 'public');
                 }
             }
 
@@ -296,26 +281,26 @@ $inspeksi = Inspeksi::create([
         ->with('success', 'Inspeksi berhasil disimpan');
 }
 
-    private function uploadResize($file, $folder, $w, $h)
-    {
-        $image = imagecreatefromstring(file_get_contents($file));
-        $width  = imagesx($image);
-        $height = imagesy($image);
+    // private function uploadResize($file, $folder, $w, $h)
+    // {
+    //     $image = imagecreatefromstring(file_get_contents($file));
+    //     $width  = imagesx($image);
+    //     $height = imagesy($image);
 
-        $thumb = imagecreatetruecolor($w, $h);
+    //     $thumb = imagecreatetruecolor($w, $h);
 
-        imagecopyresampled($thumb, $image, 0, 0, 0, 0, $w, $h, $width, $height);
+    //     imagecopyresampled($thumb, $image, 0, 0, 0, 0, $w, $h, $width, $height);
 
-        $filename = $folder . '/' . Str::random(40) . '.jpg';
-        $path = storage_path('app/public/' . $filename);
+    //     $filename = $folder . '/' . Str::random(40) . '.jpg';
+    //     $path = storage_path('app/public/' . $filename);
 
-        imagejpeg($thumb, $path, 80);
+    //     imagejpeg($thumb, $path, 80);
 
-        imagedestroy($image);
-        imagedestroy($thumb);
+    //     imagedestroy($image);
+    //     imagedestroy($thumb);
 
-        return $filename;
-    }
+    //     return $filename;
+    // }
 
     private function ambilNilai($data)
     {
@@ -401,14 +386,9 @@ private function simpanDetail($model, $data, $request, $inspeksiId, $folder, $pr
         $files = $request->file($prefix, []);
 
         if (isset($files[$fotoKey]) && $files[$fotoKey] instanceof \Illuminate\Http\UploadedFile) {
-            $payload[$fotoKey] = $this->uploadResize(
-                $files[$fotoKey],
-                $folder,
-                600,
-                450
-            );
+                $payload[$fotoKey] = $files[$fotoKey]->store($folder, 'public');
         }
-    }
+}
 
 $model::create($payload);
 }
