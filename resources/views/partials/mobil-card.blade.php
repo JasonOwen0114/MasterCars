@@ -1,3 +1,6 @@
+@php
+use Illuminate\Support\Str;
+@endphp
 @foreach($mobils as $mobil)
 
 <div class="col-md-4">
@@ -17,9 +20,7 @@
            class="text-decoration-none text-dark">
 
             <div class="card car-card shadow-sm h-100">
-                @php
-                use Illuminate\Support\Str;
-                @endphp
+
                 <img
                     src="{{ $mobil->foto_thumbnail
                             ? (Str::startsWith($mobil->foto_thumbnail, 'http')
