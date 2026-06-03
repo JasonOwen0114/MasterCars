@@ -209,6 +209,7 @@ Route::middleware(['auth', 'role:2'])->group(function () {
         ->name('staff.booking.kirim');
 
 }
+);
 Route::get('/test-cloudinary', function () {
     return response()->json([
         'cloudinary_url' => env('CLOUDINARY_URL'),
@@ -216,4 +217,3 @@ Route::get('/test-cloudinary', function () {
         'api_key' => env('CLOUDINARY_API_KEY'),
     ]);
 });
-);
