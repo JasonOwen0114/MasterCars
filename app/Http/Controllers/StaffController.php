@@ -16,6 +16,7 @@ use App\Models\JadwalBooking;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 
 class StaffController extends Controller
@@ -115,7 +116,10 @@ public function simpanInspeksi(Request $request, $id)
 
                 if ($file) {
 
-                    $mobil->$key = $file->store('mobil', 'public');
+                    $mobil->$key = $this->uploadToCloudinary(
+                        $file,
+                        'mobil'
+                    );
                 }
             }
 
@@ -144,10 +148,12 @@ public function simpanInspeksi(Request $request, $id)
 
                 if ($file) {
 
-                    $mobil->$key = $file->store('mobil', 'public');
+                    $mobil->$key = $this->uploadToCloudinary(
+                        $file,
+                        'mobil'
+                    );
                 }
             }
-
             $mobil->save();
         }
 
@@ -243,37 +249,38 @@ $inspeksi = Inspeksi::create([
             'status' => 3
         ]);
 
-        if ($isReinspeksi) {
+if ($isReinspeksi) {
 
-            $fotoData = [];
+    $fotoData = [];
 
-            foreach ($request->file('mobil', []) as $key => $file) {
+    foreach ($request->file('mobil', []) as $key => $file) {
 
-                if ($file) {
+        if ($file) {
 
-                    $fotoData[$key] = $file->store('reinspeksi', 'public');
-                }
-            }
-
-            DB::table('reinspeksi')
-                ->where('jadwal_id', $jadwal->id)
-                ->update(array_merge([
-
-                    'status' => 'selesai',
-                    'inspeksi_id' => $inspeksi->id,
-                    'merk' => $request->mobil['merk'] ?? null,
-                    'nama_mobil' => $request->mobil['nama_mobil'] ?? null,
-                    'tipe' => $request->mobil['tipe'] ?? null,
-                    'tahun' => $request->mobil['tahun'] ?? null,
-                    'warna' => $request->mobil['warna'] ?? null,
-                    'transmisi' => $request->mobil['transmisi'] ?? null,
-                    'tipe_mesin' => $request->mobil['tipe_mesin'] ?? null,
-                    'kapasitas_kursi' => $request->mobil['kapasitas_kursi'] ?? null,
-                    'kapasitas_mesin' => $request->mobil['kapasitas_mesin'] ?? null,
-                    'alamat' => $request->mobil['alamat'] ?? null,
-
-                ], $fotoData));
+            $fotoData[$key] = $this->uploadToCloudinary(
+                $file,
+                'reinspeksi'
+            );
         }
+    }
+
+    DB::table('reinspeksi')
+        ->where('jadwal_id', $jadwal->id)
+        ->update(array_merge([
+            'status' => 'selesai',
+            'inspeksi_id' => $inspeksi->id,
+            'merk' => $request->mobil['merk'] ?? null,
+            'nama_mobil' => $request->mobil['nama_mobil'] ?? null,
+            'tipe' => $request->mobil['tipe'] ?? null,
+            'tahun' => $request->mobil['tahun'] ?? null,
+            'warna' => $request->mobil['warna'] ?? null,
+            'transmisi' => $request->mobil['transmisi'] ?? null,
+            'tipe_mesin' => $request->mobil['tipe_mesin'] ?? null,
+            'kapasitas_kursi' => $request->mobil['kapasitas_kursi'] ?? null,
+            'kapasitas_mesin' => $request->mobil['kapasitas_mesin'] ?? null,
+            'alamat' => $request->mobil['alamat'] ?? null,
+        ], $fotoData));
+}
     });
 
     return redirect()
@@ -386,7 +393,10 @@ private function simpanDetail($model, $data, $request, $inspeksiId, $folder, $pr
         $files = $request->file($prefix, []);
 
         if (isset($files[$fotoKey]) && $files[$fotoKey] instanceof \Illuminate\Http\UploadedFile) {
-                $payload[$fotoKey] = $files[$fotoKey]->store($folder, 'public');
+                $payload[$fotoKey] = $this->uploadToCloudinary(
+                    $files[$fotoKey],
+                    $folder
+                );
         }
 }
 
@@ -464,5 +474,23 @@ public function kirimBooking($id)
 
     return redirect()->route('staff.booking')
         ->with('success', 'Mobil berhasil dikirim & status menjadi terjual');
+}
+private function uploadToCloudinary($file, $folder)
+{
+    try {
+
+        return Cloudinary::upload(
+            $file->getRealPath(),
+            [
+                'folder' => $folder
+            ]
+        )->getSecurePath();
+
+    } catch (\Exception $e) {
+
+        throw new \Exception(
+            'Upload Cloudinary gagal: ' . $e->getMessage()
+        );
+    }
 }
 }
