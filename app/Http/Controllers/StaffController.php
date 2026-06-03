@@ -477,9 +477,26 @@ public function kirimBooking($id)
 }
 private function uploadToCloudinary($file, $folder)
 {
-    dd([
-        'disk_cloudinary' => config('filesystems.disks.cloudinary'),
-        'cloudinary_config' => config('cloudinary'),
-    ]);
+    try {
+
+        $result = Cloudinary::upload(
+            $file->getRealPath(),
+            [
+                'folder' => $folder
+            ]
+        );
+
+        dd($result);
+
+        return $result->getSecurePath();
+
+    } catch (\Throwable $e) {
+
+        dd([
+            'message' => $e->getMessage(),
+            'file' => $e->getFile(),
+            'line' => $e->getLine(),
+        ]);
+    }
 }
 }
