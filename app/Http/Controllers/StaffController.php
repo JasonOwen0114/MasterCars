@@ -17,6 +17,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
+use Cloudinary\Api\Upload\UploadApi;
 
 
 class StaffController extends Controller
@@ -479,24 +480,20 @@ private function uploadToCloudinary($file, $folder)
 {
     try {
 
-        $result = Cloudinary::upload(
+        $upload = (new UploadApi())->upload(
             $file->getRealPath(),
             [
                 'folder' => $folder
             ]
         );
 
-        dd($result);
-
-        return $result->getSecurePath();
+        return $upload['secure_url'];
 
     } catch (\Throwable $e) {
 
-        dd([
-            'message' => $e->getMessage(),
-            'file' => $e->getFile(),
-            'line' => $e->getLine(),
-        ]);
+        throw new \Exception(
+            'Upload Cloudinary gagal: ' . $e->getMessage()
+        );
     }
 }
 }
