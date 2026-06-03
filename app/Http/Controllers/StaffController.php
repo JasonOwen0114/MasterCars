@@ -486,15 +486,20 @@ private function uploadToCloudinary($file, $folder)
             ]
         );
 
-        dd($result);
-
         return $result->getSecurePath();
 
-    } catch (\Exception $e) {
+    } catch (\Throwable $e) {
 
-        throw new \Exception(
-            'Upload Cloudinary gagal: ' . $e->getMessage()
-        );
+        dd([
+            'message' => $e->getMessage(),
+            'file' => $e->getFile(),
+            'line' => $e->getLine(),
+            'trace' => $e->getTraceAsString(),
+            'cloud_name' => env('CLOUDINARY_CLOUD_NAME'),
+            'api_key' => env('CLOUDINARY_API_KEY'),
+            'secret_exists' => !empty(env('CLOUDINARY_API_SECRET')),
+            'real_path' => $file ? $file->getRealPath() : null,
+        ]);
     }
 }
 }
