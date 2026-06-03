@@ -17,12 +17,17 @@
            class="text-decoration-none text-dark">
 
             <div class="card car-card shadow-sm h-100">
-
+                @php
+                use Illuminate\Support\Str;
+                @endphp
                 <img
                     src="{{ $mobil->foto_thumbnail
-                            ? asset('storage/'.$mobil->foto_thumbnail)
+                            ? (Str::startsWith($mobil->foto_thumbnail, 'http')
+                                ? $mobil->foto_thumbnail
+                                : asset('storage/'.$mobil->foto_thumbnail))
                             : asset('images/no-image.png') }}"
                     class="w-100"
+                    alt="{{ $mobil->merk }} {{ $mobil->nama_mobil }}"
                 >
 
                 <div class="card-body">

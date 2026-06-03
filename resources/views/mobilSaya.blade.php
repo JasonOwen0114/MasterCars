@@ -104,9 +104,10 @@
             <div class="row g-0 align-items-center">
                 
                 <div class="col-md-3 p-2">
-                    <img src="{{ asset('storage/'.$mobil->foto_thumbnail) }}"
-                         class="img-fluid rounded"
-                         style="height:160px; object-fit:cover;">
+                    <img
+                        src="{{ $mobil->foto_thumbnail ?: asset('images/no-image.png') }}"
+                        class="img-mobil"
+                        alt="Mobil">
                 </div>
 
                 <div class="col-md-7">
