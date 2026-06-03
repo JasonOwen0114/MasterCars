@@ -479,12 +479,16 @@ private function uploadToCloudinary($file, $folder)
 {
     try {
 
-        return Cloudinary::upload(
+        $result = Cloudinary::upload(
             $file->getRealPath(),
             [
                 'folder' => $folder
             ]
-        )->getSecurePath();
+        );
+
+        dd($result);
+
+        return $result->getSecurePath();
 
     } catch (\Exception $e) {
 
