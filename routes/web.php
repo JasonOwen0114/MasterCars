@@ -210,10 +210,11 @@ Route::middleware(['auth', 'role:2'])->group(function () {
 
 }
 );
-Route::get('/test-cloudinary', function () {
+Route::get('/cloudinary-debug', function () {
     return response()->json([
-        'cloudinary_url' => env('CLOUDINARY_URL'),
+        'url' => config('cloudinary.cloud_url'),
         'cloud_name' => env('CLOUDINARY_CLOUD_NAME'),
-        'api_key' => env('CLOUDINARY_API_KEY'),
+        'key' => env('CLOUDINARY_API_KEY'),
+        'secret' => !empty(env('CLOUDINARY_API_SECRET')),
     ]);
 });

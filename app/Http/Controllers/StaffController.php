@@ -477,29 +477,21 @@ public function kirimBooking($id)
 }
 private function uploadToCloudinary($file, $folder)
 {
-    try {
+    dd([
+        'env_url' => env('CLOUDINARY_URL'),
+        'config_url' => config('cloudinary.cloud_url'),
+        'cloud_name' => env('CLOUDINARY_CLOUD_NAME'),
+        'api_key' => env('CLOUDINARY_API_KEY'),
+        'secret_exists' => !empty(env('CLOUDINARY_API_SECRET')),
+    ]);
 
-        $result = Cloudinary::upload(
-            $file->getRealPath(),
-            [
-                'folder' => $folder
-            ]
-        );
+    $result = Cloudinary::upload(
+        $file->getRealPath(),
+        [
+            'folder' => $folder
+        ]
+    );
 
-        return $result->getSecurePath();
-
-    } catch (\Throwable $e) {
-
-        dd([
-            'message' => $e->getMessage(),
-            'file' => $e->getFile(),
-            'line' => $e->getLine(),
-            'trace' => $e->getTraceAsString(),
-            'cloud_name' => env('CLOUDINARY_CLOUD_NAME'),
-            'api_key' => env('CLOUDINARY_API_KEY'),
-            'secret_exists' => !empty(env('CLOUDINARY_API_SECRET')),
-            'real_path' => $file ? $file->getRealPath() : null,
-        ]);
-    }
+    return $result->getSecurePath();
 }
 }
