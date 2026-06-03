@@ -484,7 +484,10 @@ private function uploadToCloudinary($file, $folder)
         'api_key' => env('CLOUDINARY_API_KEY'),
         'secret_exists' => !empty(env('CLOUDINARY_API_SECRET')),
     ]);
-
+    dd([
+    'cloudinary_disk' => config('filesystems.disks.cloudinary'),
+    'cloudinary_config' => config('cloudinary'),
+]);
     $result = Cloudinary::upload(
         $file->getRealPath(),
         [
