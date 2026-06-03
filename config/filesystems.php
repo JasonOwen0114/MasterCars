@@ -73,10 +73,15 @@ return [
             'report' => false,
         ],
 
-        'cloudinary' => [
+            'cloudinary' => [
                 'driver' => 'cloudinary',
 
-                'url' => env('CLOUDINARY_URL'),
+                'url' => 'cloudinary://'
+                    . env('CLOUDINARY_API_KEY')
+                    . ':'
+                    . env('CLOUDINARY_API_SECRET')
+                    . '@'
+                    . env('CLOUDINARY_CLOUD_NAME'),
 
                 'cloud' => env('CLOUDINARY_CLOUD_NAME'),
 
