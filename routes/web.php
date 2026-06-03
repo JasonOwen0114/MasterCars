@@ -218,3 +218,21 @@ Route::get('/cloudinary-debug', function () {
         'secret' => !empty(env('CLOUDINARY_API_SECRET')),
     ]);
 });
+Route::get('/cloudinary-provider', function () {
+
+    $file = base_path(
+        'vendor/cloudinary-labs/cloudinary-laravel/src/CloudinaryServiceProvider.php'
+    );
+
+    if (!file_exists($file)) {
+        return 'File tidak ditemukan';
+    }
+
+    $lines = file($file);
+
+    return '<pre>' .
+        htmlspecialchars(
+            implode('', array_slice($lines, 55, 20))
+        ) .
+        '</pre>';
+});
