@@ -18,6 +18,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use Cloudinary\Api\Upload\UploadApi;
+use Cloudinary\Configuration\Configuration;
+
 
 
 class StaffController extends Controller
@@ -480,20 +482,34 @@ private function uploadToCloudinary($file, $folder)
 {
     try {
 
-        $upload = (new UploadApi())->upload(
+        Configuration::instance([
+            'cloud' => [
+                'cloud_name' => config('filesystems.disks.cloudinary.cloud'),
+                'api_key'    => config('filesystems.disks.cloudinary.key'),
+                'api_secret' => config('filesystems.disks.cloudinary.secret'),
+            ],
+            'url' => [
+                'secure' => true,
+            ],
+        ]);
+
+        $result = (new UploadApi())->upload(
             $file->getRealPath(),
             [
-                'folder' => $folder
+                'folder' => $folder,
             ]
         );
 
-        return $upload['secure_url'];
+        return $result['secure_url'];
 
     } catch (\Throwable $e) {
 
-        throw new \Exception(
-            'Upload Cloudinary gagal: ' . $e->getMessage()
-        );
+        dd([
+            'message' => $e->getMessage(),
+            'cloud_name' => config('filesystems.disks.cloudinary.cloud'),
+            'api_key' => config('filesystems.disks.cloudinary.key'),
+            'secret_exists' => !empty(config('filesystems.disks.cloudinary.secret')),
+        ]);
     }
 }
 }
