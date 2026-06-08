@@ -230,10 +230,7 @@ public function reinspeksi(Request $request, Mobil $mobil)
   
         $snapToken = Snap::getSnapToken($params);
 
-        dd([
-            'order_id' => $jadwal->order_id,
-            'snapToken' => $snapToken
-        ]);
+
 
         DB::commit();
 
@@ -402,7 +399,6 @@ public function laporanReinspeksi()
 }
 public function inspeksiUlang(Request $request, Mobil $mobil)
 {
-
     if ($mobil->user_id !== auth()->id()) {
         abort(403);
     }
@@ -425,32 +421,30 @@ public function inspeksiUlang(Request $request, Mobil $mobil)
             ->delete();
 
         $jadwal = JadwalInspeksi::create([
+            'user_id'       => auth()->id(),
+            'staff_id'      => null,
+            'mobil_id'      => $mobil->id,
 
-            'user_id' => auth()->id(),
-            'staff_id' => null,
+            'status'        => 1,
+            'tipe'          => 'inspeksi_ulang',
 
-            'mobil_id' => $mobil->id,
+            'merk'          => $mobil->merk,
+            'model_mobil'   => $mobil->nama_mobil,
+            'tahun'         => $mobil->tahun,
+            'warna'         => $mobil->warna,
+            'kilometer'     => $mobil->kilometer,
+            'tipe_mesin'    => $mobil->tipe_mesin,
+            'transmisi'     => $mobil->transmisi,
 
-            'status' => 1,
-            'tipe' => 'inspeksi_ulang',
-            'merk' => $mobil->merk,
-            'model_mobil' => $mobil->nama_mobil,
-            'tahun' => $mobil->tahun,
-            'warna' => $mobil->warna,
-            'kilometer' => $mobil->kilometer,
-            'tipe_mesin' => $mobil->tipe_mesin,
-            'nomor_kontak' => $request->nomor_kontak,
-            'alamat' => $request->alamat,
-            'kecamatan' => $request->kecamatan,
-            'transmisi' => $mobil->transmisi,
-            'jadwal' => $request->jadwal,
-            'jam' => $request->jam,
+            'nomor_kontak'  => $request->nomor_kontak,
+            'alamat'        => $request->alamat,
+            'kecamatan'     => $request->kecamatan,
 
-            'note' => $request->note,
-            'tipe' => 'inspeksi_ulang',
-            'mobil_id' => $mobil->id
+            'jadwal'        => $request->jadwal,
+            'jam'           => $request->jam,
+
+            'note'          => $request->note,
         ]);
-
 
         $jadwal->update([
             'order_id' => 'INSPEKSI-ULANG-' . $jadwal->id . '-' . uniqid()
@@ -462,6 +456,13 @@ public function inspeksiUlang(Request $request, Mobil $mobil)
 
         DB::commit();
 
+        return redirect()
+            ->route('user.inspeksi.hasil', $mobil->id)
+            ->with(
+                'success',
+                'Inspeksi ulang berhasil dibooking'
+            );
+
     } catch (\Exception $e) {
 
         DB::rollBack();
@@ -471,11 +472,6 @@ public function inspeksiUlang(Request $request, Mobil $mobil)
             'Gagal booking inspeksi ulang : ' . $e->getMessage()
         );
     }
-
-    return back()->with(
-        'success',
-        'Inspeksi ulang berhasil dibooking'
-    );
 }
 public function hapusMobil(Mobil $mobil)
 {
