@@ -336,25 +336,10 @@ public function finishReinspeksi(Request $request)
 
         $mobil = Mobil::with('user')->findOrFail($mobil_id);
 
-        /*
-        |----------------------------------------------------------
-        | PEMILIK MOBIL (SELLER)
-        |----------------------------------------------------------
-        */
         $owner = $mobil->user;
 
-        /*
-        |----------------------------------------------------------
-        | CREATE JADWAL REINSPEKSI
-        |----------------------------------------------------------
-        */
         $jadwal = JadwalInspeksi::create([
 
-            /*
-            |----------------------------------------------------------
-            | USER YANG ORDER REINSPEKSI (BUYER)
-            |----------------------------------------------------------
-            */
             'user_id' => auth()->id(),
 
             'status' => 0,
@@ -362,12 +347,6 @@ public function finishReinspeksi(Request $request)
             'tipe' => 'reinspeksi',
 
             'mobil_id' => $mobil->id,
-
-            /*
-            |----------------------------------------------------------
-            | DATA MOBIL
-            |----------------------------------------------------------
-            */
             'merk' => $mobil->merk,
             'model_mobil' => $mobil->nama_mobil,
             'tahun' => $mobil->tahun,
@@ -379,39 +358,18 @@ public function finishReinspeksi(Request $request)
             'nomor_kontak' => $owner->no_hp,
             'alamat' => $mobil->alamat,
             'kecamatan' => $mobil->kecamatan,
-
-            /*
-            |----------------------------------------------------------
-            | JADWAL
-            |----------------------------------------------------------
-            */
             'jadwal' => now()->addDay(),
             'jam' => '08:00:00'
         ]);
 
-        /*
-        |----------------------------------------------------------
-        | ORDER ID
-        |----------------------------------------------------------
-        */
         $jadwal->update([
             'order_id' => 'REINSPEKSI-' . $jadwal->id . '-' . uniqid()
         ]);
 
-        /*
-        |----------------------------------------------------------
-        | CREATE TABLE REINSPEKSI
-        |----------------------------------------------------------
-        */
         \App\Models\Reinspeksi::create([
 
             'mobil_id' => $mobil->id,
 
-            /*
-            |----------------------------------------------------------
-            | BUYER
-            |----------------------------------------------------------
-            */
             'user_id' => auth()->id(),
 
             'jadwal_id' => $jadwal->id,
@@ -444,6 +402,7 @@ public function laporanReinspeksi()
 }
 public function inspeksiUlang(Request $request, Mobil $mobil)
 {
+    dd('MASUK INSPEKSI ULANG');
     if ($mobil->user_id !== auth()->id()) {
         abort(403);
     }
