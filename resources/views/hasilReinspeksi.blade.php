@@ -192,17 +192,7 @@ function fotoUrl($path)
 
         </div>
     </div>
-    @php
-    function fotoUrl($path) {
-        if (!$path) {
-            return null;
-        }
 
-        return str_starts_with($path, 'http')
-            ? $path
-            : fotoUrl( . $path);
-    }
-    @endphp
         @php
         $fotos = collect([
             'foto_depan',

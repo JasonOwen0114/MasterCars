@@ -93,17 +93,7 @@ function fotoUrl($path)
     
 </head>
 <body>
-@php
-function fotoUrl($path) {
-    if (!$path) {
-        return null;
-    }
 
-    return str_starts_with($path, 'http')
-        ? $path
-        : asset('storage/' . $path);
-}
-@endphp
 @php
     use App\Models\Mobil;
 
@@ -225,17 +215,7 @@ function fotoUrl($path) {
         </div>
     </div>
 
-    @php
-    function fotoUrl($path) {
-        if (!$path) {
-            return null;
-        }
 
-        return str_starts_with($path, 'http')
-            ? $path
-            : asset('storage/' . $path);
-    }
-    @endphp
 
         @php
         $fotos = collect([
