@@ -1,3 +1,13 @@
+@php
+use Illuminate\Support\Str;
+
+function fotoUrl($path)
+{
+    return Str::startsWith($path, 'http')
+        ? $path
+        : asset('storage/'.$path);
+}
+@endphp
 <!DOCTYPE html>
 <html lang="id">
 <head>

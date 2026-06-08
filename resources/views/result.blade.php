@@ -1,4 +1,13 @@
-<!DOCTYPE html>
+@php
+use Illuminate\Support\Str;
+
+function fotoUrl($path)
+{
+    return Str::startsWith($path, 'http')
+        ? $path
+        : asset('storage/'.$path);
+}
+@endphp
 <html lang="en">
 <head>
 <meta charset="UTF-8">
