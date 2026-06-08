@@ -182,10 +182,10 @@ public function reinspeksi(Request $request, Mobil $mobil)
 
     $request->validate([
         'nomor_kontak' => 'required',
-        'alamat' => 'required',
-        'kecamatan' => 'required',
-        'jadwal' => 'required|date',
-        'jam' => 'required',
+        'alamat'       => 'required',
+        'kecamatan'    => 'required',
+        'jadwal'       => 'required|date',
+        'jam'          => 'required',
     ]);
 
     DB::beginTransaction();
@@ -193,18 +193,18 @@ public function reinspeksi(Request $request, Mobil $mobil)
     try {
 
         $jadwal = JadwalInspeksi::create([
-            'user_id' => auth()->id(),
-            'status' => 0,
-            'merk' => $mobil->merk,
-            'model_mobil' => $mobil->nama_mobil,
-            'tahun' => $mobil->tahun,
-            'kilometer' => $mobil->kilometer,
-            'warna' => $mobil->warna,
+            'user_id'      => auth()->id(),
+            'status'       => 0,
+            'merk'         => $mobil->merk,
+            'model_mobil'  => $mobil->nama_mobil,
+            'tahun'        => $mobil->tahun,
+            'kilometer'    => $mobil->kilometer,
+            'warna'        => $mobil->warna,
             'nomor_kontak' => $request->nomor_kontak,
-            'alamat' => $request->alamat,
-            'kecamatan' => $request->kecamatan,
-            'jadwal' => $request->jadwal,
-            'jam' => $request->jam,
+            'alamat'       => $request->alamat,
+            'kecamatan'    => $request->kecamatan,
+            'jadwal'       => $request->jadwal,
+            'jam'          => $request->jam,
         ]);
 
         $jadwal->update([
@@ -218,16 +218,22 @@ public function reinspeksi(Request $request, Mobil $mobil)
 
         $params = [
             'transaction_details' => [
-                'order_id' => $jadwal->order_id,
-                'gross_amount' => 300000,
+                'order_id'    => $jadwal->order_id,
+                'gross_amount'=> 300000,
             ],
             'customer_details' => [
-                'first_name' => auth()->user()->name,
-                'email' => auth()->user()->email,
+                'first_name' => auth()->user()->nama ?? auth()->user()->name ?? 'Customer',
+                'email'      => auth()->user()->email,
             ],
         ];
 
+  
         $snapToken = Snap::getSnapToken($params);
+
+        dd([
+            'order_id' => $jadwal->order_id,
+            'snapToken' => $snapToken
+        ]);
 
         DB::commit();
 
@@ -237,10 +243,7 @@ public function reinspeksi(Request $request, Mobil $mobil)
 
         DB::rollBack();
 
-        return back()->with(
-            'error',
-            'Gagal booking : ' . $e->getMessage()
-        );
+        dd($e->getMessage());
     }
 }
 public function detail($id)
