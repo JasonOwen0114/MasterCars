@@ -482,7 +482,7 @@ private function uploadToCloudinary($file, $folder)
 {
     try {
 
-        Configuration::instance([
+        $cloudinary = new \Cloudinary\Cloudinary([
             'cloud' => [
                 'cloud_name' => config('filesystems.disks.cloudinary.cloud'),
                 'api_key'    => config('filesystems.disks.cloudinary.key'),
@@ -493,7 +493,7 @@ private function uploadToCloudinary($file, $folder)
             ],
         ]);
 
-        $result = (new UploadApi())->upload(
+        $result = $cloudinary->uploadApi()->upload(
             $file->getRealPath(),
             [
                 'folder' => $folder,
@@ -504,12 +504,7 @@ private function uploadToCloudinary($file, $folder)
 
     } catch (\Throwable $e) {
 
-        dd([
-            'message' => $e->getMessage(),
-            'cloud_name' => config('filesystems.disks.cloudinary.cloud'),
-            'api_key' => config('filesystems.disks.cloudinary.key'),
-            'secret_exists' => !empty(config('filesystems.disks.cloudinary.secret')),
-        ]);
+        dd($e->getMessage());
     }
 }
 }
