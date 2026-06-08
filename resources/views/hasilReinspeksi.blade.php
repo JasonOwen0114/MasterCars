@@ -182,15 +182,31 @@
 
         </div>
     </div>
-
     @php
-        $fotos = collect([
-            'foto_depan','foto_belakang','foto_kiri','foto_kanan',
-            'foto_dashboard','foto_kursi_depan','foto_kursi_belakang','foto_bagasi_belakang'
-        ])->filter(fn($f) => !empty($reinspeksi->$f))
-          ->map(fn($f) => asset('storage/'.$reinspeksi->$f))
-          ->values();
+    function fotoUrl($path) {
+        if (!$path) {
+            return null;
+        }
+
+        return str_starts_with($path, 'http')
+            ? $path
+            : fotoUrl( . $path);
+    }
     @endphp
+        @php
+        $fotos = collect([
+            'foto_depan',
+            'foto_belakang',
+            'foto_kiri',
+            'foto_kanan',
+            'foto_dashboard',
+            'foto_kursi_depan',
+            'foto_kursi_belakang',
+            'foto_bagasi_belakang'
+        ])->filter(fn($f) => !empty($mobil->$f))
+        ->map(fn($f) => fotoUrl($mobil->$f))
+        ->values();
+        @endphp
 
     <div class="row g-3 mb-4">
         @foreach($fotos as $i => $foto)
@@ -439,10 +455,10 @@
                 
                         <div class="col-md-4 text-center">
                             @if(!empty($e->{'foto_'.$field}))
-                                <img src="{{ asset('storage/'.$e->{'foto_'.$field}) }}"
+                                <img src="{{ fotoUrl($e->{'foto_'.$field}) }}"
                                      class="img-fluid rounded shadow-sm"
                                      style="max-height:150px; cursor:pointer"
-                                     onclick="openSingleImage('{{ asset('storage/'.$e->{'foto_'.$field}) }}')">
+                                     onclick="openSingleImage('{{ fotoUrl($e->{'foto_'.$field}) }}')"
                             @else
                                 <div class="text-muted small">Tidak ada foto</div>
                             @endif
@@ -515,10 +531,10 @@
                      
                         <div class="col-md-4 text-center">
                             @if(!empty($i->{'foto_'.$field}))
-                                <img src="{{ asset('storage/'.$i->{'foto_'.$field}) }}"
+                                <img src="{{ fotoUrl($i->{'foto_'.$field}) }}"
                                      class="img-fluid rounded shadow-sm"
                                      style="max-height:150px; cursor:pointer"
-                                     onclick="openSingleImage('{{ asset('storage/'.$i->{'foto_'.$field}) }}')">
+                                     onclick="openSingleImage('{{ fotoUrl($i->{'foto_'.$field}) }}')">
                             @else
                                 <div class="text-muted small">Tidak ada foto</div>
                             @endif
@@ -588,10 +604,10 @@
         
                     <div class="col-md-4 text-center">
                         @if(!empty($m->{'foto_'.$field}))
-                            <img src="{{ asset('storage/'.$m->{'foto_'.$field}) }}"
+                            <img src="{{ fotoUrl(.$m->{'foto_'.$field}) }}"
                                  class="img-fluid rounded shadow-sm"
                                  style="max-height:150px; cursor:pointer"
-                                 onclick="openSingleImage('{{ asset('storage/'.$m->{'foto_'.$field}) }}')">
+                                 onclick="openSingleImage('{{ fotoUrl(.$m->{'foto_'.$field}) }}')">
                         @else
                             <div class="text-muted small">Tidak ada foto</div>
                         @endif
@@ -653,10 +669,10 @@
                  
                     <div class="col-md-4 text-center">
                         @if(!empty($k->{'foto_'.$field}))
-                            <img src="{{ asset('storage/'.$k->{'foto_'.$field}) }}"
+                            <img src="{{ fotoUrl(.$k->{'foto_'.$field}) }}"
                                  class="img-fluid rounded shadow-sm"
                                  style="max-height:150px; cursor:pointer"
-                                 onclick="openSingleImage('{{ asset('storage/'.$k->{'foto_'.$field}) }}')">
+                                 onclick="openSingleImage('{{ fotoUrl(.$k->{'foto_'.$field}) }}')">
                         @else
                             <div class="text-muted small">Tidak ada foto</div>
                         @endif

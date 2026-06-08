@@ -104,10 +104,10 @@
             <div class="row g-0 align-items-center">
                 
                 <div class="col-md-3 p-2">
-                    <img
-                        src="{{ $mobil->foto_thumbnail ?: asset('images/no-image.png') }}"
-                        class="img-mobil"
-                        alt="Mobil">
+                <img
+                    src="{{ !empty($mobil->foto_thumbnail) ? $mobil->foto_thumbnail : asset('images/no-image.png') }}"
+                    class="img-mobil"
+                    alt="Mobil">
                 </div>
 
                 <div class="col-md-7">

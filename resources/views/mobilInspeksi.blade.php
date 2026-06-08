@@ -18,7 +18,7 @@
            
                 <div class="col-md-3 p-2">
                     @if($r->mobil && $r->mobil->foto_thumbnail)
-                        <img src="{{ asset('storage/'.$r->mobil->foto_thumbnail) }}"
+                        <img src="{{ fotoUrl(.$r->mobil->foto_thumbnail) }}"
                              class="img-fluid rounded"
                              style="height:160px; object-fit:cover;">
                     @else

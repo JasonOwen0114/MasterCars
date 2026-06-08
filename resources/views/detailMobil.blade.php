@@ -528,7 +528,7 @@
 
         <div class="col-md-4 text-center">
             @if(!empty($e->{'foto_'.$field}))
-                <img src="{{ asset('storage/'.$e->{'foto_'.$field}) }}"
+                <img src="{{ fotoUrl($e->{'foto_'.$field}) }}"
                      class="img-fluid rounded shadow-sm"
                      style="max-height:150px; cursor:pointer">
             @else
@@ -598,7 +598,7 @@
 
                         <div class="col-md-4 text-center">
                             @if(!empty($i->{'foto_'.$field}))
-                                <img src="{{ asset('storage/'.$i->{'foto_'.$field}) }}"
+                                <img src="{{ fotoUrl($i->{'foto_'.$field}) }}"
                                      class="img-fluid rounded shadow-sm"
                                      style="max-height:150px; cursor:pointer">
                             @else
@@ -670,7 +670,7 @@
 
                     <div class="col-md-4 text-center">
                         @if(!empty($m->{'foto_'.$field}))
-                            <img src="{{ asset('storage/'.$m->{'foto_'.$field}) }}"
+                            <img src="{{ fotoUrl($m->{'foto_'.$field}) }}"
                                  class="img-fluid rounded shadow-sm"
                                  style="max-height:150px; cursor:pointer">
                         @else
@@ -733,7 +733,7 @@
 
                     <div class="col-md-4 text-center">
                         @if(!empty($k->{'foto_'.$field}))
-                            <img src="{{ asset('storage/'.$k->{'foto_'.$field}) }}"
+                            <img src="{{ fotoUrl(.$k->{'foto_'.$field}) }}"
                                  class="img-fluid rounded shadow-sm"
                                  style="max-height:150px; cursor:pointer">
                         @else

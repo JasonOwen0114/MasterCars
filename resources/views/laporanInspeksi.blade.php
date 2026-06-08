@@ -103,14 +103,17 @@
         <div class="card mb-3 shadow-sm">
             <div class="row g-0 align-items-center">
 
-                <!-- FOTO -->
+           
                 <div class="col-md-3 p-2">
-                    <img src="{{ asset('storage/'.$r->mobil->foto_thumbnail) }}"
-                         class="img-fluid rounded"
-                         style="height:160px; object-fit:cover;">
+                <img src="{{ str_starts_with($r->mobil->foto_thumbnail, 'http') 
+                                ? $r->mobil->foto_thumbnail 
+                                : asset('storage/'.$r->mobil->foto_thumbnail) }}"
+                    class="img-fluid rounded"
+                    style="height:160px; object-fit:cover;">
                 </div>
+                
 
-                <!-- DETAIL -->
+           
                 <div class="col-md-7">
                     <div class="card-body">
                         <h5 class="fw-bold">

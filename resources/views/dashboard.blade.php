@@ -320,7 +320,7 @@ $punyaReinspeksi = DB::table('reinspeksi')
 
     </div>
 
-    <!-- SORT -->
+ 
     <div class="sort-wrapper mb-4">
 
         <div class="row align-items-center g-3">

@@ -215,16 +215,32 @@ function fotoUrl($path) {
         </div>
     </div>
 
-    
-
     @php
-        $fotos = collect([
-            'foto_depan','foto_belakang','foto_kiri','foto_kanan',
-            'foto_dashboard','foto_kursi_depan','foto_kursi_belakang','foto_bagasi_belakang'
-        ])->filter(fn($f) => !empty($mobil->$f))
-          ->map(fn($f) => fotoUrl($mobil->$f))
-          ->values();
+    function fotoUrl($path) {
+        if (!$path) {
+            return null;
+        }
+
+        return str_starts_with($path, 'http')
+            ? $path
+            : asset('storage/' . $path);
+    }
     @endphp
+
+        @php
+        $fotos = collect([
+            'foto_depan',
+            'foto_belakang',
+            'foto_kiri',
+            'foto_kanan',
+            'foto_dashboard',
+            'foto_kursi_depan',
+            'foto_kursi_belakang',
+            'foto_bagasi_belakang'
+        ])->filter(fn($f) => !empty($mobil->$f))
+        ->map(fn($f) => fotoUrl($mobil->$f))
+        ->values();
+        @endphp
 
     <div class="row g-3 mb-4">
         @foreach($fotos as $i => $foto)
