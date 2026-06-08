@@ -567,7 +567,7 @@
                      
                         <div class="col-md-4 text-center">
                             @if(!empty($i->{'foto_'.$field}))
-                                <img src="{{ fotoUrl(.$i->{'foto_'.$field}) }}"
+                                <img src="{{ $i->{'foto_'.$field}) }}"
                                      class="img-fluid rounded shadow-sm"
                                      style="max-height:150px; cursor:pointer"
                                      onclick="openSingleImage('{{ fotoUrl($i->{'foto_'.$field}) }}')">

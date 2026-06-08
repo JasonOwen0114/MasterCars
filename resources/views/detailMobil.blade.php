@@ -743,7 +743,7 @@ function fotoUrl($path)
 
                     <div class="col-md-4 text-center">
                         @if(!empty($k->{'foto_'.$field}))
-                            <img src="{{ fotoUrl(.$k->{'foto_'.$field}) }}"
+                            <img src="{{ fotoUrl($k->{'foto_'.$field}) }}"
                                  class="img-fluid rounded shadow-sm"
                                  style="max-height:150px; cursor:pointer">
                         @else
