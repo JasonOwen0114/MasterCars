@@ -99,7 +99,8 @@ Route::get('/booking/failed', [MobilController::class, 'paymentFailedBooking'])
 
     Route::get('/reinspeksi/bayar/{mobil}', [UserController::class, 'bayarReinspeksi']);
 
-    Route::get('/reinspeksi/finish', [UserController::class, 'finishReinspeksi']);
+Route::get('/reinspeksi/finish', [UserController::class, 'finishReinspeksi'])
+    ->name('reinspeksi.finish');
 
     Route::get('/laporan-inspeksi', [UserController::class, 'laporanReinspeksi'])
         ->name('laporan.reinspeksi');

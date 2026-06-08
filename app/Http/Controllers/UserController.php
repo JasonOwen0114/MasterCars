@@ -208,17 +208,40 @@ public function reinspeksi(Request $request, Mobil $mobil)
         ]);
 
         $jadwal->update([
-            'order_id' => 'INSPEKSI-ULANG-'.$jadwal->id
+            'order_id' => 'INSPEKSI-ULANG-' . $jadwal->id
         ]);
+
+        Config::$serverKey = config('services.midtrans.server_key');
+        Config::$isProduction = false;
+        Config::$isSanitized = true;
+        Config::$is3ds = true;
+
+        $params = [
+            'transaction_details' => [
+                'order_id' => $jadwal->order_id,
+                'gross_amount' => 300000,
+            ],
+            'customer_details' => [
+                'first_name' => auth()->user()->name,
+                'email' => auth()->user()->email,
+            ],
+        ];
+
+        $snapToken = Snap::getSnapToken($params);
 
         DB::commit();
 
-    } catch (\Exception $e) {
-        DB::rollBack();
-        return back()->with('error','Gagal booking');
-    }
+        return view('pembayaran', compact('snapToken'));
 
-    return back()->with('success','Reinspeksi berhasil dibuat');
+    } catch (\Exception $e) {
+
+        DB::rollBack();
+
+        return back()->with(
+            'error',
+            'Gagal booking : ' . $e->getMessage()
+        );
+    }
 }
 public function detail($id)
 {
