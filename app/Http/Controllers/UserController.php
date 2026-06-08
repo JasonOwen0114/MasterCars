@@ -402,7 +402,7 @@ public function laporanReinspeksi()
 }
 public function inspeksiUlang(Request $request, Mobil $mobil)
 {
-    dd('MASUK INSPEKSI ULANG');
+
     if ($mobil->user_id !== auth()->id()) {
         abort(403);
     }
