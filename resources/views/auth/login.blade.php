@@ -66,9 +66,19 @@
 
             <div class="card-body">
 
-                @if(session('error'))
+                @if ($errors->any())
                     <div class="alert alert-danger">
-                        {{ session('error') }}
+                        <ul class="mb-0 ps-3">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
+                @if(session('success'))
+                    <div class="alert alert-success">
+                        {{ session('success') }}
                     </div>
                 @endif
 
@@ -78,10 +88,16 @@
                     <input
                         type="email"
                         name="email"
-                        class="form-control mb-3"
+                        class="form-control"
                         placeholder="Email"
                         required
                     >
+
+                    @error('email')
+                        <div class="text-danger small mb-3">
+                            {{ $message }}
+                        </div>
+                    @enderror
 
                     <input
                         type="password"

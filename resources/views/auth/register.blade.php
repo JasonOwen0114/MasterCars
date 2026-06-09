@@ -92,10 +92,17 @@
                     <input
                         name="email"
                         type="email"
-                        class="form-control mb-3"
+                        class="form-control"
                         placeholder="Email"
+                        value="{{ old('email') }}"
                         required
                     >
+
+                    @error('email')
+                        <div class="text-danger small mb-3">
+                            {{ $message }}
+                        </div>
+                    @enderror
 
                     <input
                         name="no_hp"
