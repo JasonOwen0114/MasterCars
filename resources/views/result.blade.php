@@ -1,13 +1,4 @@
-@php
-use Illuminate\Support\Str;
-
-function fotoUrl($path)
-{
-    return Str::startsWith($path, 'http')
-        ? $path
-        : asset('storage/'.$path);
-}
-@endphp
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -82,6 +73,45 @@ function fotoUrl($path)
 .thumb-img:hover {
     opacity:1;
     border-color:#0d6efd;
+}
+.fitur-table{
+    margin-bottom:0;
+}
+
+.fitur-table thead th{
+    background:#212529 !important;
+    color:#fff !important;
+    font-weight:600;
+    vertical-align:middle;
+    border-color:#343a40;
+}
+
+.fitur-table td,
+.fitur-table th{
+    vertical-align:middle;
+}
+
+.fitur-table td,
+.fitur-table th{
+    vertical-align:middle;
+}
+
+.icon-check{
+    color:#198754;
+    font-size:1.2rem;
+    font-weight:bold;
+}
+
+.icon-cross{
+    color:#dc3545;
+    font-size:1.2rem;
+    font-weight:bold;
+}
+.table-wrapper{
+    border-radius:12px;
+    overflow:hidden;
+    border:1px solid #dee2e6;
+    box-shadow:0 2px 8px rgba(0,0,0,.08);
 }
 </style>
 </head>
@@ -209,9 +239,9 @@ $fotos = collect([
             <div class="carousel-inner">
                 @foreach($fotos as $index => $foto)
                 <div class="carousel-item {{ $index==0 ? 'active' : '' }}">
-                    <img src="{{ fotoUrl($foto) }}"
+                    <img src="{{ asset('storage/'.$foto) }}"
                          class="d-block main-img"
-                         onclick="openSingleImage('{{ fotoUrl($foto) }}')">
+                         onclick="openSingleImage('{{ asset('storage/'.$foto) }}')">
                 </div>
                 @endforeach
             </div>
@@ -229,7 +259,7 @@ $fotos = collect([
 
         <div class="thumb-container mt-2">
             @foreach($fotos as $index => $foto)
-            <img src="{{ fotoUrl($foto) }}"
+            <img src="{{ asset('storage/'.$foto) }}"
                  class="thumb-img"
                  data-bs-target="#mobilCarousel{{$mobil->id}}"
                  data-bs-slide-to="{{ $index }}">
@@ -286,8 +316,8 @@ $fotos = collect([
                                 <div class="col-md-4">
                                 <div class="photo-box">
                                     @if(!empty($e->{'foto_'.$field}))
-                                    <img src="{{ fotoUrl($e->{'foto_'.$field}) }}"
-                                        onclick="openSingleImage('{{ fotoUrl($e->{'foto_'.$field}) }}')">
+                                    <img src="{{ asset('storage/'.$e->{'foto_'.$field}) }}"
+                                        onclick="openSingleImage('{{ asset('storage/'.$e->{'foto_'.$field}) }}')">
                                     @else
                                     <small class="text-muted">Tidak ada foto</small>
                                     @endif
@@ -344,8 +374,8 @@ $fotos = collect([
                                 <div class="col-md-4">
                                     <div class="photo-box">
                                         @if(!empty($i->{'foto_'.$field}))
-                                        <img src="{{ fotoUrl($i->{'foto_'.$field}) }}"
-                                            onclick="openSingleImage('{{ fotoUrl($i->{'foto_'.$field}) }}')">
+                                        <img src="{{ asset('storage/'.$i->{'foto_'.$field}) }}"
+                                            onclick="openSingleImage('{{ asset('storage/'.$i->{'foto_'.$field}) }}')">
                                         @else
                                         <small class="text-muted">Tidak ada foto</small>
                                         @endif
@@ -402,8 +432,8 @@ $fotos = collect([
                                 <div class="col-md-4">
                                     <div class="photo-box">
                                         @if(!empty($m->{'foto_'.$field}))
-                                        <img src="{{ fotoUrl($m->{'foto_'.$field}) }}"
-                                            onclick="openSingleImage('{{ fotoUrl($m->{'foto_'.$field}) }}')">
+                                        <img src="{{ asset('storage/'.$m->{'foto_'.$field}) }}"
+                                            onclick="openSingleImage('{{ asset('storage/'.$m->{'foto_'.$field}) }}')">
                                         @else
                                         <small class="text-muted">Tidak ada foto</small>
                                         @endif
@@ -460,8 +490,8 @@ $fotos = collect([
                                 <div class="col-md-4">
                                     <div class="photo-box">
                                         @if(!empty($k->{'foto_'.$field}))
-                                        <img src="{{ fotoUrl($k->{'foto_'.$field}) }}"
-                                            onclick="openSingleImage('{{ fotoUrl($k->{'foto_'.$field}) }}')">
+                                        <img src="{{ asset('storage/'.$k->{'foto_'.$field}) }}"
+                                            onclick="openSingleImage('{{ asset('storage/'.$k->{'foto_'.$field}) }}')">
                                         @else
                                         <small class="text-muted">Tidak ada foto</small>
                                         @endif
@@ -533,26 +563,26 @@ $mobil2 = $mobils[1];
 
 @endphp
 
-<div class="card mt-4">
 
-    </div>
+
+
 
     <div class="card-body">
 
-        <div class="table-responsive">
+        <div class="table-responsive table-wrapper">
 
-            <table class="table table-bordered align-middle">
+            <table class="table table-bordered table-hover mb-0 fitur-table">
 
-                <thead class="table-light">
+                <thead>
                     <tr class="text-center">
                         <th width="40%">Fitur</th>
 
-                        <th>
+                        <th width="30%">
                             {{ $mobil1->merk }}
                             {{ $mobil1->nama_mobil }}
                         </th>
 
-                        <th>
+                        <th width="30%">
                             {{ $mobil2->merk }}
                             {{ $mobil2->nama_mobil }}
                         </th>
@@ -572,19 +602,18 @@ $mobil2 = $mobils[1];
                         <td class="text-center">
 
                             @if(optional($mobil1->fitur)->$field)
-                                <span class="text-success fs-5">✔</span>
+                                <span class="icon-check">✔</span>
                             @else
-                                <span class="text-danger fs-5">✘</span>
+                                <span class="icon-cross">✘</span>
                             @endif
 
                         </td>
 
                         <td class="text-center">
-
                             @if(optional($mobil2->fitur)->$field)
-                                <span class="text-success fs-5">✔</span>
+                                <span class="icon-check">✔</span>
                             @else
-                                <span class="text-danger fs-5">✘</span>
+                                <span class="icon-cross">✘</span>
                             @endif
 
                         </td>
@@ -600,7 +629,7 @@ $mobil2 = $mobils[1];
         </div>
 
     </div>
-</div>
+
 
 @endif
     </div>

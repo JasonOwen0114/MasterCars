@@ -42,19 +42,20 @@ class AuthController extends Controller
         return view('auth.register');
     }
 
-    public function registerProses(Request $request)
+ public function registerProses(Request $request)
     {
         $request->validate([
             'nama' => 'required',
             'email' => 'required|email|unique:users,email',
-            'no_hp' => 'nullable',
+            'no_hp' => 'required',
             'password' => 'required|min:6|confirmed'
         ],[
             'email.unique' => 'Email sudah terdaftar.',
-            'email.required' => 'Email wajib diisi.',
-            'email.email' => 'Format email tidak valid.',
             'password.confirmed' => 'Konfirmasi password tidak cocok.',
-            'password.min' => 'Password minimal 6 karakter.'
+            'password.min' => 'Password minimal 6 karakter.',
+            'email.required' => 'Email wajib diisi.',
+            'nama.required' => 'Nama wajib diisi.',
+            'no_hp.required' => 'Nomor HP wajib diisi.',
         ]);
 
         User::create([
