@@ -1,23 +1,4 @@
-@php
-use Illuminate\Support\Str;
 
-function fotoUrl($path)
-{
-    if (!$path) {
-        return asset('images/no-image.png');
-    }
-
-    if (Str::startsWith($path, ['http://', 'https://'])) {
-        return $path;
-    }
-
-    if (Str::startsWith($path, 'storage/')) {
-        return asset($path);
-    }
-
-    return asset('storage/'.$path);
-}
-@endphp
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -26,33 +7,36 @@ function fotoUrl($path)
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
-        .thumb {
-            width: 100%;
-            height: 160px;
-            object-fit: cover;
-            border-radius: 8px;
-            cursor: pointer;
-        }
-        .viewer-img {
-            width: 100%;
-            max-height: 80vh;
-            object-fit: contain;
-            background: #000;
-        }
-        .nav-btn {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 2rem;
-            color: white;
-            background: rgba(0,0,0,.5);
-            border: none;
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-        }
-        .nav-left { left: 10px; }
-        .nav-right { right: 10px; }
+.thumb {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.viewer-img {
+    width: 100%;
+    max-height: 80vh;
+    object-fit: contain;
+    background: #000;
+}
+
+.nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 2rem;
+    color: white;
+    background: rgba(0,0,0,.5);
+    border: none;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+}
+
+.nav-left { left: 10px; }
+.nav-right { right: 10px; }
         .fitur-table th {
     background: #111827;
     color: white;
@@ -84,6 +68,27 @@ function fotoUrl($path)
     </style>
 </head>
 <body>
+    @php
+use Illuminate\Support\Str;
+
+function fotoUrl($path)
+{
+    if (!$path) {
+        return asset('images/no-image.png');
+    }
+
+    if (Str::startsWith($path, ['http://', 'https://'])) {
+        return $path;
+    }
+
+    if (Str::startsWith($path, 'storage/')) {
+        return asset($path);
+    }
+
+
+    return asset('storage/'.$path);
+}
+@endphp
 @php
     use App\Models\Mobil;
 
@@ -203,29 +208,30 @@ function fotoUrl($path)
         </div>
     </div>
 
-        @php
-        $fotos = collect([
-            'foto_depan',
-            'foto_belakang',
-            'foto_kiri',
-            'foto_kanan',
-            'foto_dashboard',
-            'foto_kursi_depan',
-            'foto_kursi_belakang',
-            'foto_bagasi_belakang'
-        ])->filter(fn($f) => !empty($mobil->$f))
-        ->map(fn($f) => fotoUrl($mobil->$f))
-        ->values();
-        @endphp
+@php
+    $fotos = collect([
+        'foto_depan',
+        'foto_belakang',
+        'foto_kiri',
+        'foto_kanan',
+        'foto_dashboard',
+        'foto_kursi_depan',
+        'foto_kursi_belakang',
+        'foto_bagasi_belakang'
+    ])->filter(fn($f) => !empty($reinspeksi->$f))
+      ->map(fn($f) => fotoUrl($reinspeksi->$f))
+      ->values();
+@endphp
 
-    <div class="row g-3 mb-4">
-        @foreach($fotos as $i => $foto)
-            <div class="col-md-3 col-6">
-                <img src="{{ $foto }}" class="thumb shadow-sm"
-                     onclick="openViewer({{ $i }})">
-            </div>
-        @endforeach
-    </div>
+<div class="row g-3 mb-4">
+    @foreach($fotos as $i => $foto)
+        <div class="col-md-3 col-6">
+            <img src="{{ $foto }}"
+                 class="thumb shadow-sm"
+                 onclick="openViewer({{ $i }})">
+        </div>
+    @endforeach
+</div>
 <div class="mt-5">
     <div class="fitur-card">
 
