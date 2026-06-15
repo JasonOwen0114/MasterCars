@@ -913,7 +913,7 @@ document.getElementById('tanggalBooking')?.addEventListener('change', function()
         },
         onPending: function(result){
             alert('Menunggu pembayaran');
-        }
+        },
         onError: function(result){
             window.location.href = "/booking/failed";
         },
