@@ -185,7 +185,7 @@ public function paymentFinishBooking(Request $request)
     }
 
     $status = Transaction::status($order_id);
-    dd(Transaction::status($order_id));
+
     if (in_array($status->transaction_status, ['settlement', 'capture'])) {
 
         DB::beginTransaction();
@@ -193,12 +193,7 @@ public function paymentFinishBooking(Request $request)
         try {
 
          
-            DB::table('jadwal_booking')
-                ->where('id', $booking->id)
-                ->update([
-                    'status' => 1,
-                    'updated_at' => now()
-                ]);
+
 
          
             $mobil = Mobil::find($booking->mobil_id);
