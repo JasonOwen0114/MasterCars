@@ -68,6 +68,7 @@
                         <th>Alamat Tujuan</th>
                         <th>Kecamatan Tujuan</th>
                         <th>Jadwal</th>
+                        <th>Foto Serah Terima</th>
                         <th>Aksi</th>
                     </tr>
 
@@ -85,7 +86,46 @@
                         <td>{{ $b->alamat_tujuan }}</td>
                         <td>{{ $b->kecamatan_tujuan }}</td>
                         <td>{{ $b->jadwal }} {{ $b->jam }}</td>
+                        <td>
 
+                            @if($b->status == 2)
+
+                                @php
+                                    $mobil = \App\Models\Mobil::find($b->mobil_id);
+                                @endphp
+
+                                @if(!$mobil->foto_serahterima)
+
+                                    <form action="{{ route('staff.booking.uploadFoto', $b->id) }}"
+                                        method="POST"
+                                        enctype="multipart/form-data">
+
+                                        @csrf
+
+                                        <input type="file"
+                                            name="foto_serahterima"
+                                            class="form-control form-control-sm mb-2"
+                                            required>
+
+                                        <button class="btn btn-warning btn-sm">
+                                            Upload
+                                        </button>
+
+                                    </form>
+
+                                @else
+
+                                    <a href="{{ $mobil->foto_serahterima }}"
+                                    target="_blank"
+                                    class="btn btn-success btn-sm">
+                                        Lihat Foto
+                                    </a>
+
+                                @endif
+
+                            @endif
+
+                            </td>
                         <td>
 
                             @if($b->status == 1)
@@ -102,10 +142,17 @@
 
                             @endif
 
-                            @if($b->status == 2)
+                        @if($b->status == 2)
+
+                            @php
+                                $mobil = \App\Models\Mobil::find($b->mobil_id);
+                            @endphp
+
+                            @if($mobil->foto_serahterima)
 
                                 <form action="{{ route('staff.booking.kirim', $b->id) }}"
-                                      method="POST">
+                                    method="POST">
+
                                     @csrf
 
                                     <button class="btn btn-primary btn-sm">
@@ -114,7 +161,15 @@
 
                                 </form>
 
+                            @else
+
+                                <button class="btn btn-secondary btn-sm" disabled>
+                                    Upload Foto Dulu
+                                </button>
+
                             @endif
+
+                        @endif
 
                         </td>
 

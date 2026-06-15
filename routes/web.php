@@ -206,6 +206,9 @@ Route::middleware(['auth', 'role:2'])->group(function () {
     Route::post('/staff/booking/{id}/accept', [StaffController::class, 'acceptBooking'])
         ->name('staff.booking.accept');
 
+    Route::post('/staff/booking/{id}/upload-foto', [StaffController::class, 'uploadFotoSerahTerima'])
+        ->name('staff.booking.uploadFoto');
+
     Route::post('/staff/booking/{id}/kirim', [StaffController::class, 'kirimBooking'])
         ->name('staff.booking.kirim');
 

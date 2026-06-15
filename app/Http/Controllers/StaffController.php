@@ -443,6 +443,15 @@ public function kirimBooking($id)
         abort(403);
     }
 
+    $mobil = Mobil::find($booking->mobil_id);
+
+    if (!$mobil->foto_serahterima) {
+        return back()->with(
+            'error',
+            'Upload foto serah terima terlebih dahulu'
+        );
+    }
+
     DB::beginTransaction();
 
     try {
@@ -453,14 +462,9 @@ public function kirimBooking($id)
                 'status' => 3
             ]);
 
-            $mobil = Mobil::find($booking->mobil_id);
-
-            if ($mobil) {
-
-                $mobil->update([
-                    'status' => 'terjual'
-                ]);
-            }
+            $mobil->update([
+                'status' => 'terjual'
+            ]);
         }
 
         DB::commit();
@@ -476,7 +480,37 @@ public function kirimBooking($id)
     }
 
     return redirect()->route('staff.booking')
-        ->with('success', 'Mobil berhasil dikirim & status menjadi terjual');
+        ->with('success', 'Mobil berhasil dikirim');
+}
+public function uploadFotoSerahTerima(Request $request, $id)
+{
+    $request->validate([
+        'foto_serahterima' => 'required|image|max:5120'
+    ]);
+
+    $booking = JadwalBooking::findOrFail($id);
+
+    if ($booking->staff_id != auth()->id()) {
+        abort(403);
+    }
+
+    $mobil = Mobil::findOrFail($booking->mobil_id);
+
+    $upload = Cloudinary::upload(
+        $request->file('foto_serahterima')->getRealPath(),
+        [
+            'folder' => 'serah-terima'
+        ]
+    );
+
+    $mobil->update([
+        'foto_serahterima' => $upload->getSecurePath()
+    ]);
+
+    return back()->with(
+        'success',
+        'Foto serah terima berhasil diupload'
+    );
 }
 private function uploadToCloudinary($file, $folder)
 {
