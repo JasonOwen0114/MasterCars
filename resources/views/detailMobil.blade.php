@@ -11,10 +11,6 @@ function fotoUrl($path)
         return $path;
     }
 
-    if (Str::startsWith($path, 'storage/')) {
-        return asset($path);
-    }
-
     return asset('storage/'.$path);
 }
 @endphp

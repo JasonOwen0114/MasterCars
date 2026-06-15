@@ -40,7 +40,6 @@ class MobilController extends Controller
             $mobil->foto_bagasi_belakang,
         ])
         ->filter()
-        ->map(fn ($f) => asset('storage/' . $f))
         ->values();
 
         return view('detailMobil', compact('mobil', 'fotos'));
