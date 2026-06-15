@@ -3,7 +3,11 @@ use Illuminate\Support\Str;
 
 function fotoUrl($path)
 {
-    return Str::startsWith($path, 'http')
+    if (empty($path)) {
+        return asset('images/no-image.png');
+    }
+
+    return Str::startsWith($path, ['http://', 'https://'])
         ? $path
         : asset('storage/'.$path);
 }
@@ -214,10 +218,10 @@ function fotoUrl($path)
 
                     @foreach($fotos as $index => $foto)
                         <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
-                            <img src="{{ $foto }}"
-                                 class="d-block main-img"
-                                 data-bs-toggle="modal"
-                                 data-bs-target="#galleryModal">
+                            <img src="{{ fotoUrl($foto) }}"
+                                class="d-block main-img"
+                                data-bs-toggle="modal"
+                                data-bs-target="#galleryModal">
                         </div>
                     @endforeach
 
@@ -235,10 +239,10 @@ function fotoUrl($path)
      
             <div class="thumb-container">
                 @foreach($fotos as $index => $foto)
-                    <img src="{{ $foto }}"
-                         class="thumb-img {{ $index === 0 ? 'active' : '' }}"
-                         data-bs-target="#mobilCarousel"
-                         data-bs-slide-to="{{ $index }}">
+                    <img src="{{ fotoUrl($foto) }}"
+                        class="thumb-img {{ $index === 0 ? 'active' : '' }}"
+                        data-bs-target="#mobilCarousel"
+                        data-bs-slide-to="{{ $index }}">
                 @endforeach
             </div>
 
@@ -785,7 +789,7 @@ function fotoUrl($path)
 
                         @foreach($fotos as $index => $foto)
                             <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
-                                <img src="{{ $foto }}" class="d-block w-100 img-fluid">
+                                <img src="{{ fotoUrl($foto) }}" class="d-block w-100 img-fluid">
                             </div>
                         @endforeach
 

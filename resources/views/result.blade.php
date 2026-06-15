@@ -1,3 +1,17 @@
+@php
+use Illuminate\Support\Str;
+
+function fotoUrl($path)
+{
+    if (empty($path)) {
+        return asset('images/no-image.png');
+    }
+
+    return Str::startsWith($path, ['http://', 'https://'])
+        ? $path
+        : asset('storage/'.$path);
+}
+@endphp
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -239,9 +253,9 @@ $fotos = collect([
             <div class="carousel-inner">
                 @foreach($fotos as $index => $foto)
                 <div class="carousel-item {{ $index==0 ? 'active' : '' }}">
-                    <img src="{{ asset('storage/'.$foto) }}"
-                         class="d-block main-img"
-                         onclick="openSingleImage('{{ asset('storage/'.$foto) }}')">
+                    <img src="{{ fotoUrl($foto) }}"
+                        class="d-block main-img"
+                        onclick="openSingleImage('{{ fotoUrl($foto) }}')">
                 </div>
                 @endforeach
             </div>
@@ -259,10 +273,10 @@ $fotos = collect([
 
         <div class="thumb-container mt-2">
             @foreach($fotos as $index => $foto)
-            <img src="{{ asset('storage/'.$foto) }}"
-                 class="thumb-img"
-                 data-bs-target="#mobilCarousel{{$mobil->id}}"
-                 data-bs-slide-to="{{ $index }}">
+                <img src="{{ fotoUrl($foto) }}"
+                    class="thumb-img"
+                    data-bs-target="#mobilCarousel{{$mobil->id}}"
+                    data-bs-slide-to="{{ $index }}">
             @endforeach
         </div>
         @else
@@ -316,8 +330,8 @@ $fotos = collect([
                                 <div class="col-md-4">
                                 <div class="photo-box">
                                     @if(!empty($e->{'foto_'.$field}))
-                                    <img src="{{ asset('storage/'.$e->{'foto_'.$field}) }}"
-                                        onclick="openSingleImage('{{ asset('storage/'.$e->{'foto_'.$field}) }}')">
+                                    <img src="{{ fotoUrl($e->{'foto_'.$field}) }}"
+                                        onclick="openSingleImage('{{ fotoUrl($e->{'foto_'.$field}) }}')">
                                     @else
                                     <small class="text-muted">Tidak ada foto</small>
                                     @endif
@@ -374,8 +388,8 @@ $fotos = collect([
                                 <div class="col-md-4">
                                     <div class="photo-box">
                                         @if(!empty($i->{'foto_'.$field}))
-                                        <img src="{{ asset('storage/'.$i->{'foto_'.$field}) }}"
-                                            onclick="openSingleImage('{{ asset('storage/'.$i->{'foto_'.$field}) }}')">
+                                        <img src="{{ fotoUrl($i->{'foto_'.$field}) }}"
+                                            onclick="openSingleImage('{{ fotoUrl($i->{'foto_'.$field}) }}')">
                                         @else
                                         <small class="text-muted">Tidak ada foto</small>
                                         @endif
@@ -432,8 +446,8 @@ $fotos = collect([
                                 <div class="col-md-4">
                                     <div class="photo-box">
                                         @if(!empty($m->{'foto_'.$field}))
-                                        <img src="{{ asset('storage/'.$m->{'foto_'.$field}) }}"
-                                            onclick="openSingleImage('{{ asset('storage/'.$m->{'foto_'.$field}) }}')">
+                                        <img src="{{ fotoUrl($m->{'foto_'.$field}) }}"
+                                            onclick="openSingleImage('{{ fotoUrl($m->{'foto_'.$field}) }}')">
                                         @else
                                         <small class="text-muted">Tidak ada foto</small>
                                         @endif
@@ -490,8 +504,8 @@ $fotos = collect([
                                 <div class="col-md-4">
                                     <div class="photo-box">
                                         @if(!empty($k->{'foto_'.$field}))
-                                        <img src="{{ asset('storage/'.$k->{'foto_'.$field}) }}"
-                                            onclick="openSingleImage('{{ asset('storage/'.$k->{'foto_'.$field}) }}')">
+                                        <img src="{{ fotoUrl($k->{'foto_'.$field}) }}"
+                                            onclick="openSingleImage('{{ fotoUrl($k->{'foto_'.$field}) }}')">
                                         @else
                                         <small class="text-muted">Tidak ada foto</small>
                                         @endif

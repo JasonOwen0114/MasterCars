@@ -1,3 +1,17 @@
+@php
+use Illuminate\Support\Str;
+
+function fotoUrl($path)
+{
+    if(empty($path)){
+        return asset('images/no-image.png');
+    }
+
+    return Str::startsWith($path, ['http://', 'https://'])
+        ? $path
+        : asset('storage/'.$path);
+}
+@endphp
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -104,11 +118,11 @@
             <div class="row g-0 align-items-center">
                 
                 <div class="col-md-3 p-2">
-                <img
-                    src="{{ !empty($mobil->foto_thumbnail) ? $mobil->foto_thumbnail : asset('images/no-image.png') }}"
-                    class="img-fluid rounded"
-                    style="height:160px;width:100%;object-fit:cover;"
-                    alt="Mobil">
+                    <img
+                        src="{{ fotoUrl($mobil->foto_thumbnail) }}"
+                        class="img-fluid rounded"
+                        style="height:160px;width:100%;object-fit:cover;"
+                        alt="Mobil">
                 </div>
 
                 <div class="col-md-7">

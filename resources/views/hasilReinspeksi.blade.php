@@ -607,7 +607,7 @@ function fotoUrl($path)
                             <img src="{{ fotoUrl($m->{'foto_'.$field}) }}"
                                  class="img-fluid rounded shadow-sm"
                                  style="max-height:150px; cursor:pointer"
-                                 onclick="openSingleImage('{{ $m->{'foto_'.$field}) }}')">
+                                 onclick="openSingleImage('{{ fotoUrl($m->{'foto_'.$field}) }}')"
                         @else
                             <div class="text-muted small">Tidak ada foto</div>
                         @endif
