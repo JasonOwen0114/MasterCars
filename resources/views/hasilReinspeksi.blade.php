@@ -3,9 +3,19 @@ use Illuminate\Support\Str;
 
 function fotoUrl($path)
 {
-    return Str::startsWith($path, 'http')
-        ? $path
-        : asset('storage/'.$path);
+    if (!$path) {
+        return asset('images/no-image.png');
+    }
+
+    if (Str::startsWith($path, ['http://', 'https://'])) {
+        return $path;
+    }
+
+    if (Str::startsWith($path, 'storage/')) {
+        return asset($path);
+    }
+
+    return asset('storage/'.$path);
 }
 @endphp
 <!DOCTYPE html>
