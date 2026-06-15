@@ -225,14 +225,13 @@
         </div>
     </div>
         @php
-        function fotoUrl($path) {
-            if (!$path) {
-                return null;
-            }
+        use Illuminate\Support\Str;
 
-            return str_starts_with($path, 'http')
+        function fotoUrl($path)
+        {
+            return Str::startsWith($path, 'http')
                 ? $path
-                : fotoUrl( . $path);
+                : asset('storage/'.$path);
         }
         @endphp
     @php
