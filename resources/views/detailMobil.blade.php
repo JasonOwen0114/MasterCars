@@ -912,8 +912,8 @@ document.getElementById('tanggalBooking')?.addEventListener('change', function()
             window.location.href = "/booking/finish?order_id=" + result.order_id;
         },
         onPending: function(result){
-            window.location.href = "/booking/finish?order_id=" + result.order_id;
-        },
+            alert('Menunggu pembayaran');
+        }
         onError: function(result){
             window.location.href = "/booking/failed";
         },

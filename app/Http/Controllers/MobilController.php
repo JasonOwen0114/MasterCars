@@ -185,7 +185,7 @@ public function paymentFinishBooking(Request $request)
     }
 
     $status = Transaction::status($order_id);
-
+    dd(Transaction::status($order_id));
     if (in_array($status->transaction_status, ['settlement', 'capture'])) {
 
         DB::beginTransaction();
