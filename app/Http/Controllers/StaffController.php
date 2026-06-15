@@ -418,40 +418,24 @@ public function booking()
     return view('staff.jadwalBooking', compact('booking'));
 }
 
-public function acceptBooking(Request $request, $id)
+public function acceptBooking($id)
 {
-    $request->validate([
-        'foto_serahterima' => 'required|image|max:5120'
-    ]);
-
     $booking = JadwalBooking::findOrFail($id);
 
     if ($booking->staff_id != auth()->id()) {
         abort(403);
     }
 
-    $mobil = Mobil::findOrFail($booking->mobil_id);
-
-    $url = $this->uploadToCloudinary(
-        $request->file('foto_serahterima'),
-        'serah-terima'
-    );
-
-    $mobil->update([
-        'foto_serahterima' => $url
-    ]);
-
     if ($booking->status == 1) {
 
         $booking->update([
             'status' => 2
         ]);
-
     }
 
     return back()->with(
         'success',
-        'Foto berhasil diupload dan booking diaccept'
+        'Booking di-accept'
     );
 }
 public function kirimBooking($id)
@@ -501,7 +485,33 @@ public function kirimBooking($id)
     return redirect()->route('staff.booking')
         ->with('success', 'Mobil berhasil dikirim');
 }
+public function uploadFotoSerahTerima(Request $request, $id)
+{
+    $request->validate([
+        'foto_serahterima' => 'required|image|max:5120'
+    ]);
 
+    $booking = JadwalBooking::findOrFail($id);
+
+    if ($booking->staff_id != auth()->id()) {
+        abort(403);
+    }
+
+    $mobil = Mobil::findOrFail($booking->mobil_id);
+
+    $url = $this->uploadToCloudinary(
+        $request->file('foto_serahterima'),
+        'serah-terima'
+    );
+
+    $mobil->foto_serahterima = $url;
+    $mobil->save();
+
+    return back()->with(
+        'success',
+        'Foto serah terima berhasil diupload'
+    );
+}
 private function uploadToCloudinary($file, $folder)
 {
     try {

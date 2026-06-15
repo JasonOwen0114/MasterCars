@@ -34,7 +34,8 @@ class Mobil extends Model
         'foto_bagasi_belakang',
         'kilometer',
         'reinspeksi_used',
-        'tipe_mesin'
+        'tipe_mesin',
+        'foto_serahterima'
     ];
 
 

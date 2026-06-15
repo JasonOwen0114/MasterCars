@@ -116,12 +116,27 @@
             </td>
 
      
-            <td>
+          <td>
 
-        
                 @if($b->status == 1)
 
                     <form action="{{ route('staff.booking.accept', $b->id) }}"
+                        method="POST">
+
+                        @csrf
+
+                        <button class="btn btn-success btn-sm">
+                            Accept
+                        </button>
+
+                    </form>
+
+                @endif
+
+
+                @if($b->status == 2)
+
+                    <form action="{{ route('staff.booking.uploadFoto', $b->id) }}"
                         method="POST"
                         enctype="multipart/form-data">
 
@@ -132,17 +147,12 @@
                             class="form-control form-control-sm mb-2"
                             required>
 
-                        <button class="btn btn-success btn-sm">
-                            Upload & Accept
+                        <button class="btn btn-warning btn-sm mb-2">
+                            Upload Foto
                         </button>
 
                     </form>
 
-                @endif
-
-
-             
-                @if($b->status == 2)
 
                     @if($mobil && $mobil->foto_serahterima)
 
@@ -160,14 +170,14 @@
                     @else
 
                         <button class="btn btn-secondary btn-sm" disabled>
-                            Foto Belum Ada
+                            Upload Foto Dulu
                         </button>
 
                     @endif
 
                 @endif
 
-            </td>
+                </td>
 
         </tr>
 

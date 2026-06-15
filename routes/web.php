@@ -208,7 +208,8 @@ Route::middleware(['auth', 'role:2'])->group(function () {
 
     Route::post('/staff/booking/{id}/kirim', [StaffController::class, 'kirimBooking'])
         ->name('staff.booking.kirim');
-
+    Route::post('/staff/booking/{id}/upload-foto',[StaffController::class, 'uploadFotoSerahTerima'])
+        ->name('staff.booking.uploadFoto');
 }
 );
 Route::get('/cloudinary-debug', function () {
