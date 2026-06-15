@@ -76,118 +76,112 @@
 
                 <tbody>
 
-                @forelse($booking as $b)
+@forelse($booking as $b)
 
-                    <tr>
+@php
+    $mobil = \App\Models\Mobil::find($b->mobil_id);
+@endphp
 
-                        <td>{{ $b->nomor_kontak }}</td>
-                        <td>{{ $b->alamat_asal }}</td>
-                        <td>{{ $b->kecamatan_asal }}</td>
-                        <td>{{ $b->alamat_tujuan }}</td>
-                        <td>{{ $b->kecamatan_tujuan }}</td>
-                        <td>{{ $b->jadwal }} {{ $b->jam }}</td>
-                        <td>
+<tr>
 
-                            @if($b->status == 2)
+    <td>{{ $b->nomor_kontak }}</td>
+    <td>{{ $b->alamat_asal }}</td>
+    <td>{{ $b->kecamatan_asal }}</td>
+    <td>{{ $b->alamat_tujuan }}</td>
+    <td>{{ $b->kecamatan_tujuan }}</td>
+    <td>{{ $b->jadwal }} {{ $b->jam }}</td>
 
-                                @php
-                                    $mobil = \App\Models\Mobil::find($b->mobil_id);
-                                @endphp
 
-                                @if(!$mobil->foto_serahterima)
+            <td>
 
-                                    <form action="{{ route('staff.booking.uploadFoto', $b->id) }}"
-                                        method="POST"
-                                        enctype="multipart/form-data">
+                @if($mobil && $mobil->foto_serahterima)
 
-                                        @csrf
+                    <a href="{{ $mobil->foto_serahterima }}"
+                    target="_blank">
 
-                                        <input type="file"
-                                            name="foto_serahterima"
-                                            class="form-control form-control-sm mb-2"
-                                            required>
+                        <img src="{{ $mobil->foto_serahterima }}"
+                            width="100"
+                            class="img-thumbnail">
 
-                                        <button class="btn btn-warning btn-sm">
-                                            Upload
-                                        </button>
+                    </a>
 
-                                    </form>
+                @else
 
-                                @else
+                    <span class="text-danger">
+                        Belum Upload
+                    </span>
 
-                                    <a href="{{ $mobil->foto_serahterima }}"
-                                    target="_blank"
-                                    class="btn btn-success btn-sm">
-                                        Lihat Foto
-                                    </a>
+                @endif
 
-                                @endif
+            </td>
 
-                            @endif
+     
+            <td>
 
-                            </td>
-                        <td>
+        
+                @if($b->status == 1)
 
-                            @if($b->status == 1)
+                    <form action="{{ route('staff.booking.accept', $b->id) }}"
+                        method="POST"
+                        enctype="multipart/form-data">
 
-                                <form action="{{ route('staff.booking.accept', $b->id) }}"
-                                      method="POST">
-                                    @csrf
+                        @csrf
 
-                                    <button class="btn btn-success btn-sm">
-                                        Accept
-                                    </button>
+                        <input type="file"
+                            name="foto_serahterima"
+                            class="form-control form-control-sm mb-2"
+                            required>
 
-                                </form>
+                        <button class="btn btn-success btn-sm">
+                            Upload & Accept
+                        </button>
 
-                            @endif
+                    </form>
 
-                        @if($b->status == 2)
+                @endif
 
-                            @php
-                                $mobil = \App\Models\Mobil::find($b->mobil_id);
-                            @endphp
 
-                            @if($mobil->foto_serahterima)
+             
+                @if($b->status == 2)
 
-                                <form action="{{ route('staff.booking.kirim', $b->id) }}"
-                                    method="POST">
+                    @if($mobil && $mobil->foto_serahterima)
 
-                                    @csrf
+                        <form action="{{ route('staff.booking.kirim', $b->id) }}"
+                            method="POST">
 
-                                    <button class="btn btn-primary btn-sm">
-                                        Terkirim
-                                    </button>
+                            @csrf
 
-                                </form>
+                            <button class="btn btn-primary btn-sm">
+                                Terkirim
+                            </button>
 
-                            @else
+                        </form>
 
-                                <button class="btn btn-secondary btn-sm" disabled>
-                                    Upload Foto Dulu
-                                </button>
+                    @else
 
-                            @endif
+                        <button class="btn btn-secondary btn-sm" disabled>
+                            Foto Belum Ada
+                        </button>
 
-                        @endif
+                    @endif
 
-                        </td>
+                @endif
 
-                    </tr>
+            </td>
 
-                @empty
+        </tr>
 
-                    <tr>
+        @empty
 
-                        <td colspan="7" class="text-center">
-                            Tidak ada booking
-                        </td>
+        <tr>
+            <td colspan="8" class="text-center">
+                Tidak ada booking
+            </td>
+        </tr>
 
-                    </tr>
+        @endforelse
 
-                @endforelse
-
-                </tbody>
+        </tbody>
 
             </table>
 
