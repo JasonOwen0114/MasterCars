@@ -106,7 +106,8 @@
                 <div class="col-md-3 p-2">
                 <img
                     src="{{ !empty($mobil->foto_thumbnail) ? $mobil->foto_thumbnail : asset('images/no-image.png') }}"
-                    class="img-mobil"
+                    class="img-fluid rounded"
+                    style="height:160px;width:100%;object-fit:cover;"
                     alt="Mobil">
                 </div>
 

@@ -494,7 +494,7 @@
                                 <img src="{{ fotoUrl($e->{'foto_'.$field}) }}"
                                      class="img-fluid rounded shadow-sm"
                                      style="max-height:150px; cursor:pointer"
-                                     onclick="openSingleImage('{{ fotoUrl($e->{'foto_'.$field}) }}')"
+                                     onclick="openSingleImage('{{ fotoUrl($e->{'foto_'.$field}) }}')">
                             @else
                                 <div class="text-muted small">Tidak ada foto</div>
                             @endif
@@ -567,7 +567,7 @@
                      
                         <div class="col-md-4 text-center">
                             @if(!empty($i->{'foto_'.$field}))
-                                <img src="{{ $i->{'foto_'.$field}) }}"
+                                <img src="{{ fotoUrl($i->{'foto_'.$field}) }}"
                                      class="img-fluid rounded shadow-sm"
                                      style="max-height:150px; cursor:pointer"
                                      onclick="openSingleImage('{{ fotoUrl($i->{'foto_'.$field}) }}')">
