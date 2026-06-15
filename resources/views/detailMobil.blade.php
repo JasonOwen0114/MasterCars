@@ -3,13 +3,17 @@ use Illuminate\Support\Str;
 
 function fotoUrl($path)
 {
-    if (empty($path)) {
+    if (!$path) {
         return asset('images/no-image.png');
     }
 
-    return Str::startsWith($path, ['http://', 'https://'])
-        ? $path
-        : asset('storage/'.$path);
+    $path = trim($path);
+
+    if (filter_var($path, FILTER_VALIDATE_URL)) {
+        return $path;
+    }
+
+    return asset('storage/'.$path);
 }
 @endphp
 <!DOCTYPE html>
