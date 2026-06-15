@@ -7,10 +7,12 @@ function fotoUrl($path)
         return asset('images/no-image.png');
     }
 
-    $path = trim($path);
-
-    if (filter_var($path, FILTER_VALIDATE_URL)) {
+    if (Str::startsWith($path, ['http://', 'https://'])) {
         return $path;
+    }
+
+    if (Str::startsWith($path, 'storage/')) {
+        return asset($path);
     }
 
     return asset('storage/'.$path);
