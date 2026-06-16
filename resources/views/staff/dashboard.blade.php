@@ -183,7 +183,7 @@
                         <td>{{ $r->nomor_kontak }}</td>
                         <td>{{ $r->alamat }}</td>
                         <td>{{ $r->kecamatan }}</td>
-                        <td>{{ $r->jadwal }} {{ $j->jam }}</td>
+                        <td>{{ $r->jadwal }} {{ $r->jam }}</td>
                         <td>
 
                             <a href="{{ route('staff.inspeksi.form', $r->id) }}"
