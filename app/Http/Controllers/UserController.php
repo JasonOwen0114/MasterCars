@@ -258,6 +258,7 @@ public function detail($id)
 public function hasilReinspeksi($id)
 {
     $reinspeksi = \App\Models\Reinspeksi::with([
+        'mobil.fitur',
         'inspeksi.eksterior',
         'inspeksi.interior',
         'inspeksi.mesin',

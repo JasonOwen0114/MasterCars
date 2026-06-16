@@ -239,7 +239,7 @@ function fotoUrl($path)
         <div class="table-responsive">
 
             @php
-                $fitur = $reinspeksi->fitur;
+                $fitur = $reinspeksi->mobil?->fitur;
 
                 $fiturList = [
 
@@ -472,9 +472,9 @@ function fotoUrl($path)
                         <div class="col-md-4 text-center">
                             @if(!empty($e->{'foto_'.$field}))
                                 <img src="{{ fotoUrl($e->{'foto_'.$field}) }}"
-                                     class="img-fluid rounded shadow-sm"
-                                     style="max-height:150px; cursor:pointer"
-                                     onclick="openSingleImage('{{ fotoUrl($e->{'foto_'.$field}) }}')"
+                                    class="img-fluid rounded shadow-sm"
+                                    style="max-height:150px; cursor:pointer"
+                                    onclick="openSingleImage('{{ fotoUrl($e->{'foto_'.$field}) }}')">
                             @else
                                 <div class="text-muted small">Tidak ada foto</div>
                             @endif
@@ -623,7 +623,7 @@ function fotoUrl($path)
                             <img src="{{ fotoUrl($m->{'foto_'.$field}) }}"
                                  class="img-fluid rounded shadow-sm"
                                  style="max-height:150px; cursor:pointer"
-                                 onclick="openSingleImage('{{ fotoUrl($m->{'foto_'.$field}) }}')"
+                                 onclick="openSingleImage('{{ fotoUrl($m->{'foto_'.$field}) }}')">
                         @else
                             <div class="text-muted small">Tidak ada foto</div>
                         @endif
