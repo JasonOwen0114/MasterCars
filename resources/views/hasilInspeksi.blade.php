@@ -538,17 +538,17 @@ function fotoUrl($path)
 
             @if($i)
                 @foreach([
-                    'kebersihan_kabin' => 'Kebersihan Kabin',
-                    'kondisi_jok' => 'Kondisi Jok',
-                    'dashboard' => 'Dashboard',
-                    'audio' => 'Audio',
-                    'ac' => 'AC',
-                    'speedometer' => 'Speedometer',
-                    'karpet' => 'Karpet',
-                    'power_window' => 'Power Window',
-                    'sunroof' => 'Sunroof',
-                    'sabuk_pengaman' => 'Sabuk Pengaman',
-                    'setir_transmisi' => 'Setir Transmisi'
+                    'kebersihan_kabin'=>'Kebersihan Kabin',
+                    'kondisi_jok'=>'Kondisi Jok',
+                    'dashboard'=>'Dashboard',
+                    'audio'=>'Audio',
+                    'ac'=>'AC',
+                    'speedometer'=>'Speedometer',
+                    'karpet'=>'Karpet',
+                    'power_window'=>'Power Window',
+                    'sunroof'=>'Sunroof',
+                    'sabuk_pengaman'=>'Sabuk Pengaman',
+                    'setir_transmisi'=>'Setir & Transmisi'
                 ] as $field => $label)
 
                 <div class="border rounded p-3 mb-3">
@@ -610,19 +610,19 @@ function fotoUrl($path)
         <div class="accordion-body">
             @php $m = $mobil->inspeksi->mesin ?? null; @endphp
 
-            @foreach([
-                'suara_mesin' => 'Suara Mesin',
-                'getaran_mesin' => 'Getaran Mesin',
-                'kebocoran_oli' => 'Kebocoran Oli',
-                'asap_knalpot' => 'Asap Knalpot',
-                'transmisi' => 'Transmisi',
-                'rem' => 'Rem',
-                'power_steering' => 'Power Steering',
-                'suspensi' => 'Suspensi',
-                'radiator' => 'Radiator',
-                'aki' => 'Aki',
-                'indikator_dashboard' => 'Indikator Dashboard'
-            ] as $field => $label)
+                @foreach([
+                    'suara_mesin'=>'Suara Mesin',
+                    'getaran_mesin'=>'Getaran Mesin',
+                    'kebocoran_oli'=>'Kebocoran Oli',
+                    'asap_knalpot'=>'Asap Knalpot',
+                    'transmisi'=>'Transmisi',
+                    'rem'=>'Rem',
+                    'power_steering'=>'Power Steering',
+                    'suspensi'=>'Suspensi',
+                    'radiator'=>'Radiator',
+                    'aki'=>'Aki',
+                    'indikator_dashboard'=>'Indikator Dashboard'
+                ] as $field => $label)
 
             <div class="border rounded p-3 mb-3">
                 <div class="row align-items-center">
