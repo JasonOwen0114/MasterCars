@@ -9,7 +9,7 @@
 
 <form method="GET" class="row g-3 mb-4">
 
-    {{-- MERK --}}
+  
     <div class="col-md-3">
 
         <select id="merk"
@@ -35,7 +35,7 @@
 
 
 
-    {{-- GRADE --}}
+    
     <div class="col-md-3">
 
         <select id="grade"
@@ -65,7 +65,7 @@
 
 
 
-    {{-- BUTTON --}}
+
     <div class="col-md-auto">
 
         <button class="btn btn-dark">

@@ -164,9 +164,7 @@
 
 document.addEventListener('DOMContentLoaded', function () {
 
-    // =========================================
-    // MERK SELECT
-    // =========================================
+
 
     const merkSelect = new TomSelect('#merk', {
 
@@ -193,9 +191,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-    // =========================================
-    // MODEL SELECT
-    // =========================================
 
     const modelSelect = new TomSelect('#model', {
 
@@ -222,14 +217,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-    // DEFAULT DISABLE
     modelSelect.disable();
 
 
 
-    // =========================================
-    // LOAD MODEL FUNCTION
-    // =========================================
+
 
     async function loadModels(merk, selectedModel = '') {
 
@@ -303,13 +295,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-    // =========================================
-    // EVENT MERK CHANGE
-    // =========================================
 
-    merkSelect.on('change', function(value){
+    document.getElementById('merk').addEventListener('change', function(){
 
-        loadModels(value);
+        loadModels(this.value);
 
     });
 

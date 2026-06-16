@@ -192,9 +192,6 @@
 
 document.addEventListener('DOMContentLoaded', function () {
 
-    // =========================================
-    // MERK SELECT
-    // =========================================
 
     const merkSelect = new TomSelect('#merk', {
 
@@ -222,9 +219,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-    // =========================================
-    // MODEL SELECT
-    // =========================================
 
     const modelSelect = new TomSelect('#model', {
 
@@ -252,15 +246,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-    // DEFAULT DISABLE
+  
     modelSelect.disable();
 
 
 
 
-    // =========================================
-    // LOAD MODEL FUNCTION
-    // =========================================
+  
 
     async function loadModels(merk, selectedModel = '') {
 
@@ -335,22 +327,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-    // =========================================
-    // EVENT MERK CHANGE
-    // =========================================
 
-    merkSelect.on('change', function(value){
 
-        loadModels(value);
+    document.getElementById('merk').addEventListener('change', function(){
+
+        loadModels(this.value);
 
     });
 
 
 
 
-    // =========================================
-    // LOAD FILTER SEBELUMNYA
-    // =========================================
 
     @if($merk)
 
@@ -364,9 +351,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-    // =========================================
-    // PIE CHART
-    // =========================================
+
 
     const ctx = document.getElementById('chart');
 

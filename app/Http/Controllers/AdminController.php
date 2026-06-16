@@ -397,7 +397,7 @@ public function laporanWaktuPenjualan(Request $request)
 
         ->when($model, function($q) use ($model){
 
-            $q->where('mobil.nama_mobil', 'like', "%$model%");
+            $q->where('mobil.nama_mobil', $model);
 
         })
 
@@ -593,6 +593,7 @@ public function laporanPenjualanMobil(Request $request)
         ->select(
             'mobil.nama_mobil',
             'mobil.merk',
+            'mobil.foto_serahterima',
             'transaksi.harga',
             'transaksi.tanggal_transaksi',
             'pembeli.nama as pembeli',
@@ -631,7 +632,7 @@ public function laporanMobilAktif(Request $request)
         })
 
         ->when($model, function($q) use ($model){
-            $q->where('nama_mobil', 'like', "%$model%");
+            $q->where('nama_mobil', $model);
         })
 
         ->when($tahun, function($q) use ($tahun){
@@ -651,13 +652,11 @@ public function laporanMobilAktif(Request $request)
         'merks'
     ));
 }
-public function getModelsByMerk($merk)
-{
-    $models = DB::table('data_mobil')
-        ->where('merk', $merk)
-        ->pluck('model');
-
-    return response()->json($models);
-}
+    public function getModelByMerk($merk)
+    {
+        return DB::table('data_mobil')
+            ->where('merk', $merk)
+            ->pluck('model');
+    }
 
 }
