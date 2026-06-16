@@ -374,13 +374,19 @@ $fotos = collect([
                         @php $i = $mobil->inspeksi->interior ?? null; @endphp
 
                         @if($i)
-                        @foreach([
-                            'kebersihan_kabin'=>'Kebersihan Kabin',
-                            'kondisi_jok'=>'Kondisi Jok',
-                            'dashboard'=>'Dashboard',
-                            'audio'=>'Audio',
-                            'ac'=>'AC'
-                        ] as $field => $label)
+                            @foreach([
+                                'kebersihan_kabin'=>'Kebersihan Kabin',
+                                'kondisi_jok'=>'Kondisi Jok',
+                                'dashboard'=>'Dashboard',
+                                'audio'=>'Audio',
+                                'ac'=>'AC',
+                                'speedometer'=>'Speedometer',
+                                'karpet'=>'Karpet',
+                                'power_window'=>'Power Window',
+                                'sunroof'=>'Sunroof',
+                                'sabuk_pengaman'=>'Sabuk Pengaman',
+                                'setir_transmisi'=>'Setir & Transmisi'
+                            ] as $field => $label)
 
                         <div class="border rounded p-2 mb-2">
                             <div class="row align-items-center">
@@ -433,12 +439,19 @@ $fotos = collect([
                         @php $m = $mobil->inspeksi->mesin ?? null; @endphp
 
                         @if($m)
-                        @foreach([
-                            'suara_mesin'=>'Suara Mesin',
-                            'getaran_mesin'=>'Getaran Mesin',
-                            'kebocoran_oli'=>'Kebocoran Oli',
-                            'asap_knalpot'=>'Asap Knalpot'
-                        ] as $field => $label)
+                            @foreach([
+                                'suara_mesin'=>'Suara Mesin',
+                                'getaran_mesin'=>'Getaran Mesin',
+                                'kebocoran_oli'=>'Kebocoran Oli',
+                                'asap_knalpot'=>'Asap Knalpot',
+                                'transmisi'=>'Transmisi',
+                                'rem'=>'Rem',
+                                'power_steering'=>'Power Steering',
+                                'suspensi'=>'Suspensi',
+                                'radiator'=>'Radiator',
+                                'aki'=>'Aki',
+                                'indikator_dashboard'=>'Indikator Dashboard'
+                            ] as $field => $label)
 
                         <div class="border rounded p-2 mb-2">
                             <div class="row align-items-center">
