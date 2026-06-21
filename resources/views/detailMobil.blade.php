@@ -132,8 +132,10 @@ function fotoUrl($path)
 @php
 $approvalCount = DB::table('jadwal_inspeksi')
     ->where('user_id', auth()->id())
-    ->whereNull('status_approval')
-    ->orWhereNotNull('note')
+    ->where(function($q){
+        $q->whereNull('status_approval')
+          ->orWhere('status_approval', 0);
+    })
     ->exists();
 @endphp
 <nav class="navbar navbar-expand-lg navbar-dark bg-black px-4">

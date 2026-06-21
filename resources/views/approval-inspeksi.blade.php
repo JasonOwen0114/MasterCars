@@ -39,8 +39,10 @@ function fotoUrl($path)
 @php
 $approvalCount = DB::table('jadwal_inspeksi')
     ->where('user_id', auth()->id())
-    ->whereNull('status_approval')
-    ->orWhereNotNull('note')
+    ->where(function($q){
+        $q->whereNull('status_approval')
+          ->orWhere('status_approval', 0);
+    })
     ->exists();
 @endphp
 <nav class="navbar navbar-expand-lg navbar-dark bg-black px-4">
@@ -133,16 +135,11 @@ $approvalCount = DB::table('jadwal_inspeksi')
 
             <div class="row g-0 align-items-center">
 
-                <div class="col-md-3 p-2">
-
-                    <img
-                        src="{{ fotoUrl(optional($item->mobil)->foto_thumbnail) }}"
-                        class="img-fluid rounded"
-                        style="height:160px;width:100%;object-fit:cover;"
-                        alt="Mobil">
-
+                <div class="col-md-3 p-2 d-flex align-items-center justify-content-center bg-light rounded">
+                    <span class="text-muted small">
+                        Tidak ada foto
+                    </span>
                 </div>
-
                 <div class="col-md-7">
 
                     <div class="card-body">
@@ -170,39 +167,29 @@ $approvalCount = DB::table('jadwal_inspeksi')
                             {{ $item->jam }}
                         </p>
 
-                        @if($item->status_approval == 1)
+                            @if($item->status_approval == 1)
 
-                            <span class="badge bg-success">
-                                Approved
-                            </span>
+                                <span class="badge bg-success">Approved</span>
 
-                        @elseif(!empty($item->note))
+                            @elseif($item->status_approval == 0)
 
-                            <span class="badge bg-danger">
-                                Rejected
-                            </span>
+                                <span class="badge bg-danger">Rejected</span>
 
-                            <div class="mt-2">
+                                <div class="mt-2">
+                                    <strong>Alasan Penolakan:</strong><br>
 
-                                <strong>
-                                    Alasan Penolakan:
-                                </strong>
+                                    <span class="text-danger">
+                                        {{ $item->note_approval }}
+                                    </span>
+                                </div>
 
-                                <br>
+                            @else
 
-                                <span class="text-danger">
-                                    {{ $item->note }}
+                                <span class="badge bg-warning text-dark">
+                                    Menunggu Approval
                                 </span>
 
-                            </div>
-
-                        @else
-
-                            <span class="badge bg-warning text-dark">
-                                Menunggu Approval
-                            </span>
-
-                        @endif
+                            @endif
 
                     </div>
 

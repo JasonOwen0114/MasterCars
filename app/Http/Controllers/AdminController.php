@@ -122,96 +122,67 @@ public function storeAssign(Request $request, $id)
 {
     $request->validate([
         'status_approval' => 'required',
-        'staff_id' => 'nullable|exists:users,id',
-        'note' => 'nullable|string'
+        'staff_id'        => 'nullable|exists:users,id',
+        'note_approval'   => 'nullable|string'
     ]);
 
     $jadwal = JadwalInspeksi::findOrFail($id);
-
-    if($request->status_approval == 0)
-    {
+    if ($request->status_approval == 0) {
         $jadwal->update([
-            'note' => $request->note
+            'status_approval' => 0,
+            'note_approval'   => $request->note_approval
         ]);
 
-        return back()->with(
-            'success',
-            'Pengajuan inspeksi ditolak'
-        );
+        return back()->with('success', 'Pengajuan inspeksi ditolak');
     }
-
-    if(!$request->staff_id)
-    {
-        return back()->with(
-            'error',
-            'Pilih staff terlebih dahulu'
-        );
+    if (!$request->staff_id) {
+        return back()->with('error', 'Pilih staff terlebih dahulu');
     }
 
     $staffId = $request->staff_id;
 
     $jamMulai   = $jadwal->jam;
-    $jamSelesai = date(
-        'H:i:s',
-        strtotime($jamMulai . ' +2 hours')
-    );
+    $jamSelesai = date('H:i:s', strtotime($jamMulai . ' +2 hours'));
     $bentrokBooking = DB::table('jadwal_booking')
-    ->where('staff_id', $staffId)
-    ->where('jadwal', $jadwal->jadwal)
-    ->where('status', 1)
-    ->where(function ($q) use ($jamMulai, $jamSelesai) {
-
-        $q->where('jam', '<', $jamSelesai)
-          ->whereRaw(
-                "ADDTIME(jam,'02:00:00') > ?",
-                [$jamMulai]
-          );
-
+        ->where('staff_id', $staffId)
+        ->where('jadwal', $jadwal->jadwal)
+        ->where('status', 1)
+        ->where(function ($q) use ($jamMulai, $jamSelesai) {
+            $q->where('jam', '<', $jamSelesai)
+              ->whereRaw("ADDTIME(jam,'02:00:00') > ?", [$jamMulai]);
         })
         ->exists();
 
     if ($bentrokBooking) {
-
         return back()->with(
             'error',
             'Staff sudah memiliki jadwal delivery pada jam tersebut'
         );
-
     }
     $bentrokBooking = DB::table('jadwal_booking')
         ->where('staff_id', $staffId)
         ->where('jadwal', $jadwal->jadwal)
-        ->whereIn('status', [1,2])
+        ->whereIn('status', [1, 2])
         ->where(function ($q) use ($jamMulai, $jamSelesai) {
-
             $q->where('jam', '<', $jamSelesai)
-              ->whereRaw(
-                  "ADDTIME(jam,'02:00:00') > ?",
-                  [$jamMulai]
-              );
-
+              ->whereRaw("ADDTIME(jam,'02:00:00') > ?", [$jamMulai]);
         })
         ->exists();
 
-    if($bentrokBooking)
-    {
+    if ($bentrokBooking) {
         return back()->with(
             'error',
             'Staff memiliki jadwal delivery pada jam tersebut'
         );
     }
-
     $jadwal->update([
         'status_approval' => 1,
         'staff_id'        => $staffId,
         'status'          => 2,
-        'note'            => null
+        'note_approval'   => null
     ]);
 
-    return back()->with(
-        'success',
-        'Pengajuan inspeksi disetujui'
-    );
+    return back()->with('success', 'Pengajuan inspeksi disetujui');
 }
 public function createStaff()
 {
