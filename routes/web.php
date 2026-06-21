@@ -191,6 +191,15 @@ Route::middleware(['auth', 'role:1'])->group(function () {
         ->name('admin.laporan.mobilAktif');
 
     Route::get('/admin/models/{merk}', [AdminController::class, 'getModelByMerk']);
+
+    Route::get('/admin/tambah-mobil', [AdminController::class, 'tambahMobil'])
+    ->name('admin.tambahMobil');
+
+    Route::post('/admin/merk/store', [AdminController::class, 'storeMerk'])
+        ->name('admin.merk.store');
+
+    Route::post('/admin/model/store', [AdminController::class, 'storeModel'])
+        ->name('admin.model.store');
 });
 Route::middleware(['auth', 'role:2'])->group(function () {
 

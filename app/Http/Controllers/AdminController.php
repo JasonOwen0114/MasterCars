@@ -8,6 +8,8 @@ use App\Models\User;
 use Carbon\Carbon; 
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
+    use App\Models\DataMobil;
+
 
 class AdminController extends Controller
 {
@@ -737,6 +739,44 @@ public function laporanMobilAktif(Request $request)
         return DB::table('data_mobil')
             ->where('merk', $merk)
             ->pluck('model');
+    }
+
+
+    public function tambahMobil()
+    {
+        $merks = DataMobil::select('merk')
+            ->distinct()
+            ->orderBy('merk')
+            ->pluck('merk');
+
+        return view('admin.tambahMobil', compact('merks'));
+    }
+    public function storeMerk(Request $request)
+    {
+        $request->validate([
+            'merk' => 'required|string|max:255'
+        ]);
+
+        DataMobil::create([
+            'merk' => $request->merk,
+            'model' => null
+        ]);
+
+        return back()->with('success', 'Merk berhasil ditambahkan');
+    }
+    public function storeModel(Request $request)
+    {
+        $request->validate([
+            'merk'  => 'required|string',
+            'model' => 'required|string'
+        ]);
+
+        DataMobil::create([
+            'merk'  => $request->merk,
+            'model' => $request->model
+        ]);
+
+        return back()->with('success', 'Model berhasil ditambahkan');
     }
 
 }

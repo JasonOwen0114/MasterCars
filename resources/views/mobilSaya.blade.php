@@ -143,6 +143,18 @@ $approvalCount = DB::table('jadwal_inspeksi')
                         <h5 class="fw-bold">
                             {{ $mobil->merk }} {{ $mobil->nama_mobil }}
                         </h5>
+                        @if($mobil->status == 'tersedia')
+                            <span class="badge bg-success">Tersedia</span>
+
+                        @elseif($mobil->status == 'terbooking')
+                            <span class="badge bg-warning text-dark">Terbooking</span>
+
+                        @elseif($mobil->status == 'terjual')
+                            <span class="badge bg-danger">Terjual</span>
+
+                        @else
+                            <span class="badge bg-secondary">Tidak Diketahui</span>
+                        @endif
                         <p class="text-muted small mb-1">
                             {{ $mobil->tipe }} • {{ $mobil->warna }}
                         </p>

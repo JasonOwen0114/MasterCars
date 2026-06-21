@@ -44,7 +44,11 @@ table{
         </span>
 
         <div class="d-flex align-items-center gap-2 flex-wrap">
-
+            <a href="{{ route('admin.tambahMobil') }}"
+            class="btn btn-info btn-sm">
+                + Tambah Mobil
+            </a>
+            
             <a href="{{ route('admin.staff.create') }}"
                class="btn btn-success btn-sm">
                 + Add Staff

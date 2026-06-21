@@ -142,7 +142,7 @@ public function simpanJual(Request $request, Mobil $mobil)
 public function mobilSaya()
 {
     $mobils = Mobil::where('user_id', auth()->id())
-        ->where('status', 'tersedia')
+        ->whereIn('status', ['tersedia', 'terbooking', 'terjual'])
         ->get();
 
     return view('mobilSaya', compact('mobils'));
