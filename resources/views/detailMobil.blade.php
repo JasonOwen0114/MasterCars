@@ -518,116 +518,122 @@ $approvalCount = DB::table('jadwal_inspeksi')
     </div>
 
 </div>
+@php
+function score($value)
+{
+    if($value === null) return 0;
+
+    return match($value) {
+        'A', 'Baik', 'Normal', 'Ada', 'Lengkap' => 1,
+        'B' => 0.75,
+        'C' => 0.5,
+        'D' => 0.25,
+        default => 0
+    };
+}
+@endphp
+@php
+function nilaiItem($value)
+{
+    if ($value === null) return 0;
+
+    return match($value) {
+        'A', 'Baik', 'Normal', 'Ada', 'Lengkap' => 1,
+        'B' => 0.75,
+        'C' => 0.5,
+        'D' => 0.25,
+        default => 0
+    };
+}
+@endphp
+@php
+$bobotEksterior = [
+    'kondisi_cat' => 10,
+    'panel_bodi' => 10,
+    'lampu_depan' => 8,
+    'lampu_belakang' => 8,
+    'velg' => 7,
+    'ban' => 10,
+    'kaca' => 7,
+    'wiper' => 3, 
+];
+
+$bobotInterior = [
+    'kebersihan_kabin' => 6,
+    'kondisi_jok' => 8,
+    'dashboard' => 6,
+    'audio' => 4,
+    'ac' => 10,
+    'speedometer' => 6,
+    'karpet' => 3,
+    'power_window' => 5,
+    'sunroof' => 6,
+    'sabuk_pengaman' => 10,
+    'setir_transmisi' => 6,
+];
+
+$bobotMesin = [
+    'suara_mesin' => 12,
+    'getaran_mesin' => 10,
+    'kebocoran_oli' => 12,
+    'asap_knalpot' => 10,
+    'transmisi' => 12,
+    'rem' => 12,
+    'power_steering' => 6,
+    'suspensi' => 8,
+    'radiator' => 8,
+    'aki' => 5,
+    'indikator_dashboard' => 5,
+];
+
+$bobotKelengkapan = [
+    'stnk' => 15,
+    'bpkb' => 15,
+    'faktur' => 10,
+    'surat_pelepasan' => 5,
+    'dokumen_tambahan' => 5,
+];
+@endphp
 <div class="mt-5">
     <h4 class="fw-bold mb-4 text-center">Detail Inspeksi Mobil</h4>
 
     <div class="accordion" id="accordionInspeksi">
 
      
-        <div class="accordion-item">
-            <h2 class="accordion-header">
-                <button class="accordion-button collapsed"
-                        data-bs-toggle="collapse"
-                        data-bs-target="#eksterior">
-                    Eksterior :
-                    <span class="badge bg-primary ms-2">
-                        {{ $mobil->inspeksi->grade_eksterior ?? '-' }}
-                    </span>
-                </button>
-            </h2>
-
-            <div id="eksterior" class="accordion-collapse collapse">
-                <div class="accordion-body">
-
-                    @php $e = $mobil->inspeksi->eksterior ?? null; @endphp
-
-@foreach([
-    'kondisi_cat' => 'Kondisi Cat',
-    'panel_bodi' => 'Panel Bodi',
-    'lampu_depan' => 'Lampu Depan',
-    'lampu_belakang' => 'Lampu Belakang',
-    'velg' => 'Velg',
-    'ban' => 'Ban',
-    'kaca' => 'Kaca',
-    'wiper' => 'Wiper',
-] as $field => $label)
-
-<div class="border rounded p-3 mb-3">
-    <div class="row align-items-center">
-
-        <div class="col-md-4 text-center">
-            @if(!empty($e->{'foto_'.$field}))
-                <img src="{{ fotoUrl($e->{'foto_'.$field}) }}"
-                     class="img-fluid rounded shadow-sm"
-                     style="max-height:150px; cursor:pointer">
-            @else
-                <div class="text-muted small">Tidak ada foto</div>
-            @endif
-        </div>
-
-        <div class="col-md-8">
-            <div class="d-flex justify-content-between align-items-center">
-                <strong>{{ $label }}</strong>
-                <span class="badge bg-secondary">
-                    {{ $e->$field ?? '-' }}
-                </span>
-            </div>
-
-            @if(!empty($e->{'note_'.$field}))
-                <p class="mt-2 mb-0 text-muted small">
-                    {{ $e->{'note_'.$field} }}
-                </p>
-            @endif
-        </div>
-
-    </div>
-</div>
-
-@endforeach
-
-                </div>
-            </div>
-        </div>
-
-  
 <div class="accordion-item">
     <h2 class="accordion-header">
         <button class="accordion-button collapsed"
                 data-bs-toggle="collapse"
-                data-bs-target="#interior">
-            Interior :
+                data-bs-target="#eksterior">
+            Eksterior :
             <span class="badge bg-primary ms-2">
-                {{ $mobil->inspeksi->grade_interior ?? '-' }}
+                {{ $mobil->inspeksi->grade_eksterior ?? '-' }}
             </span>
         </button>
     </h2>
 
-    <div id="interior" class="accordion-collapse collapse">
+    <div id="eksterior" class="accordion-collapse collapse">
         <div class="accordion-body">
 
-            @php $i = $mobil->inspeksi->interior ?? null; @endphp
+            @php
+                $e = $mobil->inspeksi->eksterior ?? null;
+                $total = 0;
+                $max = array_sum($bobotEksterior);
+            @endphp
 
-            @if($i)
-                @foreach([
-                    'kebersihan_kabin' => 'Kebersihan Kabin',
-                    'kondisi_jok' => 'Kondisi Jok',
-                    'dashboard' => 'Dashboard',
-                    'audio' => 'Audio',
-                    'ac' => 'AC',
-                    'speedometer' => 'Speedometer',
-                    'karpet' => 'Karpet',
-                    'power_window' => 'Power Window',
-                    'sunroof' => 'Sunroof',
-                    'sabuk_pengaman' => 'Sabuk Pengaman',
-                    'setir_transmisi' => 'Setir Transmisi'
-                ] as $field => $label)
+            @foreach($bobotEksterior as $field => $bobot)
+                @php
+                    $nilai = $e ? nilaiInspeksi($e->$field ?? null) : 0;
+                    $score = $nilai * $bobot;
+                    $total += $score;
+                @endphp
 
                 <div class="border rounded p-3 mb-3">
                     <div class="row align-items-center">
 
                         <div class="col-md-4 text-center">
-                            @if(!empty($i->{'foto_'.$field}))
-                                <img src="{{ fotoUrl($i->{'foto_'.$field}) }}"
+                            @if(!empty($e->{'foto_'.$field}))
+                                <img src="{{ fotoUrl($e->{'foto_'.$field}) }}"
                                      class="img-fluid rounded shadow-sm"
                                      style="max-height:150px; cursor:pointer">
                             @else
@@ -636,162 +642,128 @@ $approvalCount = DB::table('jadwal_inspeksi')
                         </div>
 
                         <div class="col-md-8">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <strong>{{ $label }}</strong>
+                            <div class="d-flex justify-content-between">
+                                <strong>{{ ucfirst(str_replace('_',' ',$field)) }}</strong>
+
                                 <span class="badge bg-secondary">
-                                    {{ $i->$field ?? '-' }}
+                                    {{ $e->$field ?? '-' }}
                                 </span>
                             </div>
 
-                            @if(!empty($i->{'note_'.$field}))
-                                <p class="mt-2 mb-0 text-muted small">
-                                    {{ $i->{'note_'.$field} }}
-                                </p>
-                            @endif
+                            <small class="text-muted">
+                                Bobot: {{ $bobot }} | Score: {{ number_format($score,1) }}
+                            </small>
                         </div>
 
                     </div>
                 </div>
+            @endforeach
 
-                @endforeach
-            @else
-                <p class="text-muted">Data tidak tersedia</p>
-            @endif
+            <hr>
+            <div class="fw-bold">
+                Nilai Eksterior: {{ round(($total / $max) * 100, 2) }} / 100
+            </div>
 
         </div>
     </div>
 </div>
 
-<div class="accordion-item">
-    <h2 class="accordion-header">
-        <button class="accordion-button collapsed"
-                data-bs-toggle="collapse"
-                data-bs-target="#mesin">
-            Mesin :
-            <span class="badge bg-primary ms-2">
-                {{ $mobil->inspeksi->grade_mesin ?? '-' }}
+  
+@php
+$i = $mobil->inspeksi->interior ?? null;
+$total = 0;
+$max = array_sum($bobotInterior);
+@endphp
+
+@foreach($bobotInterior as $field => $bobot)
+    @php
+        $nilai = $i ? nilaiInspeksi($i->$field ?? null) : 0;
+        $score = $nilai * $bobot;
+        $total += $score;
+    @endphp
+
+    <div class="border rounded p-3 mb-3">
+        <div class="d-flex justify-content-between">
+            <strong>{{ ucfirst(str_replace('_',' ',$field)) }}</strong>
+            <span class="badge bg-secondary">
+                {{ $i->$field ?? '-' }}
             </span>
-        </button>
-    </h2>
-
-    <div id="mesin" class="accordion-collapse collapse">
-        <div class="accordion-body">
-
-            @php $m = $mobil->inspeksi->mesin ?? null; @endphp
-
-            @foreach([
-                'suara_mesin' => 'Suara Mesin',
-                'getaran_mesin' => 'Getaran Mesin',
-                'kebocoran_oli' => 'Kebocoran Oli',
-                'asap_knalpot' => 'Asap Knalpot',
-                'transmisi' => 'Transmisi',
-                'rem' => 'Rem',
-                'power_steering' => 'Power Steering',
-                'suspensi' => 'Suspensi',
-                'radiator' => 'Radiator',
-                'aki' => 'Aki',
-                'indikator_dashboard' => 'Indikator Dashboard',
-
-            ] as $field => $label)
-
-            <div class="border rounded p-3 mb-3">
-                <div class="row align-items-center">
-
-                    <div class="col-md-4 text-center">
-                        @if(!empty($m->{'foto_'.$field}))
-                            <img src="{{ fotoUrl($m->{'foto_'.$field}) }}"
-                                 class="img-fluid rounded shadow-sm"
-                                 style="max-height:150px; cursor:pointer">
-                        @else
-                            <div class="text-muted small">Tidak ada foto</div>
-                        @endif
-                    </div>
-
-                    <div class="col-md-8">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <strong>{{ $label }}</strong>
-                            <span class="badge bg-secondary">
-                                {{ $m->$field ?? '-' }}
-                            </span>
-                        </div>
-
-                        @if(!empty($m->{'note_'.$field}))
-                            <p class="mt-2 mb-0 text-muted small">
-                                {{ $m->{'note_'.$field} }}
-                            </p>
-                        @endif
-                    </div>
-
-                </div>
-            </div>
-
-            @endforeach
-
         </div>
+
+        <small class="text-muted">
+            Bobot: {{ $bobot }} | Score: {{ number_format($score,1) }}
+        </small>
     </div>
+@endforeach
+
+<hr>
+<div class="fw-bold">
+    Nilai Interior: {{ round(($total / $max) * 100, 2) }} / 100
+</div>
+
+@php
+$m = $mobil->inspeksi->mesin ?? null;
+$total = 0;
+$max = array_sum($bobotMesin);
+@endphp
+
+@foreach($bobotMesin as $field => $bobot)
+    @php
+        $nilai = $m ? nilaiInspeksi($m->$field ?? null) : 0;
+        $score = $nilai * $bobot;
+        $total += $score;
+    @endphp
+
+    <div class="border rounded p-3 mb-3">
+        <div class="d-flex justify-content-between">
+            <strong>{{ ucfirst(str_replace('_',' ',$field)) }}</strong>
+            <span class="badge bg-secondary">
+                {{ $m->$field ?? '-' }}
+            </span>
+        </div>
+
+        <small class="text-muted">
+            Bobot: {{ $bobot }} | Score: {{ number_format($score,1) }}
+        </small>
+    </div>
+@endforeach
+
+<hr>
+<div class="fw-bold">
+    Nilai Mesin: {{ round(($total / $max) * 100, 2) }} / 100
 </div>
 
 
-<div class="accordion-item">
-    <h2 class="accordion-header">
-        <button class="accordion-button collapsed"
-                data-bs-toggle="collapse"
-                data-bs-target="#kelengkapan">
-            Kelengkapan :
-            <span class="badge bg-primary ms-2">
-                {{ $mobil->inspeksi->grade_kelengkapan ?? '-' }}
+@php
+$k = $mobil->inspeksi->kelengkapan ?? null;
+$total = 0;
+$max = array_sum($bobotKelengkapan);
+@endphp
+
+@foreach($bobotKelengkapan as $field => $bobot)
+    @php
+        $nilai = $k ? nilaiInspeksi($k->$field ?? null) : 0;
+        $score = $nilai * $bobot;
+        $total += $score;
+    @endphp
+
+    <div class="border rounded p-3 mb-3">
+        <div class="d-flex justify-content-between">
+            <strong>{{ ucfirst($field) }}</strong>
+            <span class="badge bg-secondary">
+                {{ $k->$field ?? '-' }}
             </span>
-        </button>
-    </h2>
-
-    <div id="kelengkapan" class="accordion-collapse collapse">
-        <div class="accordion-body">
-
-            @php $k = $mobil->inspeksi->kelengkapan ?? null; @endphp
-
-            @foreach([
-                'stnk' => 'STNK',
-                'bpkb' => 'BPKB',
-                'faktur' => 'Faktur',
-                'surat_pelepasan' => 'Surat Pelepasan',
-                'dokumen_tambahan' => 'Dokumen Tambahan'
-            ] as $field => $label)
-
-            <div class="border rounded p-3 mb-3">
-                <div class="row align-items-center">
-
-                    <div class="col-md-4 text-center">
-                        @if(!empty($k->{'foto_'.$field}))
-                            <img src="{{ fotoUrl($k->{'foto_'.$field}) }}"
-                                 class="img-fluid rounded shadow-sm"
-                                 style="max-height:150px; cursor:pointer">
-                        @else
-                            <div class="text-muted small">Tidak ada foto</div>
-                        @endif
-                    </div>
-
-                    <div class="col-md-8">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <strong>{{ $label }}</strong>
-                            <span class="badge bg-secondary">
-                                {{ $k->$field ?? '-' }}
-                            </span>
-                        </div>
-
-                        @if(!empty($k->{'note_'.$field}))
-                            <p class="mt-2 mb-0 text-muted small">
-                                {{ $k->{'note_'.$field} }}
-                            </p>
-                        @endif
-                    </div>
-
-                </div>
-            </div>
-
-            @endforeach
-
         </div>
+
+        <small class="text-muted">
+            Bobot: {{ $bobot }} | Score: {{ number_format($score,1) }}
+        </small>
     </div>
+@endforeach
+
+<hr>
+<div class="fw-bold">
+    Nilai Kelengkapan: {{ round(($total / $max) * 100, 2) }} / 100
 </div>
 
 <div class="modal fade" id="galleryModal" tabindex="-1">
