@@ -599,52 +599,44 @@ $bobotKelengkapan = [
 
     <div class="accordion" id="accordionInspeksi">
 
-     
-<div class="accordion-item">
-    <h2 class="accordion-header">
-        <button class="accordion-button collapsed"
-                data-bs-toggle="collapse"
-                data-bs-target="#eksterior">
-            Eksterior :
-            <span class="badge bg-primary ms-2">
-                {{ $mobil->inspeksi->grade_eksterior ?? '-' }}
-            </span>
-        </button>
-    </h2>
+        {{-- ================= EKSTERIOR ================= --}}
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingEksterior">
+                <button class="accordion-button collapsed"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#collapseEksterior"
+                        aria-expanded="false"
+                        aria-controls="collapseEksterior">
+                    Eksterior :
+                    <span class="badge bg-primary ms-2">
+                        {{ $mobil->inspeksi->grade_eksterior ?? '-' }}
+                    </span>
+                </button>
+            </h2>
 
-    <div id="eksterior" class="accordion-collapse collapse">
-        <div class="accordion-body">
+            <div id="collapseEksterior"
+                 class="accordion-collapse collapse"
+                 data-bs-parent="#accordionInspeksi">
 
-            @php
-                $e = $mobil->inspeksi->eksterior ?? null;
-                $total = 0;
-                $max = array_sum($bobotEksterior);
-            @endphp
+                <div class="accordion-body">
 
-            @foreach($bobotEksterior as $field => $bobot)
-                @php
-                    $nilai = $e ? nilaiItem($e->$field ?? null) : 0;
-                    $score = $nilai * $bobot;
-                    $total += $score;
-                @endphp
+                    @php
+                        $e = $mobil->inspeksi->eksterior ?? null;
+                        $total = 0;
+                        $max = array_sum($bobotEksterior);
+                    @endphp
 
-                <div class="border rounded p-3 mb-3">
-                    <div class="row align-items-center">
+                    @foreach($bobotEksterior as $field => $bobot)
+                        @php
+                            $nilai = $e ? nilaiItem($e->$field ?? null) : 0;
+                            $score = $nilai * $bobot;
+                            $total += $score;
+                        @endphp
 
-                        <div class="col-md-4 text-center">
-                            @if(!empty($e->{'foto_'.$field}))
-                                <img src="{{ fotoUrl($e->{'foto_'.$field}) }}"
-                                     class="img-fluid rounded shadow-sm"
-                                     style="max-height:150px; cursor:pointer">
-                            @else
-                                <div class="text-muted small">Tidak ada foto</div>
-                            @endif
-                        </div>
-
-                        <div class="col-md-8">
+                        <div class="border rounded p-3 mb-3">
                             <div class="d-flex justify-content-between">
                                 <strong>{{ ucfirst(str_replace('_',' ',$field)) }}</strong>
-
                                 <span class="badge bg-secondary">
                                     {{ $e->$field ?? '-' }}
                                 </span>
@@ -654,148 +646,187 @@ $bobotKelengkapan = [
                                 Bobot: {{ $bobot }} | Score: {{ number_format($score,1) }}
                             </small>
                         </div>
+                    @endforeach
 
+                    <hr>
+                    <div class="fw-bold">
+                        Nilai Eksterior: {{ round(($total / $max) * 100, 2) }} / 100
                     </div>
+
                 </div>
-            @endforeach
-
-            <hr>
-            <div class="fw-bold">
-                Nilai Eksterior: {{ round(($total / $max) * 100, 2) }} / 100
             </div>
-
-        </div>
-    </div>
-</div>
-
-  
-@php
-$i = $mobil->inspeksi->interior ?? null;
-$total = 0;
-$max = array_sum($bobotInterior);
-@endphp
-
-@foreach($bobotInterior as $field => $bobot)
-    @php
-        $nilai = $i ? nilaiItem($i->$field ?? null) : 0;
-        $score = $nilai * $bobot;
-        $total += $score;
-    @endphp
-
-    <div class="border rounded p-3 mb-3">
-        <div class="d-flex justify-content-between">
-            <strong>{{ ucfirst(str_replace('_',' ',$field)) }}</strong>
-            <span class="badge bg-secondary">
-                {{ $i->$field ?? '-' }}
-            </span>
         </div>
 
-        <small class="text-muted">
-            Bobot: {{ $bobot }} | Score: {{ number_format($score,1) }}
-        </small>
-    </div>
-@endforeach
+        {{-- ================= INTERIOR ================= --}}
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingInterior">
+                <button class="accordion-button collapsed"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#collapseInterior">
+                    Interior :
+                    <span class="badge bg-primary ms-2">
+                        {{ $mobil->inspeksi->grade_interior ?? '-' }}
+                    </span>
+                </button>
+            </h2>
 
-<hr>
-<div class="fw-bold">
-    Nilai Interior: {{ round(($total / $max) * 100, 2) }} / 100
-</div>
+            <div id="collapseInterior"
+                 class="accordion-collapse collapse"
+                 data-bs-parent="#accordionInspeksi">
 
-@php
-$m = $mobil->inspeksi->mesin ?? null;
-$total = 0;
-$max = array_sum($bobotMesin);
-@endphp
+                <div class="accordion-body">
 
-@foreach($bobotMesin as $field => $bobot)
-    @php
-        $nilai = $m ? nilaiItem($m->$field ?? null) : 0;
-        $score = $nilai * $bobot;
-        $total += $score;
-    @endphp
+                    @php
+                        $i = $mobil->inspeksi->interior ?? null;
+                        $total = 0;
+                        $max = array_sum($bobotInterior);
+                    @endphp
 
-    <div class="border rounded p-3 mb-3">
-        <div class="d-flex justify-content-between">
-            <strong>{{ ucfirst(str_replace('_',' ',$field)) }}</strong>
-            <span class="badge bg-secondary">
-                {{ $m->$field ?? '-' }}
-            </span>
-        </div>
+                    @foreach($bobotInterior as $field => $bobot)
+                        @php
+                            $nilai = $i ? nilaiItem($i->$field ?? null) : 0;
+                            $score = $nilai * $bobot;
+                            $total += $score;
+                        @endphp
 
-        <small class="text-muted">
-            Bobot: {{ $bobot }} | Score: {{ number_format($score,1) }}
-        </small>
-    </div>
-@endforeach
-
-<hr>
-<div class="fw-bold">
-    Nilai Mesin: {{ round(($total / $max) * 100, 2) }} / 100
-</div>
-
-
-@php
-$k = $mobil->inspeksi->kelengkapan ?? null;
-$total = 0;
-$max = array_sum($bobotKelengkapan);
-@endphp
-
-@foreach($bobotKelengkapan as $field => $bobot)
-    @php
-        $nilai = $k ? nilaiItem($k->$field ?? null) : 0;
-        $score = $nilai * $bobot;
-        $total += $score;
-    @endphp
-
-    <div class="border rounded p-3 mb-3">
-        <div class="d-flex justify-content-between">
-            <strong>{{ ucfirst($field) }}</strong>
-            <span class="badge bg-secondary">
-                {{ $k->$field ?? '-' }}
-            </span>
-        </div>
-
-        <small class="text-muted">
-            Bobot: {{ $bobot }} | Score: {{ number_format($score,1) }}
-        </small>
-    </div>
-@endforeach
-
-<hr>
-<div class="fw-bold">
-    Nilai Kelengkapan: {{ round(($total / $max) * 100, 2) }} / 100
-</div>
-
-<div class="modal fade" id="galleryModal" tabindex="-1">
-    <div class="modal-dialog modal-xl modal-dialog-centered">
-        <div class="modal-content bg-black">
-            <div class="modal-body p-0">
-
-                <div id="modalCarousel" class="carousel slide" data-bs-ride="false">
-                    <div class="carousel-inner">
-
-                        @foreach($fotos as $index => $foto)
-                            <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
-                                <img src="{{ fotoUrl($foto) }}" class="d-block w-100 img-fluid">
+                        <div class="border rounded p-3 mb-3">
+                            <div class="d-flex justify-content-between">
+                                <strong>{{ ucfirst(str_replace('_',' ',$field)) }}</strong>
+                                <span class="badge bg-secondary">
+                                    {{ $i->$field ?? '-' }}
+                                </span>
                             </div>
-                        @endforeach
 
+                            <small class="text-muted">
+                                Bobot: {{ $bobot }} | Score: {{ number_format($score,1) }}
+                            </small>
+                        </div>
+                    @endforeach
+
+                    <hr>
+                    <div class="fw-bold">
+                        Nilai Interior: {{ round(($total / $max) * 100, 2) }} / 100
                     </div>
 
-                    <button class="carousel-control-prev" type="button" data-bs-target="#modalCarousel" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon"></span>
-                    </button>
-
-                    <button class="carousel-control-next" type="button" data-bs-target="#modalCarousel" data-bs-slide="next">
-                        <span class="carousel-control-next-icon"></span>
-                    </button>
                 </div>
-
             </div>
         </div>
+
+        {{-- ================= MESIN ================= --}}
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingMesin">
+                <button class="accordion-button collapsed"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#collapseMesin">
+                    Mesin :
+                    <span class="badge bg-primary ms-2">
+                        {{ $mobil->inspeksi->grade_mesin ?? '-' }}
+                    </span>
+                </button>
+            </h2>
+
+            <div id="collapseMesin"
+                 class="accordion-collapse collapse"
+                 data-bs-parent="#accordionInspeksi">
+
+                <div class="accordion-body">
+
+                    @php
+                        $m = $mobil->inspeksi->mesin ?? null;
+                        $total = 0;
+                        $max = array_sum($bobotMesin);
+                    @endphp
+
+                    @foreach($bobotMesin as $field => $bobot)
+                        @php
+                            $nilai = $m ? nilaiItem($m->$field ?? null) : 0;
+                            $score = $nilai * $bobot;
+                            $total += $score;
+                        @endphp
+
+                        <div class="border rounded p-3 mb-3">
+                            <div class="d-flex justify-content-between">
+                                <strong>{{ ucfirst(str_replace('_',' ',$field)) }}</strong>
+                                <span class="badge bg-secondary">
+                                    {{ $m->$field ?? '-' }}
+                                </span>
+                            </div>
+
+                            <small class="text-muted">
+                                Bobot: {{ $bobot }} | Score: {{ number_format($score,1) }}
+                            </small>
+                        </div>
+                    @endforeach
+
+                    <hr>
+                    <div class="fw-bold">
+                        Nilai Mesin: {{ round(($total / $max) * 100, 2) }} / 100
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        {{-- ================= KELENGKAPAN ================= --}}
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingKelengkapan">
+                <button class="accordion-button collapsed"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#collapseKelengkapan">
+                    Kelengkapan :
+                    <span class="badge bg-primary ms-2">
+                        {{ $mobil->inspeksi->grade_kelengkapan ?? '-' }}
+                    </span>
+                </button>
+            </h2>
+
+            <div id="collapseKelengkapan"
+                 class="accordion-collapse collapse"
+                 data-bs-parent="#accordionInspeksi">
+
+                <div class="accordion-body">
+
+                    @php
+                        $k = $mobil->inspeksi->kelengkapan ?? null;
+                        $total = 0;
+                        $max = array_sum($bobotKelengkapan);
+                    @endphp
+
+                    @foreach($bobotKelengkapan as $field => $bobot)
+                        @php
+                            $nilai = $k ? nilaiItem($k->$field ?? null) : 0;
+                            $score = $nilai * $bobot;
+                            $total += $score;
+                        @endphp
+
+                        <div class="border rounded p-3 mb-3">
+                            <div class="d-flex justify-content-between">
+                                <strong>{{ ucfirst(str_replace('_',' ',$field)) }}</strong>
+                                <span class="badge bg-secondary">
+                                    {{ $k->$field ?? '-' }}
+                                </span>
+                            </div>
+
+                            <small class="text-muted">
+                                Bobot: {{ $bobot }} | Score: {{ number_format($score,1) }}
+                            </small>
+                        </div>
+                    @endforeach
+
+                    <hr>
+                    <div class="fw-bold">
+                        Nilai Kelengkapan: {{ round(($total / $max) * 100, 2) }} / 100
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
-
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 @auth
 <div class="modal fade" id="bookingModal" tabindex="-1">
