@@ -44,6 +44,7 @@ $approvalCount = DB::table('jadwal_inspeksi')
           ->orWhere('status_approval', 0);
     })
     ->exists();
+    
 @endphp
 <nav class="navbar navbar-expand-lg navbar-dark bg-black px-4">
     
@@ -167,11 +168,11 @@ $approvalCount = DB::table('jadwal_inspeksi')
                             {{ $item->jam }}
                         </p>
 
-                            @if($item->status_approval == 1)
+                            @if($item->status_approval === 1)
 
                                 <span class="badge bg-success">Approved</span>
 
-                            @elseif($item->status_approval == 0)
+                            @elseif($item->status_approval === 0)
 
                                 <span class="badge bg-danger">Rejected</span>
 

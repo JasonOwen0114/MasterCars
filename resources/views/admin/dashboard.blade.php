@@ -151,11 +151,11 @@ table{
         </td>
 
         <td>
-            <textarea name="note"
-                      class="form-control note-field"
-                      rows="2"
-                      style="display:none"
-                      placeholder="Alasan penolakan"></textarea>
+            <textarea name="note_approval"
+                    class="form-control note-field"
+                    rows="2"
+                    style="display:none"
+                    placeholder="Alasan penolakan"></textarea>
         </td>
 
         <td>
