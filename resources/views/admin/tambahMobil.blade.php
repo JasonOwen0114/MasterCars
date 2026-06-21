@@ -133,35 +133,33 @@
         <div class="card p-3 shadow-sm">
 
             <h5 class="mb-3 text-danger">Hapus Model Mobil</h5>
+<form action="{{ route('admin.dataMobil.delete') }}" method="POST">
+    @csrf
+    @method('DELETE')
 
-            <form action="{{ route('admin.model.delete') }}" method="POST">
-                @csrf
-                @method('DELETE')
 
-                <label class="form-label">Pilih Merk</label>
-                <select id="merkDelete" class="form-select mb-2" required>
-                    <option value="">Pilih Merk</option>
-                    @foreach($merks as $merk)
-                        <option value="{{ $merk }}">{{ $merk }}</option>
-                    @endforeach
-                </select>
+    <label class="form-label">Pilih Merk</label>
+    <select id="merkDelete" name="merk" class="form-select mb-2" required>
+        <option value="">Pilih Merk</option>
+        @foreach($merks as $merk)
+            <option value="{{ $merk }}">{{ $merk }}</option>
+        @endforeach
+    </select>
 
-                <label class="form-label">Pilih Model</label>
-                <select name="model"
-                        id="modelDelete"
-                        class="form-select mb-3"
-                        disabled
-                        required>
-                    <option value="">Pilih Model</option>
-                </select>
 
-                <input type="hidden" name="merk" id="merkHidden">
+    <label class="form-label">Pilih Model</label>
+    <select name="model"
+            id="modelDelete"
+            class="form-select mb-3"
+            disabled
+            required>
+        <option value="">Pilih Model</option>
+    </select>
 
-                <button class="btn btn-danger w-100">
-                    Hapus Model
-                </button>
-
-            </form>
+    <button class="btn btn-danger w-100">
+        Hapus Data Mobil
+    </button>
+</form>
 
         </div>
     </div>
@@ -198,34 +196,27 @@
     });
 </script>
 <script>
-const merkDelete = document.getElementById('merkDelete');
-const modelDelete = document.getElementById('modelDelete');
-const merkHidden = document.getElementById('merkHidden');
-
-merkDelete.addEventListener('change', function () {
+document.getElementById('merkDelete').addEventListener('change', function () {
 
     let merk = this.value;
-    merkHidden.value = merk;
+    let model = document.getElementById('modelDelete');
 
-    modelDelete.disabled = true;
-    modelDelete.innerHTML = `<option>Loading...</option>`;
+    model.disabled = true;
+    model.innerHTML = `<option>Loading...</option>`;
 
     fetch(`/admin/models/${merk}`)
         .then(res => res.json())
         .then(data => {
 
-            modelDelete.innerHTML = `<option value="">Pilih Model</option>`;
+            model.innerHTML = `<option value="">Pilih Model</option>`;
 
             data.forEach(m => {
-                modelDelete.innerHTML += `
-                    <option value="${m}">${m}</option>
-                `;
+                model.innerHTML += `<option value="${m}">${m}</option>`;
             });
 
-            modelDelete.disabled = false;
+            model.disabled = false;
         });
 });
 </script>
-
 </body>
 </html>
