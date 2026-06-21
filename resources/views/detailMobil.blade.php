@@ -623,7 +623,7 @@ $bobotKelengkapan = [
 
             @foreach($bobotEksterior as $field => $bobot)
                 @php
-                    $nilai = $e ? nilaiInspeksi($e->$field ?? null) : 0;
+                    $nilai = $e ? nilaiItem($e->$field ?? null) : 0;
                     $score = $nilai * $bobot;
                     $total += $score;
                 @endphp
@@ -677,7 +677,7 @@ $max = array_sum($bobotInterior);
 
 @foreach($bobotInterior as $field => $bobot)
     @php
-        $nilai = $i ? nilaiInspeksi($i->$field ?? null) : 0;
+        $nilai = $i ? nilaiItem($i->$field ?? null) : 0;
         $score = $nilai * $bobot;
         $total += $score;
     @endphp
@@ -709,7 +709,7 @@ $max = array_sum($bobotMesin);
 
 @foreach($bobotMesin as $field => $bobot)
     @php
-        $nilai = $m ? nilaiInspeksi($m->$field ?? null) : 0;
+        $nilai = $m ? nilaiItem($m->$field ?? null) : 0;
         $score = $nilai * $bobot;
         $total += $score;
     @endphp
@@ -742,7 +742,7 @@ $max = array_sum($bobotKelengkapan);
 
 @foreach($bobotKelengkapan as $field => $bobot)
     @php
-        $nilai = $k ? nilaiInspeksi($k->$field ?? null) : 0;
+        $nilai = $k ? nilaiItem($k->$field ?? null) : 0;
         $score = $nilai * $bobot;
         $total += $score;
     @endphp
