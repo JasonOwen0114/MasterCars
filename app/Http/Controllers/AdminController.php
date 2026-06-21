@@ -15,6 +15,8 @@ public function dashboard()
 {
     $jadwal = JadwalInspeksi::with('staff')
         ->where('status', 1)
+        ->whereNull('status_approval')
+        ->whereNull('note')
         ->where('order_id', 'like', 'INSPEKSI-%')
         ->orderBy('jadwal')
         ->orderBy('jam')
@@ -71,38 +73,145 @@ public function assignStaff(Request $request, $id)
         ->route('admin.dashboard')
         ->with('success', 'Staff berhasil di-assign');
 }
-    public function getAvailableStaff($jadwal)
+public function getAvailableStaff($jadwal)
 {
     $jamMulai   = Carbon::parse($jadwal->jam);
     $jamSelesai = $jamMulai->copy()->addHours(2);
 
     return User::where('role', 2)
+
         ->whereNotIn('id', function ($q) use ($jadwal, $jamMulai, $jamSelesai) {
+
             $q->select('staff_id')
               ->from('jadwal_inspeksi')
               ->where('jadwal', $jadwal->jadwal)
               ->where('status', 2)
               ->where(function ($q2) use ($jamMulai, $jamSelesai) {
+
                   $q2->whereTime('jam', '<', $jamSelesai)
-                     ->whereRaw("ADDTIME(jam,'02:00:00') > ?", [$jamMulai]);
+                     ->whereRaw(
+                        "ADDTIME(jam,'02:00:00') > ?",
+                        [$jamMulai]
+                     );
+
               });
+
         })
+
+        ->whereNotIn('id', function ($q) use ($jadwal, $jamMulai, $jamSelesai) {
+
+            $q->select('staff_id')
+              ->from('jadwal_booking')
+              ->where('jadwal', $jadwal->jadwal)
+              ->where('status', 1)
+              ->where(function ($q2) use ($jamMulai, $jamSelesai) {
+
+                  $q2->whereTime('jam', '<', $jamSelesai)
+                     ->whereRaw(
+                        "ADDTIME(jam,'02:00:00') > ?",
+                        [$jamMulai]
+                     );
+
+              });
+
+        })
+
         ->get();
 }
 public function storeAssign(Request $request, $id)
 {
     $request->validate([
-        'staff_id' => 'required|exists:users,id'
+        'status_approval' => 'required',
+        'staff_id' => 'nullable|exists:users,id',
+        'note' => 'nullable|string'
     ]);
 
     $jadwal = JadwalInspeksi::findOrFail($id);
 
+    if($request->status_approval == 0)
+    {
+        $jadwal->update([
+            'note' => $request->note
+        ]);
+
+        return back()->with(
+            'success',
+            'Pengajuan inspeksi ditolak'
+        );
+    }
+
+    if(!$request->staff_id)
+    {
+        return back()->with(
+            'error',
+            'Pilih staff terlebih dahulu'
+        );
+    }
+
+    $staffId = $request->staff_id;
+
+    $jamMulai   = $jadwal->jam;
+    $jamSelesai = date(
+        'H:i:s',
+        strtotime($jamMulai . ' +2 hours')
+    );
+    $bentrokBooking = DB::table('jadwal_booking')
+    ->where('staff_id', $staffId)
+    ->where('jadwal', $jadwal->jadwal)
+    ->where('status', 1)
+    ->where(function ($q) use ($jamMulai, $jamSelesai) {
+
+        $q->where('jam', '<', $jamSelesai)
+          ->whereRaw(
+                "ADDTIME(jam,'02:00:00') > ?",
+                [$jamMulai]
+          );
+
+        })
+        ->exists();
+
+    if ($bentrokBooking) {
+
+        return back()->with(
+            'error',
+            'Staff sudah memiliki jadwal delivery pada jam tersebut'
+        );
+
+    }
+    $bentrokBooking = DB::table('jadwal_booking')
+        ->where('staff_id', $staffId)
+        ->where('jadwal', $jadwal->jadwal)
+        ->whereIn('status', [1,2])
+        ->where(function ($q) use ($jamMulai, $jamSelesai) {
+
+            $q->where('jam', '<', $jamSelesai)
+              ->whereRaw(
+                  "ADDTIME(jam,'02:00:00') > ?",
+                  [$jamMulai]
+              );
+
+        })
+        ->exists();
+
+    if($bentrokBooking)
+    {
+        return back()->with(
+            'error',
+            'Staff memiliki jadwal delivery pada jam tersebut'
+        );
+    }
+
     $jadwal->update([
-        'staff_id' => $request->staff_id,
-        'status'   => 2
+        'status_approval' => 1,
+        'staff_id'        => $staffId,
+        'status'          => 2,
+        'note'            => null
     ]);
 
-    return back()->with('success','Staff berhasil di-assign');
+    return back()->with(
+        'success',
+        'Pengajuan inspeksi disetujui'
+    );
 }
 public function createStaff()
 {

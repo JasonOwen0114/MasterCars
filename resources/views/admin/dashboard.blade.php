@@ -106,8 +106,10 @@ table{
                                 <th>Alamat</th>
                                 <th>Kecamatan</th>
                                 <th>Jadwal</th>
-                                <th>Staff</th>
-                                <th>Aksi</th>
+                            <th>Status Approval</th>
+                            <th>Note Reject</th>
+                            <th>Staff</th>
+                            <th>Aksi</th>
 
                             </tr>
 

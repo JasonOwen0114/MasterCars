@@ -29,7 +29,8 @@ class JadwalInspeksi extends Model
         'order_id',
         'kilometer',
         'tipe',
-        'mobil_id'
+        'mobil_id',
+        'status_approval'
     ];
     public function staff()
     {

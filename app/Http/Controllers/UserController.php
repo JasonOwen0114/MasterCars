@@ -488,4 +488,14 @@ public function hapusMobil(Mobil $mobil)
         ->route('user.mobilSaya')
         ->with('success', 'Mobil berhasil dihapus');
 }
+public function approvalInspeksi()
+{
+    $jadwal = JadwalInspeksi::with('mobil')
+        ->where('user_id', auth()->id())
+        ->where('order_id', 'like', 'INSPEKSI-%')
+        ->latest()
+        ->get();
+
+    return view('user.approval-inspeksi', compact('jadwal'));
+}
 }

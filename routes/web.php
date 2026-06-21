@@ -116,6 +116,9 @@ Route::get('/reinspeksi/finish', [UserController::class, 'finishReinspeksi'])
 
     Route::delete('/mobil-saya/{mobil}', [UserController::class, 'hapusMobil'])
         ->name('user.mobilSaya.hapus');
+        
+    Route::get('/approval-inspeksi', [UserController::class, 'approvalInspeksi'])
+        ->name('user.approval');
 });
 
 

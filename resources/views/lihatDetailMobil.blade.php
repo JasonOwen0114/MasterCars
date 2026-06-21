@@ -114,7 +114,13 @@
             ->count();
     }
 @endphp
-
+@php
+$approvalCount = DB::table('jadwal_inspeksi')
+    ->where('user_id', auth()->id())
+    ->whereNull('status_approval')
+    ->orWhereNotNull('note')
+    ->exists();
+@endphp
 <nav class="navbar navbar-expand-lg navbar-dark bg-black px-4">
     
     <a class="navbar-brand d-flex align-items-center gap-2" href="/">
@@ -137,7 +143,12 @@
                     Inspeksi
                 </a>
             @endif
-
+            @if($approvalCount)
+                <a href="{{ route('user.approval') }}"
+                class="nav-link text-white">
+                    Approval
+                </a>
+            @endif
             @if($jumlahTersedia > 0)
                 <a href="{{ route('user.mobilSaya') }}"
                    class="nav-link text-white fw-bold">

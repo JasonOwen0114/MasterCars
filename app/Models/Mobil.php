@@ -50,9 +50,9 @@ class Mobil extends Model
         return $this->hasOne(FiturMobil::class);
     }
 
-public function inspeksi()
-{
-    return $this->hasOne(\App\Models\Inspeksi::class, 'mobil_id')->latestOfMany();
-}
+    public function inspeksi()
+    {
+        return $this->hasOne(\App\Models\Inspeksi::class, 'mobil_id')->latestOfMany();
+    }
 
 }

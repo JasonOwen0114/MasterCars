@@ -16,7 +16,7 @@ function fotoUrl($path)
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Mobil Saya</title>
+    <title>Approval Inspeksi</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
@@ -122,67 +122,118 @@ $approvalCount = DB::table('jadwal_inspeksi')
 
 </nav>
 <div class="container py-4">
-    <h4 class="fw-bold mb-4">Mobil Saya (Tersedia)</h4>
 
-    @forelse($mobils as $mobil)
+    <h4 class="fw-bold mb-4">
+        Status Approval Inspeksi
+    </h4>
+
+    @forelse($jadwal as $item)
+
         <div class="card mb-3 shadow-sm">
+
             <div class="row g-0 align-items-center">
-                
+
                 <div class="col-md-3 p-2">
+
                     <img
-                        src="{{ fotoUrl($mobil->foto_thumbnail) }}"
+                        src="{{ fotoUrl(optional($item->mobil)->foto_thumbnail) }}"
                         class="img-fluid rounded"
                         style="height:160px;width:100%;object-fit:cover;"
                         alt="Mobil">
+
                 </div>
 
                 <div class="col-md-7">
+
                     <div class="card-body">
+
                         <h5 class="fw-bold">
-                            {{ $mobil->merk }} {{ $mobil->nama_mobil }}
+                            {{ $item->merk }}
+                            {{ $item->model_mobil }}
                         </h5>
+
                         <p class="text-muted small mb-1">
-                            {{ $mobil->tipe }} • {{ $mobil->warna }}
-                        </p>
-                        <p class="small mb-0">
-                            Mesin {{ $mobil->kapasitas_mesin }} cc •
-                            {{ $mobil->kapasitas_kursi }} Kursi
+                            {{ $item->tahun }}
+                            •
+                            {{ $item->transmisi }}
+                            •
+                            {{ $item->warna }}
                         </p>
 
-                        <div class="fw-bold text-success mt-2">
-                            Rp {{ number_format($mobil->harga,0,',','.') }}
-                        </div>
+                        <p class="small mb-1">
+                            {{ $item->tipe_mesin }}
+                        </p>
+
+                        <p class="small text-muted mb-2">
+                            Jadwal:
+                            {{ \Carbon\Carbon::parse($item->jadwal)->format('d-m-Y') }}
+                            {{ $item->jam }}
+                        </p>
+
+                        @if($item->status_approval == 1)
+
+                            <span class="badge bg-success">
+                                Approved
+                            </span>
+
+                        @elseif(!empty($item->note))
+
+                            <span class="badge bg-danger">
+                                Rejected
+                            </span>
+
+                            <div class="mt-2">
+
+                                <strong>
+                                    Alasan Penolakan:
+                                </strong>
+
+                                <br>
+
+                                <span class="text-danger">
+                                    {{ $item->note }}
+                                </span>
+
+                            </div>
+
+                        @else
+
+                            <span class="badge bg-warning text-dark">
+                                Menunggu Approval
+                            </span>
+
+                        @endif
+
                     </div>
+
                 </div>
 
-<div class="col-md-2 text-center">
+                <div class="col-md-2 text-center">
 
-    <a href="{{ route('user.mobilSaya.detail',$mobil->id) }}"
-       class="btn btn-outline-primary btn-sm mb-2">
-        Lihat Mobil
-    </a>
+                    @if($item->mobil)
 
-<form action="{{ route('user.mobilSaya.hapus',$mobil->id) }}"
-      method="POST"
-      class="form-hapus">
-    @csrf
-    @method('DELETE')
+                        <a href="{{ route('user.mobilSaya.detail',$item->mobil->id) }}"
+                           class="btn btn-outline-primary btn-sm">
+                            Lihat Mobil
+                        </a>
 
-    <button type="submit"
-            class="btn btn-outline-danger btn-sm">
-        Hapus
-    </button>
-</form>
+                    @endif
 
-</div>
+                </div>
 
             </div>
+
         </div>
+
     @empty
+
         <div class="alert alert-info">
-            Belum ada mobil tersedia
+            Belum ada pengajuan inspeksi.
         </div>
+
     @endforelse
+
+</div>
 
 </div>
 @if(session('success'))
