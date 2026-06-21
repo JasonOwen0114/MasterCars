@@ -946,37 +946,7 @@ $overall =
     ($gradeMesin * 0.40) +
     ($gradeKelengkapan * 0.15);
 @endphp
-<div class="card mt-4 shadow-sm border-0">
-    <div class="card-body text-center">
 
-        <h5 class="fw-bold mb-2">Overall Quality Score</h5>
-
-        <h1 class="fw-bold text-primary">
-            {{ round($overall, 2) }} / 100
-        </h1>
-
-        @php
-            $label =
-                $overall >= 85 ? 'Sangat Layak' :
-                ($overall >= 70 ? 'Layak' :
-                ($overall >= 50 ? 'Waspada' : 'Tidak Layak'));
-        @endphp
-
-        <span class="badge bg-dark mt-2 p-2">
-            {{ $label }}
-        </span>
-
-        <hr>
-
-        <small class="text-muted">
-            Eksterior: {{ round($gradeEksterior,1) }} |
-            Interior: {{ round($gradeInterior,1) }} |
-            Mesin: {{ round($gradeMesin,1) }} |
-            Kelengkapan: {{ round($gradeKelengkapan,1) }}
-        </small>
-
-    </div>
-</div>
 <div class="card mt-4 shadow-sm border-0">
     <div class="card-body text-center">
 
