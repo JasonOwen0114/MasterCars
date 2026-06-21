@@ -496,6 +496,6 @@ public function approvalInspeksi()
         ->latest()
         ->get();
 
-    return view('user.approval-inspeksi', compact('jadwal'));
+    return view('approval-inspeksi', compact('jadwal'));
 }
 }

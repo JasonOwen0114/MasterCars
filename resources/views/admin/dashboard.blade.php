@@ -114,137 +114,74 @@ table{
 
                         </thead>
            
-
-                <tbody>
-
-              <tbody>
-
+<tbody>
 @foreach($jadwal as $j)
 
 @php
-$availableStaff = app(App\Http\Controllers\AdminController::class)
-->getAvailableStaff($j);
+    $availableStaff = app(App\Http\Controllers\AdminController::class)
+        ->getAvailableStaff($j);
 @endphp
 
 <tr>
 
-```
-<td>{{ $j->merk }}</td>
-<td>{{ $j->model_mobil }}</td>
-<td>{{ $j->tahun }}</td>
-<td>{{ $j->transmisi }}</td>
-<td>{{ $j->warna }}</td>
-<td>{{ $j->tipe_mesin }}</td>
-<td>{{ $j->nomor_kontak }}</td>
-<td>{{ $j->alamat }}</td>
-<td>{{ $j->kecamatan }}</td>
-
-<td>
-    {{ $j->jadwal }}
-    <br>
-    <small class="text-muted">
-        {{ $j->jam }}
-    </small>
-</td>
-
-<form action="{{ route('admin.assign.store',$j->id) }}"
-      method="POST">
-
-    @csrf
+    <td>{{ $j->merk }}</td>
+    <td>{{ $j->model_mobil }}</td>
+    <td>{{ $j->tahun }}</td>
+    <td>{{ $j->transmisi }}</td>
+    <td>{{ $j->warna }}</td>
+    <td>{{ $j->tipe_mesin }}</td>
+    <td>{{ $j->nomor_kontak }}</td>
+    <td>{{ $j->alamat }}</td>
+    <td>{{ $j->kecamatan }}</td>
 
     <td>
-
-        <select name="status_approval"
-                class="form-select approval-select"
-                required>
-
-            <option value="">
-                Pilih Status
-            </option>
-
-            <option value="1">
-                Approve
-            </option>
-
-            <option value="0">
-                Reject
-            </option>
-
-        </select>
-
+        {{ $j->jadwal }} <br>
+        <small class="text-muted">{{ $j->jam }}</small>
     </td>
 
-    <td>
+    <form action="{{ route('admin.assign.store',$j->id) }}" method="POST">
+        @csrf
 
-        <textarea
-            name="note"
-            class="form-control note-field"
-            rows="2"
-            style="display:none"
-            placeholder="Alasan penolakan"></textarea>
+        <td>
+            <select name="status_approval" class="form-select approval-select" required>
+                <option value="">Pilih Status</option>
+                <option value="1">Approve</option>
+                <option value="0">Reject</option>
+            </select>
+        </td>
 
-    </td>
+        <td>
+            <textarea name="note"
+                      class="form-control note-field"
+                      rows="2"
+                      style="display:none"
+                      placeholder="Alasan penolakan"></textarea>
+        </td>
 
-    <td>
+        <td>
+            <select name="staff_id"
+                    class="form-select staff-select"
+                    disabled>
+                <option value="">-- Pilih Staff --</option>
 
-        <select name="staff_id"
-                class="form-select staff-select"
-                disabled>
+                @foreach($availableStaff as $s)
+                    <option value="{{ $s->id }}">{{ $s->nama }}</option>
+                @endforeach
+            </select>
+        </td>
 
-            <option value="">
-                -- Pilih Staff --
-            </option>
+        <td>
+            <button type="submit" class="btn btn-success btn-sm">
+                Simpan
+            </button>
+        </td>
 
-            @foreach($availableStaff as $s)
-
-                <option value="{{ $s->id }}">
-                    {{ $s->nama }}
-                </option>
-
-            @endforeach
-
-        </select>
-
-    </td>
-
-    <td>
-
-        <button type="submit"
-                class="btn btn-success btn-sm">
-            Simpan
-        </button>
-
-    </td>
-
-</form>
-```
+    </form>
 
 </tr>
 
 @endforeach
-
 </tbody>
-
-
-            </select>
-
-    </td>
-
-    <td>
-
-            <button class="btn btn-success btn-sm">
-                Assign
-            </button>
-
-        </form>
-
-    </td>
-
-</tr>
-
-                @endforeach
-
-                </tbody>
 
             </table>
 
