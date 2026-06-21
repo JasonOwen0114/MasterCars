@@ -751,19 +751,20 @@ public function laporanMobilAktif(Request $request)
 
         return view('admin.tambahMobil', compact('merks'));
     }
-    public function storeMerk(Request $request)
-    {
-        $request->validate([
-            'merk' => 'required|string|max:255'
-        ]);
+public function storeMerk(Request $request)
+{
+    $request->validate([
+        'merk'  => 'required|string|max:255',
+        'model' => 'required|string|max:255',
+    ]);
 
-        DataMobil::create([
-            'merk' => $request->merk,
-            'model' => null
-        ]);
+    DataMobil::create([
+        'merk'  => $request->merk,
+        'model' => $request->model,
+    ]);
 
-        return back()->with('success', 'Merk berhasil ditambahkan');
-    }
+    return back()->with('success', 'Merk dan Model berhasil ditambahkan');
+}
     public function storeModel(Request $request)
     {
         $request->validate([

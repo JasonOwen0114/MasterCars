@@ -65,21 +65,27 @@
             <div class="card p-3 shadow-sm">
 
                 <h5 class="mb-3">Tambah Merk Mobil</h5>
+<form action="{{ route('admin.merk.store') }}" method="POST">
+    @csrf
 
-                <form action="{{ route('admin.merk.store') }}" method="POST">
-                    @csrf
+    <label class="form-label">Merk Mobil</label>
+    <input type="text"
+           name="merk"
+           class="form-control mb-3"
+           placeholder="Contoh: Toyota"
+           required>
 
-                    <input type="text"
-                           name="merk"
-                           class="form-control mb-3"
-                           placeholder="Contoh: Toyota"
-                           required>
+    <label class="form-label">Model Mobil</label>
+    <input type="text"
+           name="model"
+           class="form-control mb-3"
+           placeholder="Contoh: Avanza"
+           required>
 
-                    <button class="btn btn-primary w-100">
-                        Add Merk
-                    </button>
-
-                </form>
+    <button class="btn btn-primary w-100">
+        Add Merk & Model
+    </button>
+</form>
 
             </div>
         </div>
