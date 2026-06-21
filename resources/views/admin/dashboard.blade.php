@@ -90,8 +90,7 @@ table{
 
             <table class="table table-bordered table-striped align-middle">
 
-                <thead class="table-dark">
-                    <tr>
+      
                         <thead class="table-dark">
 
                             <tr>
@@ -114,95 +113,118 @@ table{
                             </tr>
 
                         </thead>
-                    </tr>
-                </thead>
+           
 
                 <tbody>
 
-                @foreach($jadwal as $j)
+              <tbody>
 
-                    @php
-                        $availableStaff = app(App\Http\Controllers\AdminController::class)
-                            ->getAvailableStaff($j);
-                    @endphp
+@foreach($jadwal as $j)
+
+@php
+$availableStaff = app(App\Http\Controllers\AdminController::class)
+->getAvailableStaff($j);
+@endphp
 
 <tr>
 
+```
+<td>{{ $j->merk }}</td>
+<td>{{ $j->model_mobil }}</td>
+<td>{{ $j->tahun }}</td>
+<td>{{ $j->transmisi }}</td>
+<td>{{ $j->warna }}</td>
+<td>{{ $j->tipe_mesin }}</td>
+<td>{{ $j->nomor_kontak }}</td>
+<td>{{ $j->alamat }}</td>
+<td>{{ $j->kecamatan }}</td>
+
+<td>
+    {{ $j->jadwal }}
+    <br>
+    <small class="text-muted">
+        {{ $j->jam }}
+    </small>
+</td>
+
+<form action="{{ route('admin.assign.store',$j->id) }}"
+      method="POST">
+
+    @csrf
 
     <td>
-        {{ $j->merk }}
+
+        <select name="status_approval"
+                class="form-select approval-select"
+                required>
+
+            <option value="">
+                Pilih Status
+            </option>
+
+            <option value="1">
+                Approve
+            </option>
+
+            <option value="0">
+                Reject
+            </option>
+
+        </select>
+
     </td>
 
-  
     <td>
-        {{ $j->model_mobil }}
-    </td>
 
-   
-    <td>
-        {{ $j->tahun }}
-    </td>
+        <textarea
+            name="note"
+            class="form-control note-field"
+            rows="2"
+            style="display:none"
+            placeholder="Alasan penolakan"></textarea>
 
- 
-    <td>
-        {{ $j->transmisi }}
     </td>
 
     <td>
-        {{ $j->warna }}
-    </td>
 
-   
-    <td>
-        {{ $j->tipe_mesin }}
-    </td>
+        <select name="staff_id"
+                class="form-select staff-select"
+                disabled>
 
-  
-    <td>
-        {{ $j->nomor_kontak }}
-    </td>
+            <option value="">
+                -- Pilih Staff --
+            </option>
 
-    <td>
-        {{ $j->alamat }}
-    </td>
+            @foreach($availableStaff as $s)
 
-
-    <td>
-        {{ $j->kecamatan }}
-    </td>
-
-
-    <td>
-        {{ $j->jadwal }}
-        <br>
-        <small class="text-muted">
-            {{ $j->jam }}
-        </small>
-    </td>
-
-
-    <td>
-
-        <form action="{{ route('admin.assign.store',$j->id) }}"
-              method="POST">
-
-            @csrf
-
-            <select name="staff_id"
-                    class="form-select"
-                    required>
-
-                <option value="">
-                    -- Pilih Staff --
+                <option value="{{ $s->id }}">
+                    {{ $s->nama }}
                 </option>
 
-                @foreach($availableStaff as $s)
+            @endforeach
 
-                    <option value="{{ $s->id }}">
-                        {{ $s->nama }}
-                    </option>
+        </select>
 
-                @endforeach
+    </td>
+
+    <td>
+
+        <button type="submit"
+                class="btn btn-success btn-sm">
+            Simpan
+        </button>
+
+    </td>
+
+</form>
+```
+
+</tr>
+
+@endforeach
+
+</tbody>
+
 
             </select>
 
@@ -240,6 +262,57 @@ table{
     </small>
 
 </footer>
+
+<script>
+
+document.addEventListener('DOMContentLoaded', function(){
+
+    document.querySelectorAll('.approval-select').forEach(function(select){
+
+        select.addEventListener('change', function(){
+
+            let row = this.closest('tr');
+
+            let staff = row.querySelector('.staff-select');
+            let note  = row.querySelector('.note-field');
+
+            if(this.value == '1')
+            {
+                staff.disabled = false;
+                staff.required = true;
+
+                note.style.display = 'none';
+                note.required = false;
+                note.value = '';
+            }
+            else if(this.value == '0')
+            {
+                staff.disabled = true;
+                staff.required = false;
+                staff.value = '';
+
+                note.style.display = 'block';
+                note.required = true;
+            }
+            else
+            {
+                staff.disabled = true;
+                staff.required = false;
+
+                note.style.display = 'none';
+                note.required = false;
+            }
+
+        });
+
+    });
+
+});
+
+</script>
+
+</body>
+</html>
 
 </body>
 </html>
