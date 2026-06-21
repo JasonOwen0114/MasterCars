@@ -779,5 +779,18 @@ public function storeMerk(Request $request)
 
         return back()->with('success', 'Model berhasil ditambahkan');
     }
+    public function deleteDataMobil(Request $request)
+    {
+        $request->validate([
+            'merk'  => 'required|string',
+            'model' => 'required|string',
+        ]);
+
+        DataMobil::where('merk', $request->merk)
+            ->where('model', $request->model)
+            ->delete();
+
+        return back()->with('success', 'Data mobil berhasil dihapus');
+    }
 
 }

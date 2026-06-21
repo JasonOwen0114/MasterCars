@@ -200,6 +200,9 @@ Route::middleware(['auth', 'role:1'])->group(function () {
 
     Route::post('/admin/model/store', [AdminController::class, 'storeModel'])
         ->name('admin.model.store');
+
+    Route::delete('/admin/data-mobil/delete', [AdminController::class, 'deleteDataMobil'])
+        ->name('admin.dataMobil.delete');
 });
 Route::middleware(['auth', 'role:2'])->group(function () {
 
