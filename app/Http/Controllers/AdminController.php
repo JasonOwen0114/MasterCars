@@ -129,14 +129,24 @@ public function storeAssign(Request $request, $id)
     ]);
 
     $jadwal = JadwalInspeksi::findOrFail($id);
-    if ($request->status_approval == 0) {
-        $jadwal->update([
-            'status_approval' => 0,
-            'note_approval'   => $request->note_approval
-        ]);
+if ($request->status_approval == 0) {
 
-        return back()->with('success', 'Pengajuan inspeksi ditolak');
-    }
+    $jadwal->update([
+        'status_approval' => 0,
+        'note_approval'   => $request->note_approval
+    ]);
+
+    \App\Models\Notification::create([
+        'user_id' => $jadwal->user_id,
+        'title' => 'Pengajuan Inspeksi Ditolak',
+        'message' => $request->note_approval ??
+                     'Pengajuan inspeksi kendaraan Anda ditolak.',
+        'type' => 'approval_ditolak',
+        'reference_id' => $jadwal->id
+    ]);
+
+    return back()->with('success', 'Pengajuan inspeksi ditolak');
+}
     if (!$request->staff_id) {
         return back()->with('error', 'Pilih staff terlebih dahulu');
     }
@@ -177,12 +187,22 @@ public function storeAssign(Request $request, $id)
             'Staff memiliki jadwal delivery pada jam tersebut'
         );
     }
-    $jadwal->update([
-        'status_approval' => 1,
-        'staff_id'        => $staffId,
-        'status'          => 2,
-        'note_approval'   => null
-    ]);
+$jadwal->update([
+    'status_approval' => 1,
+    'staff_id'        => $staffId,
+    'status'          => 2,
+    'note_approval'   => null
+]);
+
+\App\Models\Notification::create([
+    'user_id' => $jadwal->user_id,
+    'title' => 'Pengajuan Inspeksi Disetujui',
+    'message' => 'Pengajuan inspeksi kendaraan Anda telah disetujui.',
+    'type' => 'approval_disetujui',
+    'reference_id' => $jadwal->id
+]);
+
+return back()->with('success', 'Pengajuan inspeksi disetujui');
 
     return back()->with('success', 'Pengajuan inspeksi disetujui');
 }

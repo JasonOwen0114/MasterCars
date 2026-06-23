@@ -607,5 +607,79 @@ document.addEventListener('change', function(e){
     }
 });
 </script>
+@if($notification)
+
+<div class="modal fade"
+     id="notificationModal"
+     tabindex="-1">
+
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h5 class="modal-title">
+                    {{ $notification->title }}
+                </h5>
+
+            </div>
+
+            <div class="modal-body">
+
+                {{ $notification->message }}
+
+            </div>
+
+            <div class="modal-footer">
+
+                <button
+                    class="btn btn-primary"
+                    onclick="closeNotification({{ $notification->id }})">
+                    OK
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+document.addEventListener('DOMContentLoaded', function(){
+
+    let modal = new bootstrap.Modal(
+        document.getElementById('notificationModal')
+    );
+
+    modal.show();
+
+});
+
+function closeNotification(id)
+{
+    fetch('/notification/read/' + id, {
+
+        method: 'POST',
+
+        headers: {
+            'X-CSRF-TOKEN':
+            '{{ csrf_token() }}'
+        }
+
+    }).then(() => {
+
+        location.reload();
+
+    });
+}
+
+</script>
+
+@endif
+
 </body>
 </html>

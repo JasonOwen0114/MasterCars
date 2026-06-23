@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Mobil;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
+use App\Models\Notification;
+use App\Models\JadwalInspeksi;
+use App\Models\Inspeksi;
 
 class DashboardController extends Controller
 {
@@ -14,62 +16,95 @@ class DashboardController extends Controller
 public function index(Request $request)
 {
     $query = Mobil::where('status', 'tersedia');
+
     if (auth()->check()) {
         $query->where('user_id', '!=', auth()->id());
     }
+
     if ($request->merk) {
         $query->where('merk', $request->merk);
     }
+
     if ($request->model) {
         $query->where('nama_mobil', $request->model);
     }
+
     if ($request->tahun_min) {
         $query->where('tahun', '>=', $request->tahun_min);
     }
+
     if ($request->tahun_max) {
         $query->where('tahun', '<=', $request->tahun_max);
     }
+
     if ($request->harga_min) {
-    $query->where('harga', '>=', $request->harga_min);
+        $query->where('harga', '>=', $request->harga_min);
     }
+
     if ($request->harga_max) {
         $query->where('harga', '<=', $request->harga_max);
     }
-if ($request->kursi) {
-    $query->where('kapasitas_kursi', $request->kursi);
-}
-if ($request->sort) {
-    switch ($request->sort) {
-        case 'harga_terendah':
-            $query->orderBy('harga', 'asc');
-            break;
 
-        case 'harga_tertinggi':
-            $query->orderBy('harga', 'desc');
-            break;
-
-        case 'tahun_terbaru':
-            $query->orderBy('tahun', 'desc');
-            break;
-
-        case 'tahun_terlama':
-            $query->orderBy('tahun', 'asc');
-            break;
-
-        default:
-            $query->latest();
-            break;
+    if ($request->kursi) {
+        $query->where('kapasitas_kursi', $request->kursi);
     }
-} else {
-    $query->latest();
-}
-$mobils = $query->paginate(9)->withQueryString();
-    $merks = DB::table('data_mobil')->select('merk')->distinct()->pluck('merk');
+
+    if ($request->sort) {
+
+        switch ($request->sort) {
+
+            case 'harga_terendah':
+                $query->orderBy('harga', 'asc');
+                break;
+
+            case 'harga_tertinggi':
+                $query->orderBy('harga', 'desc');
+                break;
+
+            case 'tahun_terbaru':
+                $query->orderBy('tahun', 'desc');
+                break;
+
+            case 'tahun_terlama':
+                $query->orderBy('tahun', 'asc');
+                break;
+
+            default:
+                $query->latest();
+                break;
+        }
+
+    } else {
+
+        $query->latest();
+    }
+
+    $mobils = $query->paginate(9)->withQueryString();
+
+    $merks = DB::table('data_mobil')
+        ->select('merk')
+        ->distinct()
+        ->pluck('merk');
+
+    $notifications = collect();
+
+    if (auth()->check()) {
+
+        $notifications = Notification::where('user_id', auth()->id())
+            ->where('is_read', 0)
+            ->latest()
+            ->get();
+    }
+
     if ($request->ajax()) {
         return view('partials.mobil-card', compact('mobils'))->render();
     }
 
-    return view('dashboard', compact('mobils', 'merks'));
+    return view('dashboard', compact(
+        'mobils',
+        'merks',
+        'notifications'
+    ));
 }
 
     public function getModelByMerk($merk)
@@ -98,5 +133,17 @@ public function compareResult(Request $request)
     ])->whereIn('id', $ids)->get();
 
    return view('result', compact('mobils'));
+}
+public function readNotification($id)
+{
+    Notification::where('id', $id)
+        ->where('user_id', auth()->id())
+        ->update([
+            'is_read' => 1
+        ]);
+
+    return response()->json([
+        'success' => true
+    ]);
 }
 }
