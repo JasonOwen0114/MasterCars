@@ -607,79 +607,81 @@ document.addEventListener('change', function(e){
     }
 });
 </script>
-@if($notification)
-
-<div class="modal fade"
-     id="notificationModal"
-     tabindex="-1">
-
+@if(auth()->check() && $notifications->count())
+<div class="modal fade" id="notifModal">
     <div class="modal-dialog">
-
         <div class="modal-content">
 
             <div class="modal-header">
-
-                <h5 class="modal-title">
-                    {{ $notification->title }}
-                </h5>
-
+                <h5>Notifikasi</h5>
             </div>
 
             <div class="modal-body">
 
-                {{ $notification->message }}
+                @foreach($notifications as $notif)
+
+                    <div class="alert
+                    @if($notif->type=='approval_disetujui')
+                        alert-success
+                    @elseif($notif->type=='approval_ditolak')
+                        alert-danger
+                    @else
+                        alert-primary
+                    @endif">
+
+                        <h6>{{ $notif->title }}</h6>
+
+                        <small>
+                            {{ $notif->message }}
+                        </small>
+
+                    </div>
+
+                @endforeach
 
             </div>
 
             <div class="modal-footer">
 
-                <button
-                    class="btn btn-primary"
-                    onclick="closeNotification({{ $notification->id }})">
-                    OK
+                <button class="btn btn-primary"
+                        data-bs-dismiss="modal">
+                    Tutup
                 </button>
 
             </div>
 
         </div>
-
     </div>
-
 </div>
-
+@endif
+@if(auth()->check() && $notifications->count())
 <script>
 
-document.addEventListener('DOMContentLoaded', function(){
+document.addEventListener("DOMContentLoaded", function(){
 
     let modal = new bootstrap.Modal(
-        document.getElementById('notificationModal')
+        document.getElementById('notifModal')
     );
 
     modal.show();
 
-});
+    document
+    .getElementById('notifModal')
+    .addEventListener('hidden.bs.modal', function () {
 
-function closeNotification(id)
-{
-    fetch('/notification/read/' + id, {
-
-        method: 'POST',
-
-        headers: {
-            'X-CSRF-TOKEN':
-            '{{ csrf_token() }}'
-        }
-
-    }).then(() => {
-
-        location.reload();
+        fetch("{{ route('notification.read') }}",{
+            method:"POST",
+            headers:{
+                "X-CSRF-TOKEN":"{{ csrf_token() }}",
+                "Content-Type":"application/json"
+            }
+        });
 
     });
-}
+
+});
 
 </script>
-
 @endif
-
 </body>
 </html>

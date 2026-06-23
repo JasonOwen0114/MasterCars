@@ -19,6 +19,7 @@ use Illuminate\Support\Str;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use Cloudinary\Api\Upload\UploadApi;
 use Cloudinary\Configuration\Configuration;
+use App\Models\Notification;
 
 
 
@@ -239,13 +240,6 @@ $inspeksi = Inspeksi::create([
                 $nilaiKelengkapan
             )),
         ]);
-        \App\Models\Notification::create([
-            'user_id'      => $mobil->user_id,
-            'title'        => 'Hasil Inspeksi Sudah Tersedia',
-            'message'      => 'Hasil inspeksi kendaraan Anda sudah dapat dilihat.',
-            'type'         => 'hasil_inspeksi',
-            'reference_id' => $inspeksi->id,
-        ]);
 
         if (!$isReinspeksi) {
 
@@ -257,6 +251,13 @@ $inspeksi = Inspeksi::create([
 
         $jadwal->update([
             'status' => 3
+        ]);
+        Notification::create([
+            'user_id' => $jadwal->user_id,
+            'title' => 'Hasil Inspeksi Telah Tersedia',
+            'message' => 'Hasil inspeksi kendaraan Anda telah selesai dan dapat dilihat.',
+            'type' => 'hasil_inspeksi',
+            'reference_id' => $inspeksi->id
         ]);
 
 if ($isReinspeksi) {

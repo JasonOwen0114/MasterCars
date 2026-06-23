@@ -8,7 +8,8 @@ use App\Models\User;
 use Carbon\Carbon; 
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
-    use App\Models\DataMobil;
+use App\Models\DataMobil;
+use App\Models\Notification;
 
 
 class AdminController extends Controller
@@ -129,24 +130,21 @@ public function storeAssign(Request $request, $id)
     ]);
 
     $jadwal = JadwalInspeksi::findOrFail($id);
-if ($request->status_approval == 0) {
+    if ($request->status_approval == 0) {
+        $jadwal->update([
+            'status_approval' => 0,
+            'note_approval'   => $request->note_approval
+        ]);
+        Notification::create([
+            'user_id' => $jadwal->user_id,
+            'title' => 'Pengajuan Inspeksi Ditolak',
+            'message' => 'Pengajuan inspeksi Anda ditolak. Alasan : '.$request->note_approval,
+            'type' => 'approval_ditolak',
+            'reference_id' => $jadwal->id
+        ]);
 
-    $jadwal->update([
-        'status_approval' => 0,
-        'note_approval'   => $request->note_approval
-    ]);
-
-    \App\Models\Notification::create([
-        'user_id' => $jadwal->user_id,
-        'title' => 'Pengajuan Inspeksi Ditolak',
-        'message' => $request->note_approval ??
-                     'Pengajuan inspeksi kendaraan Anda ditolak.',
-        'type' => 'approval_ditolak',
-        'reference_id' => $jadwal->id
-    ]);
-
-    return back()->with('success', 'Pengajuan inspeksi ditolak');
-}
+        return back()->with('success', 'Pengajuan inspeksi ditolak');
+    }
     if (!$request->staff_id) {
         return back()->with('error', 'Pilih staff terlebih dahulu');
     }
@@ -187,22 +185,19 @@ if ($request->status_approval == 0) {
             'Staff memiliki jadwal delivery pada jam tersebut'
         );
     }
-$jadwal->update([
-    'status_approval' => 1,
-    'staff_id'        => $staffId,
-    'status'          => 2,
-    'note_approval'   => null
-]);
-
-\App\Models\Notification::create([
-    'user_id' => $jadwal->user_id,
-    'title' => 'Pengajuan Inspeksi Disetujui',
-    'message' => 'Pengajuan inspeksi kendaraan Anda telah disetujui.',
-    'type' => 'approval_disetujui',
-    'reference_id' => $jadwal->id
-]);
-
-return back()->with('success', 'Pengajuan inspeksi disetujui');
+    $jadwal->update([
+        'status_approval' => 1,
+        'staff_id'        => $staffId,
+        'status'          => 2,
+        'note_approval'   => null
+    ]);
+    Notification::create([
+        'user_id' => $jadwal->user_id,
+        'title' => 'Pengajuan Inspeksi Disetujui',
+        'message' => 'Pengajuan inspeksi Anda telah disetujui.',
+        'type' => 'approval_disetujui',
+        'reference_id' => $jadwal->id
+    ]);
 
     return back()->with('success', 'Pengajuan inspeksi disetujui');
 }

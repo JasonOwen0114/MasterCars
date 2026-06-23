@@ -6,7 +6,7 @@ use App\Http\Controllers\JualController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\NotificationController;
+
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MobilController;
 
@@ -34,8 +34,7 @@ use App\Http\Controllers\MobilController;
         ->name('register');
 
     Route::post('/register', [AuthController::class, 'registerProses']);
-    
-    Route::post('/notification/read/{id}',[NotificationController::class, 'markAsRead'])->name('notification.read');
+
 });
 
 
@@ -121,6 +120,8 @@ Route::get('/reinspeksi/finish', [UserController::class, 'finishReinspeksi'])
         
     Route::get('/approval-inspeksi', [UserController::class, 'approvalInspeksi'])
         ->name('user.approval');
+    Route::post('/notification/read', [DashboardController::class,'readNotification'])
+        ->name('notification.read');
 });
 
 
