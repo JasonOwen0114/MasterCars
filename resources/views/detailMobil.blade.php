@@ -518,6 +518,23 @@ $approvalCount = DB::table('jadwal_inspeksi')
     </div>
 
 </div>
+@if($fitur && $fitur->note)
+
+<div class="card mt-3 border-0 shadow-sm">
+    <div class="card-body">
+
+        <h5 class="fw-bold mb-2">
+            Catatan Fitur Mobil
+        </h5>
+
+        <div class="alert alert-info mb-0">
+            {{ $fitur->note }}
+        </div>
+
+    </div>
+</div>
+
+@endif
 @php
 function score($value)
 {

@@ -468,11 +468,7 @@ $approvalCount = DB::table('jadwal_inspeksi')
 </div>
 
 </div>
-        </div>
 
-    </div>
-
-</div>
 
 <div class="card shadow-sm mb-4 mt-5">
     <div class="card-body">

@@ -669,7 +669,33 @@ $mobil2 = $mobils[1];
         </div>
 
     </div>
+    <div class="row mt-3">
 
+    @if(optional($mobil1->fitur)->note)
+    <div class="col-md-6 mb-3">
+        <h5 class="fw-bold mb-2">
+            Catatan Fitur {{ $mobil1->merk }} {{ $mobil1->nama_mobil }}
+        </h5>
+
+        <div class="alert alert-info mb-0">
+            {{ $mobil1->fitur->note }}
+        </div>
+    </div>
+    @endif
+
+    @if(optional($mobil2->fitur)->note)
+    <div class="col-md-6 mb-3">
+        <h5 class="fw-bold mb-2">
+            Catatan Fitur {{ $mobil2->merk }} {{ $mobil2->nama_mobil }}
+        </h5>
+
+        <div class="alert alert-info mb-0">
+            {{ $mobil2->fitur->note }}
+        </div>
+    </div>
+    @endif
+
+</div>
 
 @endif
     </div>
