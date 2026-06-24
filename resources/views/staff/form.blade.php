@@ -201,7 +201,19 @@ value="0"
 Tidak
 </div>
 @endforeach
+<div class="col-12 mt-4">
 
+    <label class="fw-bold">
+        Catatan Fitur Mobil
+    </label>
+
+    <textarea
+        name="fitur[note]"
+        class="form-control"
+        rows="3"
+        placeholder="Masukkan catatan fitur mobil">{{ old('fitur.note', $lastInspeksi?->fiturMobil?->note) }}</textarea>
+
+</div>
         </div>
         </div>
 

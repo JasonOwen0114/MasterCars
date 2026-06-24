@@ -32,6 +32,7 @@ class FiturMobil extends Model
         'tpms',
         'camera_360',
         'rear_view_camera',
+        'note',
     ];
 
     public function mobil()

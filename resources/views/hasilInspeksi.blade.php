@@ -447,6 +447,27 @@ $approvalCount = DB::table('jadwal_inspeksi')
 
             </table>
 
+@if($fitur && $fitur->note)
+
+<div class="mt-3">
+
+    <h5 class="fw-bold mb-2">
+        Catatan Fitur Mobil
+    </h5>
+
+    <div class="alert alert-info mb-0">
+        {{ $fitur->note }}
+    </div>
+
+</div>
+
+@endif
+
+</div>
+
+</div>
+
+</div>
         </div>
 
     </div>
