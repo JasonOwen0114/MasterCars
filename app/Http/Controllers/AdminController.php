@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use App\Models\DataMobil;
 use App\Models\Notification;
-
+use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
 {
@@ -797,9 +797,14 @@ public function storeMerk(Request $request)
     public function deleteDataMobil(Request $request)
     {
         $request->validate([
-            'merk'  => 'required|string',
-            'model' => 'required|string',
+            'merk'     => 'required|string',
+            'model'    => 'required|string',
+            'password' => 'required',
         ]);
+
+        if (!Hash::check($request->password, Auth::user()->password)) {
+            return back()->with('error', 'Password admin salah.');
+        }
 
         DataMobil::where('merk', $request->merk)
             ->where('model', $request->model)

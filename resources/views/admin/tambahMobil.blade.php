@@ -133,10 +133,20 @@
         <div class="card p-3 shadow-sm">
 
             <h5 class="mb-3 text-danger">Hapus Model Mobil</h5>
+@if(session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
+
+@if(session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+@endif
 <form action="{{ route('admin.dataMobil.delete') }}" method="POST">
     @csrf
     @method('DELETE')
-
 
     <label class="form-label">Pilih Merk</label>
     <select id="merkDelete" name="merk" class="form-select mb-2" required>
@@ -145,7 +155,6 @@
             <option value="{{ $merk }}">{{ $merk }}</option>
         @endforeach
     </select>
-
 
     <label class="form-label">Pilih Model</label>
     <select name="model"
@@ -156,7 +165,17 @@
         <option value="">Pilih Model</option>
     </select>
 
-    <button class="btn btn-danger w-100">
+    <label class="form-label text-danger">
+        Konfirmasi Password Admin
+    </label>
+    <input type="password"
+           name="password"
+           class="form-control mb-3"
+           placeholder="Masukkan password admin"
+           required>
+
+    <button class="btn btn-danger w-100"
+            onclick="return confirm('Yakin ingin menghapus data mobil ini?')">
         Hapus Data Mobil
     </button>
 </form>
